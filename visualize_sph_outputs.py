@@ -23,7 +23,7 @@ class BuildMovie:
         self.num_processes = num_processes
         self.curr_process = 0
         self.focus_process = focus_process
-        self.file_format = "results.{}_0000{}_0000{}.dat"
+        self.file_format = "results.{}_{}_{}.dat"
         self.color_map = {
             0: 'red',
             1: 'blue',
@@ -36,8 +36,9 @@ class BuildMovie:
             os.mkdir(self.to_path)
 
     def __get_filename(self):
-        return self.output_path + "/" + self.file_format.format(str(self.curr_file).zfill(5), self.num_processes,
-                                                                self.curr_process)
+        return self.output_path + "/" + self.file_format.format(str(self.curr_file).zfill(5),
+                                                                str(self.num_processes).zfill(5),
+                                                                str(self.curr_process).zfill(5))
 
     def __read_sph_file(self):
         df = pd.read_csv(self.__get_filename(), sep='\t', skiprows=2, header=None)
@@ -88,9 +89,9 @@ class BuildMovie:
             ax.set_xlabel('x')
             ax.set_ylabel('y')
             ax.set_zlabel('z')
-            # ax.set_xbound(-5e7, 5e7)
-            # ax.set_ybound(-5e7, 5e7)
-            # ax.set_zbound(-5e7, 5e7)
+            ax.set_xbound(-9e6, 9e6)
+            ax.set_ybound(-9e6, 9e6)
+            ax.set_zbound(-9e6, 9e6)
 
         else:
             if savefig:
@@ -140,17 +141,17 @@ class BuildMovie:
     def build_animation_from_existing(self, path, num_files, start_from_file_number=0):
         num_files_copy = copy(self.num_files)
 
-path = "/Users/scotthull/Desktop/test2"
+path = "/Users/scotthull/Desktop/test3"
 mov = BuildMovie(
     output_path=path,
     to_path=os.getcwd() + "/sph_visualization",
-    num_files=280,
+    num_files=1000,
     fps=30,
     colorize_particles=True,
     dimension='3',
     start_from=0,
-    num_processes=4,
-    focus_process=1
+    num_processes=20,
+    focus_process=None
 )
 
 mov.build_animation(save=True)
