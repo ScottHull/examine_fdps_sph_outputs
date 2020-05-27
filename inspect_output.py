@@ -19,13 +19,20 @@ class Inspect:
 
     def plot(self, x_index, y_index, x_label, y_label):
         x_values = list(self.combined_output[x_index])
-        silicate_x = [self.combined_output[x_index][index] for index, i in enumerate(self.ids) if i == 0]
-        silicate_y = [self.combined_output[y_index][index] for index, i in enumerate(self.ids) if i == 0]
-        iron_x = [self.combined_output[x_index][index] for index, i in enumerate(self.ids) if i == 1]
-        iron_y = [self.combined_output[y_index][index] for index, i in enumerate(self.ids) if i == 1]
+        y_values = list(self.combined_output[y_index])
+        target_silicate_x = [x_values[index] for index, i in enumerate(self.ids) if (i == 0)]
+        target_silicate_y = [y_values[index] for index, i in enumerate(self.ids) if i == 0]
+        target_iron_x = [x_values[index] for index, i in enumerate(self.ids) if i == 1]
+        target_iron_y = [y_values[index] for index, i in enumerate(self.ids) if i == 1]
+        impactor_silicate_x = [x_values[index] for index, i in enumerate(self.ids) if (i == 2)]
+        impactor_silicate_y = [y_values[index] for index, i in enumerate(self.ids) if i == 2]
+        impactor_iron_x = [x_values[index] for index, i in enumerate(self.ids) if i == 3]
+        impactor_iron_y = [y_values[index] for index, i in enumerate(self.ids) if i == 3]
         ax = plt.figure().add_subplot(111)
-        ax.scatter(silicate_x, silicate_y, marker="+", color="red", label="silicate")
-        ax.scatter(iron_x, iron_y, marker="+", color="blue", label="iron")
+        ax.scatter(target_silicate_x, target_silicate_y, marker="+", color="red", label="target silicate")
+        ax.scatter(target_iron_x, target_iron_y, marker="+", color="blue", label="target iron")
+        ax.scatter(impactor_silicate_x, impactor_silicate_y, marker="+", color="yellow", label="impactor silicate")
+        ax.scatter(impactor_iron_x, impactor_iron_y, marker="+", color="green", label="impactor iron")
         ax.set_xlabel(x_label)
         ax.set_ylabel(y_label)
         ax.legend()
