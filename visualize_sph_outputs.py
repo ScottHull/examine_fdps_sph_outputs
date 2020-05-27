@@ -92,7 +92,6 @@ class BuildMovie:
             ax.set_xbound(-9e6, 9e6)
             ax.set_ybound(-9e6, 9e6)
             ax.set_zbound(-9e6, 9e6)
-
         else:
             if savefig:
                 particle_id, x, y, z, colors = self.__read_sph_file()
@@ -118,6 +117,9 @@ class BuildMovie:
             self.curr_file += 1
         else:
             plt.show()
+
+        fig.clear()
+        plt.close(fig)
 
         self.curr_process = 0
 
@@ -151,7 +153,7 @@ mov = BuildMovie(
     dimension='3',
     start_from=0,
     num_processes=20,
-    focus_process=None
+    focus_process=None,
 )
 
 mov.build_animation(save=True)

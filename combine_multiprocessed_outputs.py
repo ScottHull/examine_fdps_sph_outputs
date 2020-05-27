@@ -44,7 +44,22 @@ class CombineFile:
         os.remove("merged_{}.dat".format(self.time))
         os.rename("temp.dat", "merged_{}.dat".format(self.time))
 
+    def combine_df(self):
+        dfs = []
+        total_N = 0
+        time = 0
+        for proc in range(0, self.num_processes, 1):
+            self.curr_process = proc
+            with open(self.__get_filename(), 'r') as infile:
+                reader = csv.reader(infile, delimiter="\t")
+                time = float(next(reader)[0])
+                total_N += int(next(reader)[0])
+                infile.close()
+            dfs.append(self.__read_sph_file())
+        merged_df = pd.concat(dfs)
+        return merged_df
 
-m = CombineFile(num_processes=20, time=1000, output_path="/Users/scotthull/Desktop/target_small")
-m.combine()
+
+# m = CombineFile(num_processes=20, time=1000, output_path="/Users/scotthull/Desktop/target_small")
+# m.combine()
 
