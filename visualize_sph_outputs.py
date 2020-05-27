@@ -96,28 +96,29 @@ class BuildMovie:
             if savefig:
                 particle_id, x, y, z, colors = self.__read_sph_file()
             else:
-                savestate = copy(self.curr_file)
-                self.curr_file = file_num
-                particle_id, x, y, z, colors = self.__read_sph_file()
-                self.curr_file = savestate
-            for proc in range(0, self.num_processes, 1):
-                self.curr_process = proc
-                if self.colorize_particles:
-                    ax.scatter(x, y, c=colors, alpha=alpha)
+                for proc in range(0, self.num_processes, 1):
+                    savestate = copy(self.curr_file)
+                    self.curr_file = file_num
+                    particle_id, x, y, z, colors = self.__read_sph_file()
+                    self.curr_file = savestate
+                    self.curr_process = proc
+                    print(self.__get_filename())
+                    if self.colorize_particles:
+                        ax.scatter(x, y, c=colors, alpha=alpha)
+                    else:
+                        ax.scatter(x, y, c='black', alpha=alpha)
+                ax.set_xlabel('x')
+                ax.set_ylabel('y')
+                # ax.set_xbound(-5e7, 5e7)
+                # ax.set_ybound(-5e7, 5e7)
+                ax.axis('equal')
+                if savefig:
+                    ax.set_title("Iteration: {}".format(self.curr_file))
+                    print("Built scene: {}".format(self.curr_file))
+                    fig.savefig(self.to_path + "/output_{}.png".format(self.curr_file), format='png', dpi=100)
+                    self.curr_file += 1
                 else:
-                    ax.scatter(x, y, c='black', alpha=alpha)
-            ax.set_xlabel('x')
-            ax.set_ylabel('y')
-            # ax.set_xbound(-5e7, 5e7)
-            # ax.set_ybound(-5e7, 5e7)
-            ax.axis('equal')
-            if savefig:
-                ax.set_title("Iteration: {}".format(self.curr_file))
-                print("Built scene: {}".format(self.curr_file))
-                fig.savefig(self.to_path + "/output_{}.png".format(self.curr_file), format='png', dpi=100)
-                self.curr_file += 1
-            else:
-                plt.show()
+                    plt.show()
 
         fig.clear()
         plt.close(fig)
