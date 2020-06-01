@@ -1,4 +1,5 @@
 import os
+from operator import add
 from copy import copy
 import shutil
 import pandas as pd
@@ -10,13 +11,14 @@ from mpl_toolkits.mplot3d import Axes3D
 class BuildMovie:
 
     def __init__(self, output_path, to_path, num_files, fps=10, start_from=0, new_sim=True, colorize_particles=True,
-                 dimension='3', num_processes=1, focus_process=None):
+                 dimension='3', num_processes=1, focus_process=None, center=False):
         self.output_path = output_path
         self.to_path = to_path
         self.num_files = num_files
         self.start_file = start_from
         self.curr_file = start_from
         self.fps = fps
+        self.center = center
         self.colorize_particles = colorize_particles
         self.animation_filename = 'sph_output.mp4'
         self.dimension = dimension
@@ -43,13 +45,14 @@ class BuildMovie:
     def __read_sph_file(self):
         df = pd.read_csv(self.__get_filename(), sep='\t', skiprows=2, header=None)
         particle_id = df[1]
+        mass = df[2]
         x = df[3]
         y = df[4]
         z = df[5]
         colors = []
         if self.colorize_particles:
             colors = [self.color_map[int(i)] for i in particle_id]
-        return particle_id, x, y, z, colors
+        return particle_id, x, y, z, colors, mass
 
     def __make_scene(self, savefig=True, file_num=None, alpha=1.0):
         fig = plt.figure()
@@ -60,11 +63,11 @@ class BuildMovie:
                 for proc in range(0, self.num_processes, 1):
                     self.curr_process = proc
                     if savefig:
-                        particle_id, x, y, z, colors = self.__read_sph_file()
+                        particle_id, x, y, z, colors, mass = self.__read_sph_file()
                     else:
                         savestate = copy(self.curr_file)
                         self.curr_file = file_num
-                        particle_id, x, y, z, colors = self.__read_sph_file()
+                        particle_id, x, y, z, colors, mass = self.__read_sph_file()
                         self.curr_file = savestate
                     print(self.__get_filename())
                     if self.colorize_particles:
@@ -75,11 +78,11 @@ class BuildMovie:
             else:
                 self.curr_process = self.focus_process
                 if savefig:
-                    particle_id, x, y, z, colors = self.__read_sph_file()
+                    particle_id, x, y, z, colors, mass = self.__read_sph_file()
                 else:
                     savestate = copy(self.curr_file)
                     self.curr_file = file_num
-                    particle_id, x, y, z, colors = self.__read_sph_file()
+                    particle_id, x, y, z, colors, mass = self.__read_sph_file()
                     self.curr_file = savestate
                 if self.colorize_particles:
                     ax.scatter(x, y, z, c=colors, alpha=alpha)
@@ -96,7 +99,7 @@ class BuildMovie:
             for proc in range(0, self.num_processes, 1):
                 savestate = copy(self.curr_file)
                 self.curr_file = file_num
-                particle_id, x, y, z, colors = self.__read_sph_file()
+                particle_id, x, y, z, colors, mass = self.__read_sph_file()
                 self.curr_file = savestate
                 self.curr_process = proc
                 print(self.__get_filename())
@@ -106,9 +109,11 @@ class BuildMovie:
                     ax.scatter(x, y, c='black', alpha=alpha)
             ax.set_xlabel('x')
             ax.set_ylabel('y')
-            # ax.set_xbound(-5e7, 5e7)
-            # ax.set_ybound(-5e7, 5e7)
-            ax.axis('equal')
+            if self.center:
+                x_center, y_center, z_center = self.center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass)
+                ax.set_xbound(x_center - 5e7, x_center + 5e7)
+                ax.set_ybound(y_center - 5e7, y_center + 5e7)
+            # ax.axis('equal')
             if savefig:
                 ax.set_title("Iteration: {}".format(self.curr_file))
                 print("Built scene: {}".format(self.curr_file))
@@ -121,6 +126,13 @@ class BuildMovie:
         plt.close(fig)
 
         self.curr_process = 0
+
+    def center_of_mass(self, x_coords, y_coords, z_coords, masses):
+        total_mass = sum(masses)
+        x_center = map(add, x_coords, masses) / total_mass
+        y_center = map(add, y_coords, masses) / total_mass
+        z_center = map(add, z_coords, masses) / total_mass
+        return (x_center, y_center, z_center)
 
     def __animate(self):
         frames = [self.to_path + "/output_{}.png".format(i) for i in range(self.start_file, self.num_files + 1)]
@@ -153,6 +165,7 @@ mov = BuildMovie(
     start_from=0,
     num_processes=20,
     focus_process=None,
+    center=True
 )
 
 mov.build_animation(save=True)
