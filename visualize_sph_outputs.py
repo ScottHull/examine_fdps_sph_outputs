@@ -3,6 +3,7 @@ from operator import add
 from copy import copy
 import shutil
 import pandas as pd
+import numpy as np
 import moviepy.editor as mpy
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -94,23 +95,36 @@ class BuildMovie:
             ax.set_xbound(-9e6, 9e6)
             ax.set_ybound(-9e6, 9e6)
             ax.set_zbound(-9e6, 9e6)
+            if savefig:
+                ax.set_title("Iteration: {}".format(self.curr_file))
+                print("Built scene: {}".format(self.curr_file))
+                fig.savefig(self.to_path + "/output_{}.png".format(self.curr_file), format='png', dpi=100)
+                self.curr_file += 1
+            else:
+                plt.show()
         else:
             ax = fig.add_subplot(111)
+            x_array = np.array([])
+            y_array = np.array([])
+            mass_array = np.array([])
             for proc in range(0, self.num_processes, 1):
                 savestate = copy(self.curr_file)
-                self.curr_file = file_num
-                particle_id, x, y, z, colors, mass = self.__read_sph_file()
                 self.curr_file = savestate
                 self.curr_process = proc
+                self.curr_file = file_num
+                particle_id, x, y, z, colors, mass = self.__read_sph_file()
+                x_array = np.concatenate([x_array, x])
+                y_array = np.concatenate([y_array, y])
+                mass_array = np.concatenate([mass_array, mass])
                 print(self.__get_filename())
                 if self.colorize_particles:
                     ax.scatter(x, y, c=colors, alpha=alpha)
                 else:
                     ax.scatter(x, y, c='black', alpha=alpha)
-            ax.set_xlabel('x')
-            ax.set_ylabel('y')
+                ax.set_xlabel('x')
+                ax.set_ylabel('y')
             if self.center:
-                x_center, y_center, z_center = self.center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass)
+                x_center, y_center, z_center = self.center_of_mass(x_coords=x_array, y_coords=y_array, z_coords=np.array([]), masses=mass_array)
                 ax.set_xbound(x_center - 5e7, x_center + 5e7)
                 ax.set_ybound(y_center - 5e7, y_center + 5e7)
             # ax.axis('equal')
@@ -128,10 +142,11 @@ class BuildMovie:
         self.curr_process = 0
 
     def center_of_mass(self, x_coords, y_coords, z_coords, masses):
-        total_mass = sum(masses)
-        x_center = map(add, x_coords, masses) / total_mass
-        y_center = map(add, y_coords, masses) / total_mass
-        z_center = map(add, z_coords, masses) / total_mass
+        masses = np.array(masses, dtype=np.float32)
+        total_mass = float(np.sum(masses))
+        x_center = sum([a * b for a, b in zip(x_coords, masses)]) / total_mass
+        y_center = sum([a * b for a, b in zip(y_coords, masses)]) / total_mass
+        z_center = sum([a * b for a, b in zip(z_coords, masses)]) / total_mass
         return (x_center, y_center, z_center)
 
     def __animate(self):
@@ -148,22 +163,22 @@ class BuildMovie:
         return None
 
     def return_single_scene(self, file_num):
-        self.__make_scene(savefig=False, file_num=file_num, alpha=1.0)
+        self.__make_scene(savefig=True, file_num=file_num, alpha=1.0)
         return None
 
     def build_animation_from_existing(self, path, num_files, start_from_file_number=0):
         num_files_copy = copy(self.num_files)
 
-path = "/Users/scotthull/Desktop/test3"
+path = "/Users/scotthull/Desktop/GI_small"
 mov = BuildMovie(
     output_path=path,
     to_path=os.getcwd() + "/sph_visualization",
-    num_files=1000,
+    num_files=7,
     fps=30,
     colorize_particles=True,
-    dimension='3',
+    dimension='2',
     start_from=0,
-    num_processes=20,
+    num_processes=4,
     focus_process=None,
     center=True
 )
