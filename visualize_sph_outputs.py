@@ -107,6 +107,7 @@ class BuildMovie:
             x_array = np.array([])
             y_array = np.array([])
             mass_array = np.array([])
+            colors_array = np.array([])
             for proc in range(0, self.num_processes, 1):
                 savestate = copy(self.curr_file)
                 self.curr_file = savestate
@@ -116,18 +117,24 @@ class BuildMovie:
                 x_array = np.concatenate([x_array, x])
                 y_array = np.concatenate([y_array, y])
                 mass_array = np.concatenate([mass_array, mass])
+                colors_array = np.concatenate([colors_array, colors])
                 print(self.__get_filename())
-                if self.colorize_particles:
-                    ax.scatter(x, y, c=colors, alpha=alpha)
-                else:
-                    ax.scatter(x, y, c='black', alpha=alpha)
-                ax.set_xlabel('x')
-                ax.set_ylabel('y')
             if self.center:
-                x_center, y_center, z_center = self.center_of_mass(x_coords=x_array, y_coords=y_array, z_coords=np.array([]), masses=mass_array)
-                ax.set_xbound(x_center - 5e7, x_center + 5e7)
-                ax.set_ybound(y_center - 5e7, y_center + 5e7)
-            # ax.axis('equal')
+                x_center, y_center, z_center = self.center_of_mass(x_coords=x_array, y_coords=y_array,
+                                                                   z_coords=np.array([]), masses=mass_array)
+                x_array -= x_center
+                y_array -= y_center
+            if self.colorize_particles:
+                ax.scatter(x_array, y_array, c=colors_array, alpha=alpha)
+            else:
+                ax.scatter(x_array, y_array, c='black', alpha=alpha)
+            ax.set_xlabel('x')
+            ax.set_ylabel('y')
+            # if self.center:
+            #     x_center, y_center, z_center = self.center_of_mass(x_coords=x_array, y_coords=y_array, z_coords=np.array([]), masses=mass_array)
+            #     ax.set_xbound(x_center - 5e7, x_center + 5e7)
+            #     ax.set_ybound(y_center - 5e7, y_center + 5e7)
+            ax.axis('equal')
             if savefig:
                 ax.set_title("Iteration: {}".format(self.curr_file))
                 print("Built scene: {}".format(self.curr_file))
@@ -173,7 +180,7 @@ path = "/Users/scotthull/Desktop/GI_small"
 mov = BuildMovie(
     output_path=path,
     to_path=os.getcwd() + "/sph_visualization",
-    num_files=7,
+    num_files=4,
     fps=30,
     colorize_particles=True,
     dimension='2',
