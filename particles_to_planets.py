@@ -194,30 +194,53 @@ class MapParticles:
     def plot_particles_from_iteration(self, max_iteration, max_randint):
         ax = self.plot_particles()
         iterated_particles = self.iterate_particles_within_planet(max_iteration, max_randint)
+        min_distance, closest_particle = self.__closest_particle_to_equitorial_radius(particles=iterated_particles)
         ax.scatter([i.position_vector[0] for i in iterated_particles],
                    [i.position_vector[1] for i in iterated_particles], marker="+", color="green")
+        ax.scatter(closest_particle.position_vector[0], closest_particle.position_vector[1], marker='x',
+                   color="blue", s=50)
         plt.show()
 
-    def __moment_of_inertia_of_subsection(self, particles):
+    def __moment_of_inertia_of_ellpise(self):
+        I_x = (1.0 / 4.0) * (pi * self.a * self.b) * (self.b**2)
+        I_y = (1.0 / 4.0) * (pi * self.a * self.b) * (self.a**2)
+        I = I_x + I_y
+        return I
 
-        i = sum([p.particle_mass * (sqrt(p.position_vector[0]**2 + p.position_vector[1]**2)) for p in particles])
-        return i
-
-    def __mass_of_subsection(self, particles):
-        return sum([p.particle_mass for p in particles])
-
-    def __minimum_rotational_period_of_subsection(self, particles):
-        I = self.__moment_of_inertia_of_subsection(particles=particles)
+    def __angular_momentum_of_subsection(self):
         K = 0.335
         rho = 5500.0
-        G = 6.674 * 10**-11
-        L_star = self.calc_mass_protoearth(a=self.a, b=self.b)**(5.0/3.0) * K * sqrt(G) * ((3.0 / (4.0 * pi * rho))**(1.0 / 6.0))
-        omega_star = L_star / I
-        T_star = (2.0 * pi) / omega_star
+        G = 6.674 * 10 ** -11
+        L_star = K * self.mass_protoearth * self.a * sqrt((G * self.mass_protoearth) / self.a)
+        return L_star
+
+    def __minimum_rotational_period_of_subsection(self, I, L_star):
+        omega = L_star / I
+        T_star = (2.0 * pi) / omega
         return T_star
 
     def __rotational_period_of_subsection(self, particles):
         return sum([p.magnitude_angular_momentum_xy_plane for p in particles])
+
+    def __closest_particle_to_equitorial_radius(self, particles):
+        equitorial_radius = np.linalg.norm([self.a, 0])
+        min_distance = None
+        min_particle = None
+        for index, i in enumerate(particles):
+            d = np.linalg.norm([i.position_vector[0], 0])
+            if index == 0:
+                min_distance = d
+                min_particle = i
+            else:
+                if d < min_distance:
+                    min_distance = d
+                    min_particle = i
+        return min_distance, min_particle
+
+
+    def __keplerian_velocity(self):
+        G = 6.674 * 10 ** -11
+        return sqrt((G * self.mass_protoearth / self.a))
 
     def iterate_particles_within_planet(self, max_iteration, max_randint):
         particles = []
@@ -261,29 +284,20 @@ class MapParticles:
         CONVERGENCE = False
         # particles = self.__gather_particles()
         particles = self.iterate_particles_within_planet(max_iteration=5000, max_randint=110000)
-        while not CONVERGENCE:
-            refined_mass = self.__mass_of_subsection(particles=particles)
-            minimum_rotational_period = self.__minimum_rotational_period_of_subsection(particles=particles)
-            protoearth_rotational_period = self.__rotational_period_of_subsection(particles=particles)
-            refined_oblateness = self.refined_oblateness(T_star=minimum_rotational_period,
-                                                         T_protoearth=protoearth_rotational_period)
-            new_a = (refined_oblateness * self.b) + self.b
-            err = abs(new_a - self.a) / self.a
-            if err < 0.001:
-                CONVERGENCE = True
-            self.a = new_a
-            self.oblateness = self.calc_oblateness(a=self.a, b=self.b)
-            self.mass_protoearth = refined_mass
-            self.tracked_a.append(self.a)
-            self.tracked_oblateness.append(self.oblateness)
-            self.tracked_mass_protoearth.append(self.mass_protoearth)
-            iteration += 1
-            print("ITERATION: {} (error: {})".format(iteration, err))
+        min_distance, closest_particle = self.__closest_particle_to_equitorial_radius(particles=particles)
+        print(self.a, min_distance)
+        # while CONVERGENCE is False:
+        #     L_star = self.__angular_momentum_of_subsection()
+        #     I = self.__moment_of_inertia_of_ellpise()
+        #     self.__minimum_rotational_period_of_subsection(I=I, L_star=L_star)
+            # new_f = self.refined_oblateness()
 
 
 
 
 
-m = MapParticles(output_path="/Users/scotthull/Desktop/merged_293.dat")
-# m.plot_particles_from_iteration(max_iteration=5000, max_randint=110000)
-m.solve()
+
+
+m = MapParticles(output_path="/Users/scotthull/Desktop/merged_800.dat")
+m.plot_particles_from_iteration(max_iteration=5000, max_randint=110000)
+# m.solve()
