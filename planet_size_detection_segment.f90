@@ -1,8 +1,8 @@
       do while(dabs((aa-aa_old)/aa)>10.d0**(-8.d0))
-         Mpe2=0.d0
-         Lpla2=0.d0
-         Mesc=0.d0
-         Lesc=0.d0
+         Mpe2=0.d0  ! mass of protoearth
+         Lpla2=0.d0  ! angular momentum of protoearth
+         Mesc=0.d0   ! mass of escaped material
+         Lesc=0.d0   ! angular momentum of escaped material
          internal=0.d0
          
          do j=1,m
@@ -28,7 +28,7 @@
                inc(i)=dacos(dabs(Lz2(i)/hhh(i))) !inclination
                rad_av(i)=Lz2(i)*Lz2(i)/GG/Mpe
 
-               if((rad(i)<=aa).or.(rad_av(i))<=aa)then
+               if((rad(i)<=aa).or.(rad_av(i))<=aa)then  ! if
                   Mpe2=Mpe2+mas(i)! the particle becomes part of the planet 
                   Lpla2=Lpla2+mas(i)*(rx(i)*vy(i)-ry(i)*vx(i)) ! angular momentum of the planet
                   vrr=(-vx(i)*ry(i)+rx(i)*vy(i))/dsqrt(rx(i)*rx(i)+ry(i)*ry(i))

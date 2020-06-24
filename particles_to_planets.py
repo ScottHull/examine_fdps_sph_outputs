@@ -142,6 +142,7 @@ class MapParticles:
         self.output = pd.read_csv(output_path, skiprows=2, header=None, delimiter="\t")
         self.com = self.center_of_mass(x_coords=self.output[3], y_coords=self.output[4],
                                        z_coords=self.output[5], masses=self.output[2])
+        self.earth_center = self.__find_center(resolution=5e3, delta_x=1e7, delta_y=1e7, delta_z=1e7)
         self.a = (12713.6 / 2.0) * 1000.0  # present-day equitorial radius of the Earth in m
         self.b = (12756.2 / 2.0) * 1000.0  # present-day polar radius of the Earth in m
         self.oblateness = self.calc_oblateness(a=self.a, b=self.b)
@@ -181,7 +182,7 @@ class MapParticles:
 
     def plot_particles(self):
         ax = plt.figure().add_subplot(111)
-        ax.scatter(self.output[3] - self.com[0], self.output[4] - self.com[1], marker="+", color="black")
+        ax.scatter(self.output[3] - self.earth_center[0], self.output[4] - self.earth_center[1], marker="+", color="black")
         ax.scatter(0, 0, marker="o", s=30, color='red')
         e = Ellipse(xy=(0, 0), width=self.a * 2.0, height=self.b * 2.0, alpha=0.8)
         ax.add_artist(e)
@@ -194,11 +195,12 @@ class MapParticles:
     def plot_particles_from_iteration(self, max_iteration, max_randint):
         ax = self.plot_particles()
         iterated_particles = self.iterate_particles_within_planet(max_iteration, max_randint)
-        min_distance, closest_particle = self.__closest_particle_to_equitorial_radius(particles=iterated_particles)
+
+        # min_distance, closest_particle = self.__closest_particle_to_equitorial_radius(particles=iterated_particles)
         ax.scatter([i.position_vector[0] for i in iterated_particles],
                    [i.position_vector[1] for i in iterated_particles], marker="+", color="green")
-        ax.scatter(closest_particle.position_vector[0], closest_particle.position_vector[1], marker='x',
-                   color="blue", s=50)
+        # ax.scatter(closest_particle.position_vector[0], closest_particle.position_vector[1], marker='x',
+        #            color="blue", s=50)
         plt.show()
 
     def __moment_of_inertia_of_ellpise(self):
@@ -249,9 +251,9 @@ class MapParticles:
             p = Particle(
                 particle_mass=float(self.output[2][r]),
                 particle_id=self.output[0][r],
-                position_x=self.output[3][r] - self.com[0],
-                position_y=self.output[4][r] - self.com[1],
-                position_z=self.output[5][r] - self.com[2],
+                position_x=self.output[3][r] - self.earth_center[0],
+                position_y=self.output[4][r] - self.earth_center[1],
+                position_z=self.output[5][r] - self.earth_center[2],
                 velocity_x=self.output[6][r],
                 velocity_y=self.output[7][r],
                 velocity_z=self.output[8][r],
@@ -267,9 +269,9 @@ class MapParticles:
             Particle(
                 particle_mass=self.output[2][row],
                 particle_id=self.output[0][row],
-                position_x=self.output[3][row] - self.com[0],
-                position_y=self.output[4][row] - self.com[1],
-                position_z=self.output[5][row] - self.com[2],
+                position_x=self.output[3][row] - self.earth_center[0],
+                position_y=self.output[4][row] - self.earth_center[1],
+                position_z=self.output[5][row] - self.earth_center[2],
                 velocity_x=self.output[6][row],
                 velocity_y=self.output[7][row],
                 velocity_z=self.output[8][row],
@@ -278,6 +280,57 @@ class MapParticles:
             )
             for row in self.output.index
         ]
+
+    def __assign_particle_to_profile(self, profile_list, density_list, particle_position):
+        max_index = len(profile_list) - 1
+        for index, i in enumerate(profile_list):
+            if index < max_index:
+                if i <= particle_position < profile_list[index + 1]:
+                    density_list[index] += 1
+                    break
+
+    def __find_center(self, resolution, delta_x, delta_y, delta_z, plot_profile=False):
+        x_profile = list(np.arange(self.com[0] - delta_x, self.com[0] + delta_x, resolution))
+        y_profile = list(np.arange(self.com[1] - delta_y, self.com[1] + delta_y, resolution))
+        z_profile = list(np.arange(self.com[2] - delta_z, self.com[2] + delta_z, resolution))
+
+        x_density = [0 for i in x_profile]
+        y_density = [0 for i in y_profile]
+        z_density = [0 for i in z_profile]
+
+        particles = zip(self.output[3], self.output[4], self.output[5])
+        for p in particles:
+            particle_x_pos = p[0]
+            particle_y_pos = p[1]
+            particle_z_pos = p[2]
+            self.__assign_particle_to_profile(profile_list=x_profile, density_list=x_density,
+                                              particle_position=particle_x_pos)
+            self.__assign_particle_to_profile(profile_list=y_profile, density_list=y_density,
+                                              particle_position=particle_y_pos)
+            self.__assign_particle_to_profile(profile_list=z_profile, density_list=z_density,
+                                              particle_position=particle_z_pos)
+
+        x_center = x_profile[x_density.index(max(x_density))]
+        y_center = y_profile[y_density.index(max(y_density))]
+        z_center = z_profile[z_density.index(max(z_density))]
+
+        if plot_profile:
+            ax = plt.figure().add_subplot(111)
+            ax.plot(x_profile, x_density, linewidth=2.0, color='black')
+            ax.plot(y_profile, y_density, linewidth=2.0, color='red')
+            ax.plot(z_profile, z_density, linewidth=2.0, color='blue')
+            ax.legend()
+            ax.set_xlabel("Position")
+            ax.set_ylabel("Number")
+            ax.grid()
+            plt.show()
+
+        return (x_center, y_center, z_center)
+
+
+
+
+
 
     def solve(self):
         iteration = 1
@@ -301,3 +354,5 @@ class MapParticles:
 m = MapParticles(output_path="/Users/scotthull/Desktop/merged_800.dat")
 m.plot_particles_from_iteration(max_iteration=5000, max_randint=110000)
 # m.solve()
+# p = m.iterate_particles_within_planet(max_iteration=5000, max_randint=110000)
+# m.find_center(particles=p, resolution=5000, max_x=1e7, max_y=1e7, max_z=1e7, plot_profile=True)
