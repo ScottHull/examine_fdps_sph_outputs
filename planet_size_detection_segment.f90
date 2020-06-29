@@ -23,7 +23,7 @@
             else
                rad(i)=dsqrt(rx(i)*rx(i)+ry(i)*ry(i)+rz(i)*rz(i))! radial distance from the center
                vel(i)=dsqrt(vx(i)*vx(i)+vy(i)*vy(i)+vz(i)*vz(i)) ! velocity 
-               hhh(i)=dsqrt((ry(i)*vz(i)-rz(i)*vy(i))**2.d0+(rz(i)*vx(i)-rx(i)*vz(i))**2.d0+(rx(i)*vy(i)-ry(i)*vx(i))**2.d0) ! angular momentum
+               hhh(i)=dsqrt((ry(i)*vz(i)-rz(i)*vy(i**2.d0+(rz(i)*vx(i)-rx(i)*vz(i))**2.d0+(rx(i)*vy(i)-ry(i)*vx(i))**2.d0) ! angular momentum
                Lz2(i)=(rx(i)*vy(i)-ry(i)*vx(i))! angular momentum in the z-direction
                inc(i)=dacos(dabs(Lz2(i)/hhh(i))) !inclination
                rad_av(i)=Lz2(i)*Lz2(i)/GG/Mpe

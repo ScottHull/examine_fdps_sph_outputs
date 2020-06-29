@@ -112,7 +112,8 @@ class ParticleOrbitalElements:
             self.true_anomaly = 360.0 - self.true_anomaly
 
     def calc_radius_periapsis(self, semi_latus_rectum, eccentricity):
-        return semi_latus_rectum / (1.0 + np.linalg.norm(eccentricity))
+        # return semi_latus_rectum / (1.0 + np.linalg.norm(eccentricity))
+        return self.semi_major_axis * (1.0 - np.linalg.norm(self.eccentricity_vector))
 
     def calc_radius_apoapsis(self, semi_latus_rectum, eccentricity):
         return semi_latus_rectum / (1.0 - np.linalg.norm(eccentricity))
@@ -127,22 +128,30 @@ class Particle(ParticleOrbitalElements):
         super().__init__(position_x, position_y, position_z, velocity_x, velocity_y, velocity_z, gravitating_mass)
         self.particle_mass = particle_mass
         self.particle_id = particle_id
-        self.label = self.set_label(equitorial_radius=equitorial_radius)
+        self.particle_radial_distance_from_center = self.__radial_distance_of_particle()
+        self.particle_linear_velocity = self.__linear_velocity_of_particle()
+        self.label = None
 
-    def set_label(self, equitorial_radius):
-        if abs(np.linalg.norm(self.radius_periapsis)) < equitorial_radius:
-            return "PLANET"
-        else:
-            return "DISK"
+    def __radial_distance_of_particle(self):
+        return sqrt(self.position_vector[0]**2 + self.position_vector[1]**2 + self.position_vector[2]**2)
+
+    def __linear_velocity_of_particle(self):
+        return sqrt(self.velocity_vector[0]**2 + self.velocity_vector[1]**2 + self.velocity_vector[2]**2)
+
+    def __angular_momentum_of_particle_in_z_direction(self):
+        return ((self.position_vector[0] * self.velocity_vector[1]) - (self.position_vector[1] * self.velocity_vector[0]))
 
 
 class MapParticles:
 
-    def __init__(self, output_path):
+    def __init__(self, output_path, center=True):
         self.output = pd.read_csv(output_path, skiprows=2, header=None, delimiter="\t")
         self.com = self.center_of_mass(x_coords=self.output[3], y_coords=self.output[4],
                                        z_coords=self.output[5], masses=self.output[2])
-        self.earth_center = self.__find_center(resolution=5e3, delta_x=1e7, delta_y=1e7, delta_z=1e7)
+        if center:
+            self.earth_center = self.__find_center(resolution=5e3, delta_x=1e7, delta_y=1e7, delta_z=1e7)
+        else:
+            self.earth_center = self.com
         self.a = (12713.6 / 2.0) * 1000.0  # present-day equitorial radius of the Earth in m
         self.b = (12756.2 / 2.0) * 1000.0  # present-day polar radius of the Earth in m
         self.oblateness = self.calc_oblateness(a=self.a, b=self.b)
@@ -194,7 +203,7 @@ class MapParticles:
 
     def plot_particles_from_iteration(self, max_iteration, max_randint):
         ax = self.plot_particles()
-        iterated_particles = self.iterate_particles_within_planet(max_iteration, max_randint)
+        iterated_particles = self.select_random_particles(max_iteration, max_randint)
 
         # min_distance, closest_particle = self.__closest_particle_to_equitorial_radius(particles=iterated_particles)
         ax.scatter([i.position_vector[0] for i in iterated_particles],
@@ -239,12 +248,12 @@ class MapParticles:
                     min_particle = i
         return min_distance, min_particle
 
-
     def __keplerian_velocity(self):
         G = 6.674 * 10 ** -11
         return sqrt((G * self.mass_protoearth / self.a))
 
-    def iterate_particles_within_planet(self, max_iteration, max_randint):
+    def select_random_particles(self, max_iteration, max_randint):
+        print("Collecting particles...")
         particles = []
         for i in range(0, max_iteration):
             r = randint(0, max_randint)
@@ -260,8 +269,9 @@ class MapParticles:
                 gravitating_mass=self.calc_mass_protoearth(a=self.a, b=self.b),
                 equitorial_radius=self.a
             )
-            if p.label == "PLANET":
-                particles.append(p)
+            particles.append(p)
+
+        print("Collected particles!")
         return particles
 
     def __gather_particles(self):
@@ -290,6 +300,7 @@ class MapParticles:
                     break
 
     def __find_center(self, resolution, delta_x, delta_y, delta_z, plot_profile=False):
+        print("Finding center...")
         x_profile = list(np.arange(self.com[0] - delta_x, self.com[0] + delta_x, resolution))
         y_profile = list(np.arange(self.com[1] - delta_y, self.com[1] + delta_y, resolution))
         z_profile = list(np.arange(self.com[2] - delta_z, self.com[2] + delta_z, resolution))
@@ -325,25 +336,66 @@ class MapParticles:
             ax.grid()
             plt.show()
 
+        print("Found center!")
         return (x_center, y_center, z_center)
 
-
-
-
-
-
     def solve(self):
+        print("Beginning solution iteration...")
         iteration = 1
         CONVERGENCE = False
+        K = 0.335
+        G = 6.674 * 10 ** -11
         # particles = self.__gather_particles()
-        particles = self.iterate_particles_within_planet(max_iteration=5000, max_randint=110000)
-        min_distance, closest_particle = self.__closest_particle_to_equitorial_radius(particles=particles)
-        print(self.a, min_distance)
-        # while CONVERGENCE is False:
-        #     L_star = self.__angular_momentum_of_subsection()
-        #     I = self.__moment_of_inertia_of_ellpise()
-        #     self.__minimum_rotational_period_of_subsection(I=I, L_star=L_star)
-            # new_f = self.refined_oblateness()
+        particles = self.select_random_particles(max_iteration=5000, max_randint=110000)
+        while CONVERGENCE is False:
+            NEW_MASS_PROTOPLANET = 0.0
+            NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET = 0.0
+            NEW_MASS_DISK = 0.0
+            NEW_Z_ANGULAR_MOMENTUM_DISK = 0.0
+            NEW_MASS_ESCAPED = 0.0
+            NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
+            for p in particles:
+                if p.particle_radial_distance_from_center <= self.a:  # the particle's radial position is inside of the protoplanetary equatorial radius
+                    NEW_MASS_PROTOPLANET += p.particle_mass
+                    print(NEW_MASS_PROTOPLANET)
+                    NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
+                    p.label = "PLANET"
+                else:  # the particle's radial position is not within the planet
+                    if np.linalg.norm(p.eccentricity_vector) < 1.0:  # elliptic orbit, will remain in the disk
+                        if p.radius_periapsis <= self.a:  # the particle's periapsis is < the equatorial radius and will eventually fall on the planet
+                            p.label = "PLANET"
+                            NEW_MASS_PROTOPLANET += p.particle_mass
+                            print(NEW_MASS_PROTOPLANET)
+                            NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
+                        else:  # the particle is part of the disk
+                            p.label = "DISK"
+                            NEW_MASS_DISK += p.particle_mass
+                            NEW_Z_ANGULAR_MOMENTUM_DISK += p.angular_momentum_vector[2]
+                    else:  # parabolic orbit, will escape the disk
+                        p.label = "ESCAPE"
+                        NEW_MASS_ESCAPED += p.particle_mass
+                        NEW_Z_ANGULAR_MOMENTUM_ESCAPED += p.angular_momentum_vector[2]
+
+            moment_of_inertia_protoplanet = (2.0 / 5.0) * NEW_MASS_PROTOPLANET * (self.a**2)
+            angular_velocity_protoplanet = NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET / moment_of_inertia_protoplanet
+            keplerian_velocity_protoplanet = sqrt((G * NEW_MASS_PROTOPLANET) / self.a)
+            rotational_period_minimum = (2.0 * pi) / angular_velocity_protoplanet
+            rotational_period_protoplanet = (2 * pi) / keplerian_velocity_protoplanet
+            numerator = (5.0 / 2.0) * ((rotational_period_minimum / rotational_period_protoplanet) ** 2)
+            denominator = 1.0 + ((5.0 / 2.0) - ((15.0 * K) / 4.0)) ** 2
+            NEW_F = numerator / denominator
+            DENSITY_AVG = 5.5
+            # NEW_A = - self.b / (NEW_F - 1.0)
+            NEW_A = ((3 * pi * NEW_MASS_PROTOPLANET * (1 - NEW_F)) / (4 * DENSITY_AVG))**(1/3)
+            if (NEW_A - self.a) / self.a < 10**-8:
+                CONVERGENCE = True
+            else:
+                CONVERGENCE = False
+            self.a = NEW_A
+            self.mass_protoearth = NEW_MASS_PROTOPLANET
+            iteration += 1
+            print(NEW_MASS_PROTOPLANET, NEW_F, NEW_A)
+            print(iteration, (NEW_A - self.a) / self.a)
 
 
 
@@ -351,8 +403,15 @@ class MapParticles:
 
 
 
-m = MapParticles(output_path="/Users/scotthull/Desktop/merged_800.dat")
-m.plot_particles_from_iteration(max_iteration=5000, max_randint=110000)
-# m.solve()
-# p = m.iterate_particles_within_planet(max_iteration=5000, max_randint=110000)
+
+
+
+
+
+
+
+m = MapParticles(output_path="/Users/scotthull/Desktop/merged_800.dat", center=False)
+# m.plot_particles_from_iteration(max_iteration=5000, max_randint=110000)
+m.solve()
+# p = m.select_random_particles(max_iteration=5000, max_randint=110000)
 # m.find_center(particles=p, resolution=5000, max_x=1e7, max_y=1e7, max_z=1e7, plot_profile=True)
