@@ -4,6 +4,7 @@ from random import randint
 import numpy as np
 from matplotlib.patches import Ellipse
 import matplotlib.pyplot as plt
+import sys
 
 class ParticleOrbitalElements:
 
@@ -86,7 +87,7 @@ class ParticleOrbitalElements:
 
     def calc_semi_latus_rectum(self, eccentricity, angular_momentum_vector, grav_mass, semi_major_axis):
         if np.linalg.norm(eccentricity) != 1:
-            return semi_major_axis * (1.0 - eccentricity**2)
+            return semi_major_axis * (1.0 - np.linalg.norm(eccentricity)**2)
         else:
             mu = self.graviational_parameter(mass=grav_mass)
             return (np.linalg.norm(angular_momentum_vector)**2) / mu
@@ -189,9 +190,12 @@ class MapParticles:
         z_center = sum([a * b for a, b in zip(z_coords, masses)]) / total_mass
         return (x_center, y_center, z_center)
 
-    def plot_particles(self):
+    def plot_particles(self, particle_sample=None):
         ax = plt.figure().add_subplot(111)
         ax.scatter(self.output[3] - self.earth_center[0], self.output[4] - self.earth_center[1], marker="+", color="black")
+        if particle_sample is not None:
+            ax.scatter([i.position_vector[0] for i in particle_sample],
+                       [i.position_vector[1] for i in particle_sample], marker="+", color="green")
         ax.scatter(0, 0, marker="o", s=30, color='red')
         e = Ellipse(xy=(0, 0), width=self.a * 2.0, height=self.b * 2.0, alpha=0.8)
         ax.add_artist(e)
@@ -341,13 +345,17 @@ class MapParticles:
 
     def solve(self):
         print("Beginning solution iteration...")
-        iteration = 1
+        iteration = 0
         CONVERGENCE = False
         K = 0.335
         G = 6.674 * 10 ** -11
         # particles = self.__gather_particles()
-        particles = self.select_random_particles(max_iteration=5000, max_randint=110000)
+        particles = self.select_random_particles(max_iteration=50000, max_randint=110000)
         while CONVERGENCE is False:
+            NUM_PARTICLES_WITHIN_RADIAL_DISTANCE = 0
+            NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE = 0
+            NUM_PARTICLES_IN_DISK = 0
+            NUM_PARTICLES_ESCAPING = 0
             NEW_MASS_PROTOPLANET = 0.0
             NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET = 0.0
             NEW_MASS_DISK = 0.0
@@ -355,36 +363,40 @@ class MapParticles:
             NEW_MASS_ESCAPED = 0.0
             NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
             for p in particles:
-                if p.particle_radial_distance_from_center <= self.a:  # the particle's radial position is inside of the protoplanetary equatorial radius
+                if p.particle_radial_distance_from_center <= self.a:  # the particle's radial position is inside of the protoplanetary equatorial radius and is part of the planet
+                    NUM_PARTICLES_WITHIN_RADIAL_DISTANCE += 1
                     NEW_MASS_PROTOPLANET += p.particle_mass
-                    print(NEW_MASS_PROTOPLANET)
                     NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
                     p.label = "PLANET"
                 else:  # the particle's radial position is not within the planet
                     if np.linalg.norm(p.eccentricity_vector) < 1.0:  # elliptic orbit, will remain in the disk
-                        if p.radius_periapsis <= self.a:  # the particle's periapsis is < the equatorial radius and will eventually fall on the planet
+                        if p.radius_periapsis <= self.a:  # the particle's periapsis is < the equatorial radius and will eventually fall on the planet and become part of the planet
+                            print(p.radius_periapsis, p.semi_major_axis * (1.0 - np.linalg.norm(p.eccentricity_vector)),
+                                  p.semi_latus_rectum / (1.0 + np.linalg.norm(p.eccentricity_vector)))
+                            NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE += 1
                             p.label = "PLANET"
                             NEW_MASS_PROTOPLANET += p.particle_mass
-                            print(NEW_MASS_PROTOPLANET)
                             NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
                         else:  # the particle is part of the disk
+                            NUM_PARTICLES_IN_DISK += 1
                             p.label = "DISK"
                             NEW_MASS_DISK += p.particle_mass
                             NEW_Z_ANGULAR_MOMENTUM_DISK += p.angular_momentum_vector[2]
                     else:  # parabolic orbit, will escape the disk
+                        NUM_PARTICLES_ESCAPING += 1
                         p.label = "ESCAPE"
                         NEW_MASS_ESCAPED += p.particle_mass
                         NEW_Z_ANGULAR_MOMENTUM_ESCAPED += p.angular_momentum_vector[2]
 
             moment_of_inertia_protoplanet = (2.0 / 5.0) * NEW_MASS_PROTOPLANET * (self.a**2)
             angular_velocity_protoplanet = NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET / moment_of_inertia_protoplanet
-            keplerian_velocity_protoplanet = sqrt((G * NEW_MASS_PROTOPLANET) / self.a)
+            keplerian_velocity_protoplanet = sqrt((G * NEW_MASS_PROTOPLANET) / self.a**3)
             rotational_period_minimum = (2.0 * pi) / angular_velocity_protoplanet
-            rotational_period_protoplanet = (2 * pi) / keplerian_velocity_protoplanet
+            rotational_period_protoplanet = (2.0 * pi) / keplerian_velocity_protoplanet
             numerator = (5.0 / 2.0) * ((rotational_period_minimum / rotational_period_protoplanet) ** 2)
             denominator = 1.0 + ((5.0 / 2.0) - ((15.0 * K) / 4.0)) ** 2
             NEW_F = numerator / denominator
-            DENSITY_AVG = 5.5
+            DENSITY_AVG = 5.5 * 1000
             # NEW_A = - self.b / (NEW_F - 1.0)
             NEW_A = ((3 * pi * NEW_MASS_PROTOPLANET * (1 - NEW_F)) / (4 * DENSITY_AVG))**(1/3)
             if (NEW_A - self.a) / self.a < 10**-8:
@@ -394,8 +406,20 @@ class MapParticles:
             self.a = NEW_A
             self.mass_protoearth = NEW_MASS_PROTOPLANET
             iteration += 1
-            print(NEW_MASS_PROTOPLANET, NEW_F, NEW_A)
             print(iteration, (NEW_A - self.a) / self.a)
+            print(NEW_MASS_PROTOPLANET, NEW_F, NEW_A, angular_velocity_protoplanet, keplerian_velocity_protoplanet)
+            print(
+                "NUM_PARTICLES_WITHIN_RADIAL_DISTANCE: {}\n"
+                "NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE: {}\n"
+                "NUM_PARTICLES_IN_DISK: {}\n"
+                "NUM_PARTICLES_ESCAPING: {}".format(NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
+                                                    NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE,
+                                                    NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING)
+            )
+            if iteration == 1:
+                ax = self.plot_particles(particle_sample=particles)
+                plt.show()
+                sys.exit(0)
 
 
 
@@ -407,10 +431,7 @@ class MapParticles:
 
 
 
-
-
-
-m = MapParticles(output_path="/Users/scotthull/Desktop/merged_800.dat", center=False)
+m = MapParticles(output_path="merged_800.dat", center=False)
 # m.plot_particles_from_iteration(max_iteration=5000, max_randint=110000)
 m.solve()
 # p = m.select_random_particles(max_iteration=5000, max_randint=110000)
