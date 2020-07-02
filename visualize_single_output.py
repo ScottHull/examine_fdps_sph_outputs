@@ -33,7 +33,7 @@ class Visualize:
         return ax
 
 
-v = Visualize(output_path="merged_800.dat")
+v = Visualize(output_path="merged_1.dat")
 ax = v.plot(dimension=3)
 plt.show()
 

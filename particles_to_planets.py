@@ -125,7 +125,7 @@ class ParticleOrbitalElements:
 
 class Particle(ParticleOrbitalElements):
 
-    def __init__(self, equitorial_radius, particle_mass, particle_id, position_x, position_y, position_z, velocity_x, velocity_y, velocity_z, gravitating_mass):
+    def __init__(self, particle_mass, particle_id, position_x, position_y, position_z, velocity_x, velocity_y, velocity_z, gravitating_mass):
         super().__init__(position_x, position_y, position_z, velocity_x, velocity_y, velocity_z, gravitating_mass)
         self.particle_mass = particle_mass
         self.particle_id = particle_id
@@ -197,7 +197,7 @@ class MapParticles:
             ax.scatter([i.position_vector[0] for i in particle_sample],
                        [i.position_vector[1] for i in particle_sample], marker="+", color="green")
         ax.scatter(0, 0, marker="o", s=30, color='red')
-        e = Ellipse(xy=(0, 0), width=self.a * 2.0, height=self.b * 2.0, alpha=0.8)
+        e = Ellipse(xy=(0, 0), width=self.a * 2.0, height=self.b * 2.0, alpha=0.8, color="blue")
         ax.add_artist(e)
         ax.set_xlabel("x")
         ax.set_ylabel("y")
@@ -271,7 +271,6 @@ class MapParticles:
                 velocity_y=self.output[7][r],
                 velocity_z=self.output[8][r],
                 gravitating_mass=self.calc_mass_protoearth(a=self.a, b=self.b),
-                equitorial_radius=self.a
             )
             particles.append(p)
 
@@ -290,7 +289,6 @@ class MapParticles:
                 velocity_y=self.output[7][row],
                 velocity_z=self.output[8][row],
                 gravitating_mass=self.calc_mass_protoearth(a=self.a, b=self.b),
-                equitorial_radius=self.a
             )
             for row in self.output.index
         ]
@@ -350,7 +348,7 @@ class MapParticles:
         K = 0.335
         G = 6.674 * 10 ** -11
         # particles = self.__gather_particles()
-        particles = self.select_random_particles(max_iteration=50000, max_randint=110000)
+        particles = self.select_random_particles(max_iteration=5000, max_randint=110000)
         while CONVERGENCE is False:
             NUM_PARTICLES_WITHIN_RADIAL_DISTANCE = 0
             NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE = 0
@@ -431,7 +429,7 @@ class MapParticles:
 
 
 
-m = MapParticles(output_path="merged_800.dat", center=False)
+m = MapParticles(output_path="merged_800.dat", center=True)
 # m.plot_particles_from_iteration(max_iteration=5000, max_randint=110000)
 m.solve()
 # p = m.select_random_particles(max_iteration=5000, max_randint=110000)
