@@ -1,4 +1,4 @@
-from math import sqrt, acos
+from math import sqrt, acos, sin, cos, exp
 import numpy as np
 
 class Particle:
@@ -66,8 +66,38 @@ class Particle:
                     (np.linalg.norm(self.periapsis_node_vector) * np.linalg.norm(self.eccentricity_vector)))
 
     def __true_anomaly(self):
+        """
+        http://www.braeunig.us/space/orbmech.htm
+        The true anomaly is the position of the orbiting body of the ellipse at a given time.
+        The true anomaly equals the mean anomaly for a circular orbit.
+        :return:
+        """
         return acos(np.dot(self.eccentricity_vector, self.position_vector) /
                     (np.linalg.norm(self.eccentricity_vector) * np.linalg.norm(self.position_vector)))
 
+    def __eccentric_anomaly(self):
+        return acos(self.position_vector[0] / self.semi_major_axis)
+
+    def __mean_anomaly(self):
+        E = self.__eccentric_anomaly()
+        return E - (self.eccentricity * sin(E))
+
     def __periapsis(self):
         return self.semi_major_axis * (1.0 - self.eccentricity)
+
+    def compute_orbital_position(self):
+        """
+        https://space.stackexchange.com/questions/8911/determining-orbital-position-at-a-future-point-in-time
+
+        Step 1: Solve Kepler's equation.
+        Step 2: Compute 2D position of the body in the orbital plane.
+        Step 3. Rotate 2 positions into 3D coordinates.
+
+        :return:
+        """
+
+        # Step 1: Solve Kepler's Equation
+        mean_anomaly = self.__mean_anomaly()
+        eccentric_anomaly = self.__eccentric_anomaly()
+        P = self.semi_major_axis * (cos(eccentric_anomaly) - self.eccentricity)
+        Q = self.semi_major_axis * sin(eccentric_anomaly) * sqrt(1.0 - exp(2))

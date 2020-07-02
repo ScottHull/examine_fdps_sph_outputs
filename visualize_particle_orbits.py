@@ -21,7 +21,7 @@ class Visualize:
         self.coords = list(zip(self.x, self.y, self.z, self.v_x, self.v_y, self.v_z, self.mass))
         self.com = self.center_of_mass(x_coords=self.x, y_coords=self.y, z_coords=self.z, masses=self.mass)
         if center:
-            self.center = self.__find_center(resolution=1e4, delta_x=1e7, delta_y=1e7, delta_z=1e7)
+            self.center = self.__find_center(resolution=1e5, delta_x=1e7, delta_y=1e7, delta_z=1e7)
             self.x = self.x - self.center[0]
             self.y = self.y - self.center[1]
             self.z = self.z - self.center[2]
