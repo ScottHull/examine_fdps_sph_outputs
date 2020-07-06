@@ -125,7 +125,7 @@ class Visualize:
         return ax
 
 
-v = Visualize(output_file="merged_800.dat", center=True)
+v = Visualize(output_file="merged_800.dat", center=False)
 ax = v.visualize3D()
 plt.show()
 

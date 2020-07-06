@@ -85,19 +85,3 @@ class Particle:
     def __periapsis(self):
         return self.semi_major_axis * (1.0 - self.eccentricity)
 
-    def compute_orbital_position(self):
-        """
-        https://space.stackexchange.com/questions/8911/determining-orbital-position-at-a-future-point-in-time
-
-        Step 1: Solve Kepler's equation.
-        Step 2: Compute 2D position of the body in the orbital plane.
-        Step 3. Rotate 2 positions into 3D coordinates.
-
-        :return:
-        """
-
-        # Step 1: Solve Kepler's Equation
-        mean_anomaly = self.__mean_anomaly()
-        eccentric_anomaly = self.__eccentric_anomaly()
-        P = self.semi_major_axis * (cos(eccentric_anomaly) - self.eccentricity)
-        Q = self.semi_major_axis * sin(eccentric_anomaly) * sqrt(1.0 - exp(2))
