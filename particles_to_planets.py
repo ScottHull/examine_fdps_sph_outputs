@@ -10,12 +10,13 @@ import sys
 
 class MapParticles:
 
-    def __init__(self, output_path, center=True):
+    def __init__(self, output_path, center=True, centering_resolution=1e5, centering_delta=1e7):
         self.output = pd.read_csv(output_path, skiprows=2, header=None, delimiter="\t")
         self.com = self.center_of_mass(x_coords=self.output[3], y_coords=self.output[4],
                                        z_coords=self.output[5], masses=self.output[2])
         if center:
-            self.earth_center = self.__find_center(resolution=1e5, delta_x=1e7, delta_y=1e7, delta_z=1e7)
+            self.earth_center = self.__find_center(resolution=centering_resolution, delta_x=centering_delta,
+                                                   delta_y=centering_delta, delta_z=centering_delta)
         else:
             self.earth_center = self.com
         self.a = (12713.6 / 2.0) * 1000.0  # present-day equitorial radius of the Earth in m
@@ -130,7 +131,27 @@ class MapParticles:
                 mass_grav_body=grav_mass
             )
             particles.append(p)
+        print("Collected particles!")
+        return particles
 
+    def collect_all_particles(self):
+        print("Collecting particles...")
+        particles = []
+        grav_mass = self.calc_mass_protoearth(a=self.a, b=self.b)
+        for row in self.output.index:
+            particle_id = int(self.output[1][row])
+            mass = float(self.output[2][row])
+            position_vector = [self.output[3][row] - self.earth_center[0], self.output[4][row] - self.earth_center[1],
+                               self.output[5][row] - self.earth_center[2]]
+            velocity_vector = [self.output[6][row], self.output[7][row], self.output[8][row]]
+            p = Particle(
+                particle_id=particle_id,
+                position_vector=position_vector,
+                velocity_vector=velocity_vector,
+                mass=mass,
+                mass_grav_body=grav_mass
+            )
+            particles.append(p)
         print("Collected particles!")
         return particles
 
@@ -188,9 +209,8 @@ class MapParticles:
         CONVERGENCE = False
         K = 0.335
         G = 6.674 * 10 ** -11
-        # particles = self.__gather_particles()
-        particles = self.select_random_particles(max_iteration=50000, max_randint=110000)
-        rand_particle = particles[randint(0, len(particles))]
+        # particles = self.select_random_particles(max_iteration=50000, max_randint=110000)
+        particles = self.collect_all_particles()
         while CONVERGENCE is False:
             NUM_PARTICLES_WITHIN_RADIAL_DISTANCE = 0
             NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE = 0
@@ -245,7 +265,6 @@ class MapParticles:
             self.a = NEW_A
             self.mass_protoearth = NEW_MASS_PROTOPLANET
             iteration += 1
-            # print(NEW_MASS_PROTOPLANET, NEW_F, NEW_A, angular_velocity_protoplanet, keplerian_velocity_protoplanet)
             print(
                 "ITERATION: {}\n"
                 "ERROR: {}\n"
