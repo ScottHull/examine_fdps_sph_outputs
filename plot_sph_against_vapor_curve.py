@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse
 from src.identify import ParticleMap
 
 vapor_file = "duniteS_vapour_curve.txt"
@@ -21,7 +22,8 @@ sph_x = sph_df[3]
 sph_y = sph_df[4]
 sph_z = sph_df[5]
 
-particle_map = ParticleMap(output_path="merged_800.dat").solve()
+pm = ParticleMap(output_path=sph_file)
+particle_map = pm.solve()
 planet_particles = [p for p in particle_map if p.label == "PLANET"]
 
 # sph_dunite_temperatures = [i for index, i in enumerate(sph_temperature) if sph_tag[index] % 2 == 0]
@@ -30,13 +32,53 @@ planet_particles = [p for p in particle_map if p.label == "PLANET"]
 
 ax = plt.figure().add_subplot(111)
 ax.scatter(
-    [p.distance / 1000.0 for p in planet_particles],
-    [p.entropy for p in planet_particles],
+    [p.distance / 1000.0 for p in planet_particles if p.particle_id % 2 == 0],
+    [p.temperature for p in planet_particles if p.particle_id % 2 == 0],
     color='blue',
-    marker="+"
+    marker="+",
+    label="Dunite"
+)
+ax.scatter(
+    [p.distance / 1000.0 for p in planet_particles if p.particle_id % 2 != 0],
+    [p.temperature for p in planet_particles if p.particle_id % 2 != 0],
+    color='red',
+    marker="+",
+    label="Iron"
 )
 ax.set_xlabel("Radial Distance From Earth Center (km)")
-ax.set_ylabel("Entropy")
+ax.set_ylabel("Temperature")
 ax.grid()
+ax.legend()
+
+ax2 = plt.figure().add_subplot(111)
+ax2.scatter(
+    [p.position_vector[0] for p in particle_map if p.label == "PLANET"],
+    [p.position_vector[1] for p in particle_map if p.label == "PLANET"],
+    color="green",
+    marker="+",
+    label="Planet"
+)
+ax2.scatter(
+    [p.position_vector[0] for p in particle_map if p.label == "DISK"],
+    [p.position_vector[1] for p in particle_map if p.label == "DISK"],
+    color="blue",
+    marker="+",
+    label="Disk"
+)
+ax2.scatter(
+    [p.position_vector[0] for p in particle_map if p.label == "ESCAPE"],
+    [p.position_vector[1] for p in particle_map if p.label == "ESCAPE"],
+    color="red",
+    marker="+",
+    label="Escape"
+)
+e = Ellipse(xy=(0, 0), width=pm.a * 2.0, height=pm.b * 2.0, alpha=0.2, color="blue")
+ax2.add_artist(e)
+ax2.set_xlabel("x")
+ax2.set_ylabel("y")
+ax2.grid()
+ax2.legend()
+
+
 
 plt.show()

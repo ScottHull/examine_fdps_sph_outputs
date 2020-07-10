@@ -1,4 +1,4 @@
-from orbitalelements import Particle
+from src.orbitalelements import Particle
 from math import pi, acos, sqrt
 import pandas as pd
 from random import randint
@@ -149,7 +149,9 @@ class MapParticles:
                 position_vector=position_vector,
                 velocity_vector=velocity_vector,
                 mass=mass,
-                mass_grav_body=grav_mass
+                mass_grav_body=grav_mass,
+                entropy=self.output[13][row],
+                temperature=self.output[14][row]
             )
             particles.append(p)
         print("Collected particles!")
@@ -285,7 +287,7 @@ class MapParticles:
                 ax = self.plot_particles(particle_sample=particles)
                 plt.show()
 
-m = MapParticles(output_path="merged_800.dat", center=True)
+m = MapParticles(output_path="merged_1.dat", center=True)
 # m.plot_particles_from_iteration(max_iteration=5000, max_randint=110000)
 m.solve()
 # p = m.select_random_particles(max_iteration=5000, max_randint=110000)

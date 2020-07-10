@@ -43,16 +43,19 @@ class ParticleMap:
             position_vector = [self.output[3][row] - self.earth_center[0], self.output[4][row] - self.earth_center[1],
                                self.output[5][row] - self.earth_center[2]]
             velocity_vector = [self.output[6][row], self.output[7][row], self.output[8][row]]
-            p = Particle(
-                particle_id=particle_id,
-                position_vector=position_vector,
-                velocity_vector=velocity_vector,
-                mass=self.output[2][row],
-                mass_grav_body=grav_mass,
-                entropy=self.output[13][row],
-                temperature=self.output[14][row]
-            )
-            particles.append(p)
+            try:
+                p = Particle(
+                    particle_id=particle_id,
+                    position_vector=position_vector,
+                    velocity_vector=velocity_vector,
+                    mass=self.output[2][row],
+                    mass_grav_body=grav_mass,
+                    entropy=self.output[13][row],
+                    temperature=self.output[14][row]
+                )
+                particles.append(p)
+            except:
+                pass
         print("Collected particles!")
         return particles
 
