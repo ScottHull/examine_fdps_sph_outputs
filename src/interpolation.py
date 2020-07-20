@@ -3,13 +3,13 @@ import pandas as pd
 def __get_neighbors(val, array):
     # returns array index value of neighbors
     if val < array[0]:
-        return (0, array[1])
+        return (1, 0)
     elif val > array[-1]:
-        return (array[-2], array[-1])
+        return (len(array) - 1, len(array) - 2)
     for index, i in enumerate(array):
         if index < len(array) + 1:
             if i < val <= array[index + 1]:
-                return (index + 1, index)
+                return index + 1, index
 
 def interpolate1d(val, val_array, interp_array):
     sorted_interp_array = [x for _, x in sorted(zip(val_array, interp_array))]

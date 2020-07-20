@@ -22,6 +22,7 @@ class Structure:
                                         interp_array=self.phase_df['entropy_sol_liq'])
             entropy_vap = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
                                         interp_array=self.phase_df['entropy_vap'])
+            print(temperature_i, entropy_i, entropy_liq, entropy_vap)
             if entropy_i < entropy_liq:
                 vapor_mass_fraction += 0.0
             elif entropy_liq <= entropy_i <= entropy_vap:
