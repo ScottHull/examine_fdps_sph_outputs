@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 from src.identify import ParticleMap
 
-vapor_file = "duniteS_vapour_curve.txt"
+vapor_file = "src/phase_data/duniteS_vapour_curve.txt"
 vapor_df = pd.read_fwf(vapor_file, header=None, skiprows=1)
 temperature = vapor_df[0]
 density_solid = vapor_df[1]
