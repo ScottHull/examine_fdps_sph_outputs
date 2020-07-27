@@ -23,10 +23,10 @@ class Output:
         self.entropy = self.df[13]
 
     def plot_pressure(self):
-        silicate_pressure = [self.pressure[index] * 10**-9 for index, i in enumerate(self.id) if i == 0]
-        iron_pressure = [self.pressure[index] * 10**-9 for index, i in enumerate(self.id) if i == 1]
-        silicate_radius = [self.radius[index] for index, i in enumerate(self.id) if i == 0]
-        iron_radius = [self.radius[index] for index, i in enumerate(self.id) if i == 1]
+        silicate_pressure = [self.pressure[index] * 10**-9 for index, i in enumerate(self.id) if i % 2 == 0]
+        iron_pressure = [self.pressure[index] * 10**-9 for index, i in enumerate(self.id) if i % 2 != 0]
+        silicate_radius = [self.radius[index] for index, i in enumerate(self.id) if i % 2 == 0]
+        iron_radius = [self.radius[index] for index, i in enumerate(self.id) if i % 2 != 0]
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.scatter(silicate_radius, silicate_pressure, color='blue', marker="+", label="silicate")
@@ -39,10 +39,10 @@ class Output:
         plt.show()
         
     def plot_density(self):
-        silicate_density = [self.density[index] for index, i in enumerate(self.id) if i == 0]
-        iron_density = [self.density[index] for index, i in enumerate(self.id) if i == 1]
-        silicate_radius = [self.radius[index] for index, i in enumerate(self.id) if i == 0]
-        iron_radius = [self.radius[index] for index, i in enumerate(self.id) if i == 1]
+        silicate_density = [self.density[index] for index, i in enumerate(self.id) if i % 2 == 0]
+        iron_density = [self.density[index] for index, i in enumerate(self.id) if i % 2 != 0]
+        silicate_radius = [self.radius[index] for index, i in enumerate(self.id) if i % 2 == 0]
+        iron_radius = [self.radius[index] for index, i in enumerate(self.id) if i % 2 != 0]
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.scatter(silicate_radius, silicate_density, color='blue', marker="+", label="silicate")
@@ -55,10 +55,10 @@ class Output:
         plt.show()
         
     def plot_energy(self):
-        silicate_energy = [self.energy[index] for index, i in enumerate(self.id) if i == 0]
-        iron_energy = [self.energy[index] for index, i in enumerate(self.id) if i == 1]
-        silicate_radius = [self.radius[index] for index, i in enumerate(self.id) if i == 0]
-        iron_radius = [self.radius[index] for index, i in enumerate(self.id) if i == 1]
+        silicate_energy = [self.energy[index] for index, i in enumerate(self.id) if i % 2 == 0]
+        iron_energy = [self.energy[index] for index, i in enumerate(self.id) if i % 2 != 0]
+        silicate_radius = [self.radius[index] for index, i in enumerate(self.id) if i % 2 == 0]
+        iron_radius = [self.radius[index] for index, i in enumerate(self.id) if i % 2 != 0]
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.scatter(silicate_radius, silicate_energy, color='blue', marker="+", label="silicate")
@@ -70,7 +70,7 @@ class Output:
         ax.grid()
         plt.show()
 
-m = Output(path_to_output="/Users/scotthull/Documents/FDPS_SPH/test2/results.01000_00001_00000.dat")
+m = Output(path_to_output="/Users/scotthull/Desktop/merged_1000.dat")
 m.plot_density()
 m.plot_pressure()
 m.plot_energy()
