@@ -1,6 +1,7 @@
-from src.interpolation import interpolate1d
+from src.interpolation import GenericTrilinearInterpolation
 from scipy.integrate import odeint
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 def __adiabat_eq(T, y, c_p, alpha_v, g):
@@ -19,7 +20,7 @@ def hydrostatic(P_0, rho, g, y):
     return [i[0] for i in odeint(__hydrostatic_eq, P_0, y, args=(rho, g))]
 
 def map_hydrostatic_pressure_to_entropy(hydrostatic_pressures):
-    i = inter
+    pass
 
 def manual_adiabat(T_0, c_p, g, alpha_v, y_resolution, max_y):
     T = T_0
