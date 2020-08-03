@@ -155,10 +155,12 @@ class ParticleMap:
         print("Finished solving target!")
         if self.num_bodies != 1:
             target_removed_particles = [p for p in particles if p.assigned_body != target_label]
+            print(target_removed_particles[0].position_vector)
             for p in target_removed_particles:
                 p.position_vector[0] += self.earth_center[0]
                 p.position_vector[1] += self.earth_center[1]
                 p.position_vector[2] += self.earth_center[2]
+            print(target_removed_particles[0].position_vector)
             print("Solving impactor...")
             self.earth_center = find_center(
                 x=[p.position_vector[0] for p in target_removed_particles],
@@ -170,10 +172,12 @@ class ParticleMap:
                 delta_y=self.centering_delta,
                 delta_z=self.centering_delta
             )
+            print(target_removed_particles[0].position_vector)
             for p in target_removed_particles:
                 p.position_vector[0] -= self.earth_center[0]
                 p.position_vector[1] -= self.earth_center[1]
                 p.position_vector[2] -= self.earth_center[2]
+            print(target_removed_particles[0].position_vector)
             impactor = self.__solve(particles=target_removed_particles, planet_label=impactor_label)
             print("Finished solving impactor!")
 
