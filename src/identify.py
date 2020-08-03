@@ -7,7 +7,9 @@ import numpy as np
 
 class ParticleMap:
 
-    def __init__(self, output_path, center=True, centering_resolution=1e5, centering_delta=1e7):
+    def __init__(self, output_path, center=True, centering_resolution=1e5, centering_delta=1e7,
+                 number_expected_bodies=1):
+        self.num_bodies = number_expected_bodies
         self.output = pd.read_csv(output_path, skiprows=2, header=None, delimiter="\t")
         self.com = center_of_mass(x_coords=self.output[3], y_coords=self.output[4],
                                   z_coords=self.output[5], masses=self.output[2])
@@ -59,14 +61,11 @@ class ParticleMap:
         print("Collected particles!")
         return particles
 
-    def solve(self):
-        print("Beginning solution iteration...")
+    def __solve(self, particles, planet_label):
         iteration = 0
-        CONVERGENCE = False
         K = 0.335
         G = 6.674 * 10 ** -11
-        # particles = self.select_random_particles(max_iteration=50000, max_randint=110000)
-        particles = self.collect_all_particles()
+        CONVERGENCE = False
         while CONVERGENCE is False:
             NUM_PARTICLES_WITHIN_RADIAL_DISTANCE = 0
             NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE = 0
@@ -79,29 +78,32 @@ class ParticleMap:
             NEW_MASS_ESCAPED = 0.0
             NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
             for p in particles:
-                if p.distance <= self.a:  # the particle's radial position is inside of the protoplanetary equatorial radius and is part of the planet
-                    NUM_PARTICLES_WITHIN_RADIAL_DISTANCE += 1
-                    NEW_MASS_PROTOPLANET += p.mass
-                    NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
-                    p.label = "PLANET"
-                else:  # the particle's radial position is not within the planet
-                    if p.eccentricity < 1.0:  # elliptic orbit, will remain in the disk
-                        if abs(
-                                p.periapsis) <= self.a:  # the particle's periapsis is < the equatorial radius and will eventually fall on the planet and become part of the planet
-                            NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE += 1
-                            p.label = "PLANET"
-                            NEW_MASS_PROTOPLANET += p.mass
-                            NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
-                        else:  # the particle is part of the disk
-                            NUM_PARTICLES_IN_DISK += 1
-                            p.label = "DISK"
-                            NEW_MASS_DISK += p.mass
-                            NEW_Z_ANGULAR_MOMENTUM_DISK += p.angular_momentum_vector[2]
-                    else:  # parabolic orbit, will escape the disk
-                        NUM_PARTICLES_ESCAPING += 1
-                        p.label = "ESCAPE"
-                        NEW_MASS_ESCAPED += p.mass
-                        NEW_Z_ANGULAR_MOMENTUM_ESCAPED += p.angular_momentum_vector[2]
+                if p.assigned_body is None:
+                    if p.distance <= self.a:  # the particle's radial position is inside of the protoplanetary equatorial radius and is part of the planet
+                        NUM_PARTICLES_WITHIN_RADIAL_DISTANCE += 1
+                        NEW_MASS_PROTOPLANET += p.mass
+                        NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
+                        p.label = "PLANET"
+                        p.assigned_body = planet_label
+                    else:  # the particle's radial position is not within the planet
+                        if p.eccentricity < 1.0:  # elliptic orbit, will remain in the disk
+                            if abs(
+                                    p.periapsis) <= self.a:  # the particle's periapsis is < the equatorial radius and will eventually fall on the planet and become part of the planet
+                                NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE += 1
+                                p.label = "PLANET"
+                                p.assigned_body = planet_label
+                                NEW_MASS_PROTOPLANET += p.mass
+                                NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
+                            else:  # the particle is part of the disk
+                                NUM_PARTICLES_IN_DISK += 1
+                                p.label = "DISK"
+                                NEW_MASS_DISK += p.mass
+                                NEW_Z_ANGULAR_MOMENTUM_DISK += p.angular_momentum_vector[2]
+                        else:  # parabolic orbit, will escape the disk
+                            NUM_PARTICLES_ESCAPING += 1
+                            p.label = "ESCAPE"
+                            NEW_MASS_ESCAPED += p.mass
+                            NEW_Z_ANGULAR_MOMENTUM_ESCAPED += p.angular_momentum_vector[2]
 
             moment_of_inertia_protoplanet = (2.0 / 5.0) * NEW_MASS_PROTOPLANET * (self.a ** 2)
             angular_velocity_protoplanet = NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET / moment_of_inertia_protoplanet
@@ -137,5 +139,27 @@ class ParticleMap:
                     p.recalculate_elements(mass_grav_body=self.mass_protoearth)
                 except:
                     particles.remove(p)
+
+    def solve(self):
+        print("Beginning solution iteration...")
+        target_label = "TARGET"
+        impactor_label = "IMPACTOR"
+        # particles = self.select_random_particles(max_iteration=50000, max_randint=110000)
+        particles = self.collect_all_particles()
+
+        print("Solving target...")
+        target = self.__solve(particles=particles, planet_label=target_label)
+        print("Finished solving target!")
+        if self.num_bodies != 1:
+            target_removed_particles = [p for p in particles if p.assigned_body != target_label]
+            print("Solving impactor...")
+            self.com = center_of_mass(
+                x_coords=[p.position_vector[0] for p in target_removed_particles],
+                y_coords=[p.position_vector[1] for p in target_removed_particles],
+                z_coords=[p.position_vector[2] for p in target_removed_particles],
+                masses=[p.mass for p in target_removed_particles]
+            )
+            impactor = self.__solve(particles=particles, planet_label=impactor_label)
+            print("Finished solving impactor!")
 
         return particles

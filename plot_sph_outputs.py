@@ -70,7 +70,7 @@ class Output:
         ax.grid()
         plt.show()
 
-m = Output(path_to_output="/Users/scotthull/Desktop/merged_1000.dat")
+m = Output(path_to_output="/Users/scotthull/Desktop/tar.dat")
 m.plot_density()
 m.plot_pressure()
 m.plot_energy()

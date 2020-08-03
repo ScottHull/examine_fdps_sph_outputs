@@ -6,6 +6,7 @@ class Particle:
     def __init__(self, position_vector, velocity_vector, mass, mass_grav_body, particle_id, temperature, entropy):
         self.__G = 6.674 * 10 ** -11
         self.label = None
+        self.assigned_body = None
         self.particle_id = particle_id
         self.position_vector = position_vector
         self.velocity_vector = velocity_vector
