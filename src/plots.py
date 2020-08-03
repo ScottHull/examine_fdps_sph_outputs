@@ -27,4 +27,4 @@ def plot_particle_density_heatmap(x, y):
     ax.set_xlim(x.min(), x.max())
     ax.set_ylim(y.min(), y.max())
 
-    ax.imshow(im, extent=[x.min(), x.max(), y.min(), y.max()], aspect='auto')
+    return ax
