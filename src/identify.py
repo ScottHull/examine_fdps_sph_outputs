@@ -107,7 +107,7 @@ class ParticleMap:
                         p.assigned_body = None
                         NEW_MASS_ESCAPED += p.mass
                         NEW_Z_ANGULAR_MOMENTUM_ESCAPED += p.angular_momentum_vector[2]
-
+            print(NEW_MASS_PROTOPLANET, self.a, NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET)
             moment_of_inertia_protoplanet = (2.0 / 5.0) * NEW_MASS_PROTOPLANET * (self.a ** 2)
             angular_velocity_protoplanet = NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET / moment_of_inertia_protoplanet
             keplerian_velocity_protoplanet = sqrt((G * NEW_MASS_PROTOPLANET) / self.a ** 3)
@@ -160,8 +160,6 @@ class ParticleMap:
                 p.position_vector[1] += self.earth_center[1]
                 p.position_vector[2] += self.earth_center[2]
             print("Solving impactor...")
-            print(len(target_removed_particles))
-            print([p.mass for p in target_removed_particles])
             self.earth_center = find_center(
                 x=[p.position_vector[0] for p in target_removed_particles],
                 y=[p.position_vector[1] for p in target_removed_particles],
