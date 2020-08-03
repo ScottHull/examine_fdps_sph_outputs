@@ -1,5 +1,6 @@
 from src.orbitalelements import Particle
 from src.centering import find_center, center_of_mass
+from src.plots import plot_heatmap
 import pandas as pd
 from math import pi, sqrt
 import matplotlib.pyplot as plt
@@ -178,13 +179,18 @@ class ParticleMap:
                 p.position_vector[0] -= self.earth_center[0]
                 p.position_vector[1] -= self.earth_center[1]
                 p.position_vector[2] -= self.earth_center[2]
-            ax = plt.figure().add_subplot(111)
-            ax.scatter(
-                [p.position_vector[0] for p in target_removed_particles],
-                [p.position_vector[1] for p in target_removed_particles]
+            # ax = plt.figure().add_subplot(111)
+            # ax.scatter(
+            #     [p.position_vector[0] for p in target_removed_particles],
+            #     [p.position_vector[1] for p in target_removed_particles]
+            # )
+            # e = Ellipse(xy=(0, 0), width=self.a * 2.0, height=self.b * 2.0, alpha=0.2, color="blue")
+            # ax.add_artist(e)
+            ax = plot_heatmap(
+                x=[p.position_vector[0] for p in target_removed_particles],
+                y=[p.position_vector[1] for p in target_removed_particles],
+                z=[p.mass for p in target_removed_particles]
             )
-            e = Ellipse(xy=(0, 0), width=self.a * 2.0, height=self.b * 2.0, alpha=0.2, color="blue")
-            ax.add_artist(e)
             plt.show()
             impactor = self.__solve(particles=target_removed_particles, planet_label=impactor_label)
             print("Finished solving impactor!")
