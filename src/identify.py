@@ -1,6 +1,6 @@
 from src.orbitalelements import Particle
 from src.centering import find_center, center_of_mass
-from src.plots import plot_heatmap
+import src.plots as plots
 import pandas as pd
 from math import pi, sqrt
 import matplotlib.pyplot as plt
@@ -179,13 +179,17 @@ class ParticleMap:
                 p.position_vector[0] -= self.earth_center[0]
                 p.position_vector[1] -= self.earth_center[1]
                 p.position_vector[2] -= self.earth_center[2]
-            ax = plot_heatmap(
+            ax1 = plots.plot_heatmap(
                 x=[p.position_vector[0] for p in target_removed_particles],
                 y=[p.position_vector[1] for p in target_removed_particles],
                 z=[p.mass for p in target_removed_particles],
                 a=self.a,
                 b=self.b,
                 center=self.earth_center
+            )
+            ax2 = plots.plot_particle_density_heatmap(
+                x=[p.position_vector[0] for p in target_removed_particles],
+                y=[p.position_vector[1] for p in target_removed_particles]
             )
             plt.show()
             impactor = self.__solve(particles=target_removed_particles, planet_label=impactor_label)
