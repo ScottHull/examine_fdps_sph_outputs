@@ -27,6 +27,4 @@ def plot_particle_density_heatmap(x, y):
     ax.set_xlim(x.min(), x.max())
     ax.set_ylim(y.min(), y.max())
 
-    # you can also overlay your soccer field
-    im = plt.imread('soccerPitch.jpg')
     ax.imshow(im, extent=[x.min(), x.max(), y.min(), y.max()], aspect='auto')
