@@ -2,6 +2,8 @@ from src.orbitalelements import Particle
 from src.centering import find_center, center_of_mass
 import pandas as pd
 from math import pi, sqrt
+import matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse
 import numpy as np
 
 
@@ -155,12 +157,10 @@ class ParticleMap:
         print("Finished solving target!")
         if self.num_bodies != 1:
             target_removed_particles = [p for p in particles if p.assigned_body != target_label]
-            print(target_removed_particles[0].position_vector)
             for p in target_removed_particles:
                 p.position_vector[0] += self.earth_center[0]
                 p.position_vector[1] += self.earth_center[1]
                 p.position_vector[2] += self.earth_center[2]
-            print(target_removed_particles[0].position_vector)
             print("Solving impactor...")
             self.earth_center = find_center(
                 x=[p.position_vector[0] for p in target_removed_particles],
@@ -172,12 +172,18 @@ class ParticleMap:
                 delta_y=self.centering_delta,
                 delta_z=self.centering_delta
             )
-            print(target_removed_particles[0].position_vector)
             for p in target_removed_particles:
                 p.position_vector[0] -= self.earth_center[0]
                 p.position_vector[1] -= self.earth_center[1]
                 p.position_vector[2] -= self.earth_center[2]
-            print(target_removed_particles[0].position_vector)
+            ax = plt.figure().add_subplot(111)
+            ax.scatter(
+                [p.position_vector[0] for p in target_removed_particles],
+                [p.position_vector[1] for p in target_removed_particles]
+            )
+            e = Ellipse(xy=(0, 0), width=self.a * 2.0, height=self.b * 2.0, alpha=0.2, color="blue")
+            ax.add_artist(e)
+            plt.show()
             impactor = self.__solve(particles=target_removed_particles, planet_label=impactor_label)
             print("Finished solving impactor!")
 
