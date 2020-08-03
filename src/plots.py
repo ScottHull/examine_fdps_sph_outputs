@@ -2,13 +2,5 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def plot_heatmap(x, y, z):
-    ax = plt.figure().add_subplot(111)
-    # y, x = np.meshgrid(x, y)
-    x = np.unique(x)
-    y = np.unique(y)
-    X, Y = np.meshgrid(x, y)
-    Z = np.array(z).reshape(len(y), len(x))
-    c = ax.pcolormesh(X, Y, Z)
-    cbar = plt.colorbar(c, ax=ax)
-
+    ax = plt.tricontour(x, y, z, 15, linewidths=0.5, colors='k')
     return ax
