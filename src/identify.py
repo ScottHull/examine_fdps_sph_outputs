@@ -162,6 +162,8 @@ class ParticleMap:
                 p.position_vector[1] += self.earth_center[1]
                 p.position_vector[2] += self.earth_center[2]
             print("Solving impactor...")
+            self.centering_resolution = 1e2
+            self.centering_delta = 1.8e3
             self.earth_center = find_center(
                 x=[p.position_vector[0] for p in target_removed_particles],
                 y=[p.position_vector[1] for p in target_removed_particles],
