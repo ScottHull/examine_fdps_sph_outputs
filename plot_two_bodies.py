@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 from src.identify import ParticleMap
 
-sph_file = "merged_800.dat"
+sph_file = "merged_0.dat"
 sph_df = pd.read_csv(sph_file, header=None, skiprows=2, delimiter="\t")
 
 pm = ParticleMap(output_path=sph_file, number_expected_bodies=2)
