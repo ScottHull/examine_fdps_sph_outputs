@@ -9,15 +9,17 @@ class ParticleMap:
 
     def __init__(self, output_path, center=True, centering_resolution=1e5, centering_delta=1e7,
                  number_expected_bodies=1):
+        self.centering_resolution = centering_resolution
+        self.centering_delta = centering_delta
         self.num_bodies = number_expected_bodies
         self.output = pd.read_csv(output_path, skiprows=2, header=None, delimiter="\t")
         self.com = center_of_mass(x_coords=self.output[3], y_coords=self.output[4],
                                   z_coords=self.output[5], masses=self.output[2])
         if center:
             self.earth_center = find_center(x=self.output[3], y=self.output[4],
-                                            z=self.output[5], mass=self.output[2], resolution=centering_resolution,
-                                            delta_x=centering_delta,
-                                            delta_y=centering_delta, delta_z=centering_delta)
+                                            z=self.output[5], mass=self.output[2], resolution=self.centering_resolution,
+                                            delta_x=self.centering_delta,
+                                            delta_y=self.centering_delta, delta_z=self.centering_delta)
         else:
             self.earth_center = self.com
         self.a = (12713.6 / 2.0) * 1000.0  # present-day equitorial radius of the Earth in m
@@ -153,13 +155,16 @@ class ParticleMap:
         print("Finished solving target!")
         if self.num_bodies != 1:
             target_removed_particles = [p for p in particles if p.assigned_body != target_label]
-            print(len(target_removed_particles))
             print("Solving impactor...")
-            self.com = center_of_mass(
-                x_coords=[p.position_vector[0] for p in target_removed_particles],
-                y_coords=[p.position_vector[1] for p in target_removed_particles],
-                z_coords=[p.position_vector[2] for p in target_removed_particles],
-                masses=[p.mass for p in target_removed_particles]
+            self.earth_center = find_center(
+                x=[p.position_vector[0] for p in target_removed_particles],
+                y=[p.position_vector[1] for p in target_removed_particles],
+                z=[p.position_vector[2] for p in target_removed_particles],
+                mass=[p.mass for p in target_removed_particles],
+                resolution=self.centering_resolution,
+                delta_x = self.centering_delta,
+                delta_y=self.centering_delta,
+                delta_z=self.centering_delta
             )
             impactor = self.__solve(particles=target_removed_particles, planet_label=impactor_label)
             print("Finished solving impactor!")
