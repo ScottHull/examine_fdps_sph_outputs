@@ -96,11 +96,13 @@ class ParticleMap:
                         else:  # the particle is part of the disk
                             NUM_PARTICLES_IN_DISK += 1
                             p.label = "DISK"
+                            p.assigned_body = None
                             NEW_MASS_DISK += p.mass
                             NEW_Z_ANGULAR_MOMENTUM_DISK += p.angular_momentum_vector[2]
                     else:  # parabolic orbit, will escape the disk
                         NUM_PARTICLES_ESCAPING += 1
                         p.label = "ESCAPE"
+                        p.assigned_body = None
                         NEW_MASS_ESCAPED += p.mass
                         NEW_Z_ANGULAR_MOMENTUM_ESCAPED += p.angular_momentum_vector[2]
 
@@ -151,6 +153,7 @@ class ParticleMap:
         print("Finished solving target!")
         if self.num_bodies != 1:
             target_removed_particles = [p for p in particles if p.assigned_body != target_label]
+            print(len(target_removed_particles))
             print("Solving impactor...")
             self.com = center_of_mass(
                 x_coords=[p.position_vector[0] for p in target_removed_particles],
