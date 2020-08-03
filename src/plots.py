@@ -7,9 +7,8 @@ def plot_heatmap(x, y, z):
     x = np.unique(x)
     y = np.unique(y)
     X, Y = np.meshgrid(x, y)
-    Z = z.reshape(len(y), len(x))
+    Z = np.array(z).reshape(len(y), len(x))
     c = ax.pcolormesh(X, Y, Z)
-    # set the limits of the plot to the limits of the data
     cbar = plt.colorbar(c, ax=ax)
 
     return ax
