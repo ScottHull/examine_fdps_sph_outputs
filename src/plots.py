@@ -28,3 +28,27 @@ def plot_particle_density_heatmap(x, y):
     ax.set_ylim(y.min(), y.max())
 
     return ax
+
+def scatter_particles(x, y, tags, x_label, y_label):
+    ax = plt.figure().add_subplot(111)
+
+    target_silicate_x = [x[index] for i, index in enumerate(tags) if i == 0]
+    target_silicate_y = [y[index] for i, index in enumerate(tags) if i == 0]
+    target_iron_x = [x[index] for i, index in enumerate(tags) if i == 1]
+    target_iron_y = [y[index] for i, index in enumerate(tags) if i == 1]
+    impactor_silicate_x = [x[index] for i, index in enumerate(tags) if i == 2]
+    impactor_silicate_y = [y[index] for i, index in enumerate(tags) if i == 2]
+    impactor_iron_x = [x[index] for i, index in enumerate(tags) if i == 3]
+    impactor_iron_y = [y[index] for i, index in enumerate(tags) if i == 3]
+
+    ax.scatter(target_silicate_x, target_silicate_y, marker="+", color="red", label="Target Silicate")
+    ax.scatter(target_iron_x, target_iron_y, marker="+", color="blue", label="Target Iron")
+    ax.scatter(impactor_silicate_x, impactor_silicate_y, marker="+", color="green", label="Impactor Silicate")
+    ax.scatter(impactor_iron_x, impactor_iron_y, marker="+", color="pink", label="Impactor Iron")
+
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    ax.grid()
+    ax.legend()
+
+    return ax
