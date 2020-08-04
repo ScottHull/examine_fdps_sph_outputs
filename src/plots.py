@@ -48,6 +48,7 @@ def scatter_particles(x, y, tags, x_label, y_label, a=None, b=None):
 
     if a is not None and b is not None:
         e = Ellipse(xy=(0, 0), width=a * 2.0, height=b * 2.0, alpha=0.3, color="blue")
+        ax.add_artist(e)
 
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
