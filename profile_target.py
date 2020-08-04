@@ -24,8 +24,8 @@ ax2 = plots.scatter_particles(
     tags=[i.particle_id for i in particle_map],
     x_label="x (km)",
     y_label="y (km)",
-    a=pm.a,
-    b=pm.b
+    a=pm.a / 1000.0,
+    b=pm.b / 1000.0
 )
 
 plt.show()

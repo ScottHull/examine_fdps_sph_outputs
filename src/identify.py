@@ -179,19 +179,6 @@ class ParticleMap:
                 p.position_vector[0] -= self.earth_center[0]
                 p.position_vector[1] -= self.earth_center[1]
                 p.position_vector[2] -= self.earth_center[2]
-            ax1 = plots.plot_heatmap(
-                x=[p.position_vector[0] for p in target_removed_particles],
-                y=[p.position_vector[1] for p in target_removed_particles],
-                z=[p.mass for p in target_removed_particles],
-                a=self.a,
-                b=self.b,
-                center=self.earth_center
-            )
-            ax2 = plots.plot_particle_density_heatmap(
-                x=[p.position_vector[0] for p in target_removed_particles],
-                y=[p.position_vector[1] for p in target_removed_particles]
-            )
-            plt.show()
             impactor = self.__solve(particles=target_removed_particles, planet_label=impactor_label)
             print("Finished solving impactor!")
 
