@@ -3,7 +3,8 @@ import numpy as np
 
 class Particle:
 
-    def __init__(self, position_vector, velocity_vector, mass, mass_grav_body, particle_id, temperature, entropy):
+    def __init__(self, position_vector, velocity_vector, mass, density, mass_grav_body, particle_id,
+                 temperature, entropy, internal_energy):
         self.__G = 6.674 * 10 ** -11
         self.label = None
         self.assigned_body = None
@@ -12,8 +13,10 @@ class Particle:
         self.velocity_vector = velocity_vector
         self.distance = np.linalg.norm(position_vector)
         self.mass = float(mass)
+        self.density = float(density)
         self.temperature = float(temperature)
         self.entropy = float(entropy)
+        self.internal_energy = float(internal_energy)
         self.mass_grav_body = mass_grav_body
         self.angular_momentum_vector = self.__angular_momentum()
         self.semi_major_axis = self.__semi_major_axis()

@@ -12,13 +12,21 @@ particle_map = pm.solve()
 
 ax1 = plots.scatter_particles(
     x=[i.distance / 1000.0 for i in particle_map if i.label == "PLANET"],
-    y=[i.entropy for i in particle_map if i.label == "PLANET"],
+    y=[i.density for i in particle_map if i.label == "PLANET"],
     tags=[i.particle_id for i in particle_map if i.label == "PLANET"],
     x_label="Distance (km)",
-    y_label="Entropy"
+    y_label="Density"
 )
 
 ax2 = plots.scatter_particles(
+    x=[i.distance / 1000.0 for i in particle_map if i.label == "PLANET"],
+    y=[i.internal_energy for i in particle_map if i.label == "PLANET"],
+    tags=[i.particle_id for i in particle_map if i.label == "PLANET"],
+    x_label="Distance (km)",
+    y_label="Internal Energy"
+)
+
+ax3 = plots.scatter_particles(
     x=[i.position_vector[0] / 1000.0 for i in particle_map],
     y=[i.position_vector[1] / 1000.0 for i in particle_map],
     tags=[i.particle_id for i in particle_map],

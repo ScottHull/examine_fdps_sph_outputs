@@ -56,6 +56,8 @@ class ParticleMap:
                     position_vector=position_vector,
                     velocity_vector=velocity_vector,
                     mass=self.output[2][row],
+                    density=self.output[9][row],
+                    internal_energy=self.output[10][row],
                     mass_grav_body=grav_mass,
                     entropy=self.output[13][row],
                     temperature=self.output[14][row]
