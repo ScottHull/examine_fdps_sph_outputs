@@ -29,7 +29,7 @@ def plot_particle_density_heatmap(x, y):
 
     return ax
 
-def scatter_particles(x, y, tags, x_label, y_label):
+def scatter_particles(x, y, tags, x_label, y_label, a=None, b=None):
     ax = plt.figure().add_subplot(111)
 
     target_silicate_x = [x[index] for index, i in enumerate(tags) if i == 0]
@@ -45,6 +45,9 @@ def scatter_particles(x, y, tags, x_label, y_label):
     ax.scatter(target_iron_x, target_iron_y, marker="+", color="blue", label="Target Iron")
     ax.scatter(impactor_silicate_x, impactor_silicate_y, marker="+", color="green", label="Impactor Silicate")
     ax.scatter(impactor_iron_x, impactor_iron_y, marker="+", color="pink", label="Impactor Iron")
+
+    if a is not None and b is not None:
+        e = Ellipse(xy=(0, 0), width=a * 2.0, height=b * 2.0, alpha=0.3, color="blue")
 
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
