@@ -33,7 +33,7 @@ class Visualize:
         return ax
 
 
-v = Visualize(output_path="/Users/scotthull/Desktop/merged_0.dat")
-ax = v.plot(dimension=3)
+v = Visualize(output_path="/Users/scotthull/Desktop/imp.dat")
+ax = v.plot(dimension=2)
 plt.show()
 
