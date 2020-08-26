@@ -18,11 +18,20 @@ class Visualize:
 
         return x, y, z, mass, particle_id
 
-    def plot(self, dimension):
+    def __return_color_list(self, header_index):
+        df = pd.read_csv(self.output_path, sep='\t', skiprows=2, header=None)
+        return df[header_index]
+
+    def plot(self, dimension, color=None, color_label=""):
         x, y, z, mass, particle_id = self.__return_data()
         if dimension == 2:
             ax = plt.figure().add_subplot(111)
-            ax.scatter(x, y, color='black', marker="+")
+            if color is None:
+                ax.scatter(x, y, color='black', marker="+")
+            else:
+                sc = ax.scatter(x, y, c=self.__return_color_list(header_index=color), marker="+")
+                cbar = plt.colorbar(sc, ax=ax)
+                cbar.set_label(color_label)
         else:
             ax = Axes3D(plt.figure())
             ax.scatter(x, y, z, color="black", marker="+")
@@ -33,7 +42,7 @@ class Visualize:
         return ax
 
 
-v = Visualize(output_path="/Users/scotthull/Desktop/imp.dat")
-ax = v.plot(dimension=2)
+v = Visualize(output_path="/Users/scotthull/Desktop/merged_212.dat")
+ax = v.plot(dimension=2, color=15, color_label="Soundspeed")
 plt.show()
 

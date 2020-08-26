@@ -10,9 +10,10 @@ from mpl_toolkits.mplot3d import Axes3D
 class BuildMovie:
 
     def __init__(self, output_path, to_path, num_files, fps=10, start_from=0, new_sim=True, colorize_particles=True,
-                 dimension='3', num_processes=1, focus_process=None):
+                 dimension='3', file_name="sph_output.mp4", num_processes=1, focus_process=None):
         self.output_path = output_path
         self.to_path = to_path
+        self.file_name = file_name
         self.num_files = num_files
         self.start_file = start_from
         self.curr_file = start_from
@@ -122,16 +123,16 @@ class BuildMovie:
 
         self.curr_process = 0
 
-    def __animate(self):
+    def __animate(self, file_name="sph_output.mp4"):
         frames = [self.to_path + "/output_{}.png".format(i) for i in range(self.start_file, self.num_files + 1)]
         animation = mpy.ImageSequenceClip(frames, fps=self.fps, load_images=True)
-        animation.write_videofile('sph_output.mp4', fps=self.fps)
+        animation.write_videofile(file_name, fps=self.fps)
 
     def build_animation(self, save=False):
         for i in range(self.start_file, self.num_files + 1):
             self.__make_scene(savefig=save, file_num=i)
             self.curr_process = 0
-        self.__animate()
+        self.__animate(file_name=self.file_name)
         print("Your animation is now available at {}/{}.".format(os.getcwd(), self.animation_filename))
         return None
 
@@ -153,6 +154,7 @@ mov = BuildMovie(
     start_from=0,
     num_processes=20,
     focus_process=None,
+    file_name="sph_output.mp4"
 )
 
 mov.build_animation(save=True)
