@@ -1,16 +1,18 @@
 import os
 from copy import copy
 import shutil
+import numpy as np
 import pandas as pd
 import moviepy.editor as mpy
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from src.centering import center_of_mass
 
 
 class BuildMovie:
 
     def __init__(self, output_path, to_path, num_files, fps=10, start_from=0, new_sim=True, colorize_particles=True,
-                 dimension='3', file_name="sph_output.mp4", num_processes=1, focus_process=None):
+                 dimension='3', file_name="sph_output.mp4", num_processes=1, focus_process=None, center=True):
         self.output_path = output_path
         self.to_path = to_path
         self.file_name = file_name
@@ -24,6 +26,7 @@ class BuildMovie:
         self.num_processes = num_processes
         self.curr_process = 0
         self.focus_process = focus_process
+        self.center = center
         self.file_format = "results.{}_{}_{}.dat"
         self.color_map = {
             0: 'red',
@@ -44,12 +47,18 @@ class BuildMovie:
     def __read_sph_file(self):
         df = pd.read_csv(self.__get_filename(), sep='\t', skiprows=2, header=None)
         particle_id = df[1]
+        mass = df[2]
         x = df[3]
         y = df[4]
         z = df[5]
         colors = []
         if self.colorize_particles:
             colors = [self.color_map[int(i)] for i in particle_id]
+        if self.center:
+            com = center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass)
+            x = np.array(x) - com[0]
+            y = np.array(y) - com[1]
+            z = np.array(z) - com[2]
         return particle_id, x, y, z, colors
 
     def __make_scene(self, savefig=True, file_num=None, alpha=1.0):
@@ -107,9 +116,9 @@ class BuildMovie:
                     ax.scatter(x, y, c='black', alpha=alpha)
             ax.set_xlabel('x')
             ax.set_ylabel('y')
-            # ax.set_xbound(-5e7, 5e7)
-            # ax.set_ybound(-5e7, 5e7)
-            ax.axis('equal')
+            ax.set_xbound(-5e7, 5e7)
+            ax.set_ybound(-5e7, 5e7)
+            # ax.axis('equal')
             if savefig:
                 ax.set_title("Iteration: {}".format(self.curr_file))
                 print("Built scene: {}".format(self.curr_file))
@@ -154,7 +163,8 @@ mov = BuildMovie(
     start_from=0,
     num_processes=20,
     focus_process=None,
-    file_name="sph_output.mp4"
+    file_name="sph_output.mp4",
+    center=True
 )
 
 mov.build_animation(save=True)
