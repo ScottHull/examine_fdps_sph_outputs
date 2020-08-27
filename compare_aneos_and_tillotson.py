@@ -26,7 +26,7 @@ tillotson = [
 fig = plt.figure()
 fig2 = plt.figure()
 ax_aneos = fig.add_subplot(111)
-ax_tillotson = fig.add_subplot(111)
+ax_tillotson = fig2.add_subplot(111)
 
 plotting_index = 10
 plotting_label = "Internal Energy"
