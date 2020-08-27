@@ -40,6 +40,7 @@ for i in tillotson:
     r = radius(x_coords=df[3], y_coords=df[4], z_coords=df[5])
     ax_tillotson.scatter(r, df[plotting_index], marker="+", label=i[0])
 
+ax_aneos.set_xlabel("Radius (km)")
 ax_tillotson.set_xlabel("Radius (km)")
 ax_aneos.set_ylabel(plotting_label)
 ax_tillotson.set_ylabel(plotting_label)
