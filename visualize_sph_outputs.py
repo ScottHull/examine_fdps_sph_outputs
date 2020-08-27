@@ -52,15 +52,9 @@ class BuildMovie:
         y = df[4]
         z = df[5]
         colors = []
-        com = center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass)
         if self.colorize_particles:
             colors = [self.color_map[int(i)] for i in particle_id]
-        # if self.center:
-        #     com = center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass)
-            # x = np.array(x) - com[0]
-            # y = np.array(y) - com[1]
-            # z = np.array(z) - com[2]
-        return particle_id, x, y, z, colors, com
+        return particle_id, x, y, z, colors, mass
 
     def __make_scene(self, savefig=True, file_num=None, alpha=1.0):
         fig = plt.figure()
@@ -71,11 +65,11 @@ class BuildMovie:
                 for proc in range(0, self.num_processes, 1):
                     self.curr_process = proc
                     if savefig:
-                        particle_id, x, y, z, colors = self.__read_sph_file()
+                        particle_id, x, y, z, colors, mass = self.__read_sph_file()
                     else:
                         savestate = copy(self.curr_file)
                         self.curr_file = file_num
-                        particle_id, x, y, z, colors = self.__read_sph_file()
+                        particle_id, x, y, z, colors, mass = self.__read_sph_file()
                         self.curr_file = savestate
                     print(self.__get_filename())
                     if self.colorize_particles:
@@ -86,11 +80,11 @@ class BuildMovie:
             else:
                 self.curr_process = self.focus_process
                 if savefig:
-                    particle_id, x, y, z, colors = self.__read_sph_file()
+                    particle_id, x, y, z, colors, mass = self.__read_sph_file()
                 else:
                     savestate = copy(self.curr_file)
                     self.curr_file = file_num
-                    particle_id, x, y, z, colors = self.__read_sph_file()
+                    particle_id, x, y, z, colors, mass = self.__read_sph_file()
                     self.curr_file = savestate
                 if self.colorize_particles:
                     ax.scatter(x, y, z, c=colors, alpha=alpha)
@@ -104,18 +98,34 @@ class BuildMovie:
             ax.set_zbound(-9e6, 9e6)
         else:
             ax = fig.add_subplot(111)
+            x = np.array([])
+            y = np.array([])
+            z = np.array([])
+            particle_id = np.array([])
+            colors = np.array([])
+            mass = np.array([])
             for proc in range(0, self.num_processes, 1):
                 savestate = copy(self.curr_file)
                 self.curr_file = file_num
-                particle_id, x, y, z, colors, com = self.__read_sph_file()
+                particle_id_t, x_t, y_t, z_t, colors_t, mass_t = self.__read_sph_file()
+                x = np.concatenate((x, x_t))
+                y = np.concatenate((y, y_t))
+                z = np.concatenate((z, z_t))
+                particle_id = np.concatenate((particle_id, particle_id_t))
+                colors = np.concatenate((colors, colors_t))
+                mass = np.concatenate((mass, mass_t))
                 self.curr_file = savestate
                 self.curr_process = proc
                 print(self.__get_filename())
-                if self.colorize_particles:
-                    ax.scatter(x, y, c=colors, alpha=alpha)
-                    ax.scatter(com[0], com[1], marker="*", s=100, color="pink")
-                else:
-                    ax.scatter(x, y, c='black', alpha=alpha)
+            if self.center:
+                com = center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass)
+                x = x - com[0]
+                y = y - com[1]
+                z = z - com[2]
+            if self.colorize_particles:
+                ax.scatter(x, y, c=colors, alpha=alpha)
+            else:
+                ax.scatter(x, y, c='black', alpha=alpha)
             ax.set_xlabel('x')
             ax.set_ylabel('y')
             ax.set_xbound(-5e7, 5e7)
