@@ -52,14 +52,15 @@ class BuildMovie:
         y = df[4]
         z = df[5]
         colors = []
+        com = center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass)
         if self.colorize_particles:
             colors = [self.color_map[int(i)] for i in particle_id]
-        if self.center:
-            com = center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass)
-            x = np.array(x) - com[0]
-            y = np.array(y) - com[1]
-            z = np.array(z) - com[2]
-        return particle_id, x, y, z, colors
+        # if self.center:
+        #     com = center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass)
+            # x = np.array(x) - com[0]
+            # y = np.array(y) - com[1]
+            # z = np.array(z) - com[2]
+        return particle_id, x, y, z, colors, com
 
     def __make_scene(self, savefig=True, file_num=None, alpha=1.0):
         fig = plt.figure()
@@ -106,12 +107,13 @@ class BuildMovie:
             for proc in range(0, self.num_processes, 1):
                 savestate = copy(self.curr_file)
                 self.curr_file = file_num
-                particle_id, x, y, z, colors = self.__read_sph_file()
+                particle_id, x, y, z, colors, com = self.__read_sph_file()
                 self.curr_file = savestate
                 self.curr_process = proc
                 print(self.__get_filename())
                 if self.colorize_particles:
                     ax.scatter(x, y, c=colors, alpha=alpha)
+                    ax.scatter(com[0], com[1], marker="*", s=100, color="pink")
                 else:
                     ax.scatter(x, y, c='black', alpha=alpha)
             ax.set_xlabel('x')
