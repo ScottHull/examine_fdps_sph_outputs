@@ -122,6 +122,12 @@ class BuildMovie:
                 x = x - com[0]
                 y = y - com[1]
                 z = z - com[2]
+            x = np.array([i for index, i in enumerate(x) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(x) if particle_id[index] % 2 != 0])
+            y = np.array([i for index, i in enumerate(y) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(y) if particle_id[index] % 2 != 0])
+            z = np.array([i for index, i in enumerate(z) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(z) if particle_id[index] % 2 != 0])
+            colors = np.array([i for index, i in enumerate(colors) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(colors) if particle_id[index] % 2 != 0])
+            mass = np.array([i for index, i in enumerate(mass) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(mass) if particle_id[index] % 2 != 0])
+            particle_id = np.array([i for index, i in enumerate(particle_id) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(particle_id) if particle_id[index] % 2 != 0])
             if self.colorize_particles:
                 ax.scatter(x, y, c=colors, alpha=alpha)
             else:

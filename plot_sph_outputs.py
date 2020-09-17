@@ -26,8 +26,8 @@ class Output:
         self.density = self.df[9]
         self.energy = self.df[10]
         self.entropy = self.df[13]
-        self.soundspeed = self.df[15]
-        self.dt = self.df[16]
+        # self.soundspeed = self.df[15]
+        # self.dt = self.df[16]
 
         for index, i in enumerate(self.id):
             p = self.pressure[index] * 10**-9
@@ -97,49 +97,47 @@ class Output:
         ax.grid()
         plt.show()
         
-    def plot_soundspeed(self):
-        target_silicate_soundspeed = [self.soundspeed[index] for index, i in enumerate(self.tag) if i == 0]
-        target_iron_soundspeed = [self.soundspeed[index] for index, i in enumerate(self.tag) if i == 1]
-        impactor_silicate_soundspeed = [self.soundspeed[index] for index, i in enumerate(self.tag) if i == 2]
-        impactor_iron_soundspeed = [self.soundspeed[index] for index, i in enumerate(self.tag) if i == 3]
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax.scatter(self.target_silicate_radius, target_silicate_soundspeed, color='blue', marker="+",
-                   label="Target Silicate")
-        ax.scatter(self.target_iron_radius, target_iron_soundspeed, color='red', marker="+", label="Target Iron")
-        ax.scatter(self.impactor_silicate_radius, impactor_silicate_soundspeed, color='green', marker="+",
-                   label="Impactor Silicate")
-        ax.scatter(self.impactor_iron_radius, impactor_iron_soundspeed, color='purple', marker="+", label="Impactor Iron")
-        ax.set_xlabel("Radius (km)")
-        ax.set_ylabel("Soundspeed")
-        ax.set_title("Soundspeed")
-        ax.legend(loc='upper left')
-        ax.grid()
-        plt.show()
-        
-    def plot_dt(self):
-        target_silicate_dt = [self.dt[index] for index, i in enumerate(self.tag) if i == 0]
-        target_iron_dt = [self.dt[index] for index, i in enumerate(self.tag) if i == 1]
-        impactor_silicate_dt = [self.dt[index] for index, i in enumerate(self.tag) if i == 2]
-        impactor_iron_dt = [self.dt[index] for index, i in enumerate(self.tag) if i == 3]
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax.scatter(self.target_silicate_radius, target_silicate_dt, color='blue', marker="+",
-                   label="Target Silicate")
-        ax.scatter(self.target_iron_radius, target_iron_dt, color='red', marker="+", label="Target Iron")
-        ax.scatter(self.impactor_silicate_radius, impactor_silicate_dt, color='green', marker="+",
-                   label="Impactor Silicate")
-        ax.scatter(self.impactor_iron_radius, impactor_iron_dt, color='purple', marker="+", label="Impactor Iron")
-        ax.set_xlabel("Radius (km)")
-        ax.set_ylabel("dt")
-        ax.set_title("Timestep (dt)")
-        ax.legend(loc='upper left')
-        ax.grid()
-        plt.show()
+    # def plot_soundspeed(self):
+    #     target_silicate_soundspeed = [self.soundspeed[index] for index, i in enumerate(self.tag) if i == 0]
+    #     target_iron_soundspeed = [self.soundspeed[index] for index, i in enumerate(self.tag) if i == 1]
+    #     impactor_silicate_soundspeed = [self.soundspeed[index] for index, i in enumerate(self.tag) if i == 2]
+    #     impactor_iron_soundspeed = [self.soundspeed[index] for index, i in enumerate(self.tag) if i == 3]
+    #     fig = plt.figure()
+    #     ax = fig.add_subplot(111)
+    #     ax.scatter(self.target_silicate_radius, target_silicate_soundspeed, color='blue', marker="+",
+    #                label="Target Silicate")
+    #     ax.scatter(self.target_iron_radius, target_iron_soundspeed, color='red', marker="+", label="Target Iron")
+    #     ax.scatter(self.impactor_silicate_radius, impactor_silicate_soundspeed, color='green', marker="+",
+    #                label="Impactor Silicate")
+    #     ax.scatter(self.impactor_iron_radius, impactor_iron_soundspeed, color='purple', marker="+", label="Impactor Iron")
+    #     ax.set_xlabel("Radius (km)")
+    #     ax.set_ylabel("Soundspeed")
+    #     ax.set_title("Soundspeed")
+    #     ax.legend(loc='upper left')
+    #     ax.grid()
+    #     plt.show()
+    #
+    # def plot_dt(self):
+    #     target_silicate_dt = [self.dt[index] for index, i in enumerate(self.tag) if i == 0]
+    #     target_iron_dt = [self.dt[index] for index, i in enumerate(self.tag) if i == 1]
+    #     impactor_silicate_dt = [self.dt[index] for index, i in enumerate(self.tag) if i == 2]
+    #     impactor_iron_dt = [self.dt[index] for index, i in enumerate(self.tag) if i == 3]
+    #     fig = plt.figure()
+    #     ax = fig.add_subplot(111)
+    #     ax.scatter(self.target_silicate_radius, target_silicate_dt, color='blue', marker="+",
+    #                label="Target Silicate")
+    #     ax.scatter(self.target_iron_radius, target_iron_dt, color='red', marker="+", label="Target Iron")
+    #     ax.scatter(self.impactor_silicate_radius, impactor_silicate_dt, color='green', marker="+",
+    #                label="Impactor Silicate")
+    #     ax.scatter(self.impactor_iron_radius, impactor_iron_dt, color='purple', marker="+", label="Impactor Iron")
+    #     ax.set_xlabel("Radius (km)")
+    #     ax.set_ylabel("dt")
+    #     ax.set_title("Timestep (dt)")
+    #     ax.legend(loc='upper left')
+    #     ax.grid()
+    #     plt.show()
 
-m = Output(path_to_output="/Users/scotthull/Desktop/merged_1253 1.dat")
+m = Output(path_to_output="/Users/scotthull/Desktop/GI_t_20.dat")
 m.plot_density()
 m.plot_pressure()
 m.plot_energy()
-m.plot_soundspeed()
-m.plot_dt()
