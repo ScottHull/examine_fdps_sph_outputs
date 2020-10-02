@@ -25,7 +25,7 @@ class Output:
         self.pressure = self.df[11]
         self.density = self.df[9]
         self.energy = self.df[10]
-        self.entropy = self.df[13]
+        # self.entropy = self.df[13]
         # self.soundspeed = self.df[15]
         # self.dt = self.df[16]
 
@@ -137,7 +137,7 @@ class Output:
     #     ax.grid()
     #     plt.show()
 
-m = Output(path_to_output="/Users/scotthull/Desktop/GI_t_20.dat")
+m = Output(path_to_output="/Users/scotthull/Desktop/imp_new_gcc.dat")
 m.plot_density()
 m.plot_pressure()
 m.plot_energy()

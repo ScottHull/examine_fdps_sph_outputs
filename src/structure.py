@@ -35,7 +35,7 @@ class Structure:
         return vapor_mass_fraction
 
     def calc_disk_surface_density(self):
-        particles = sorted_interp_array = [x for _, x in sorted(zip([i.distance for i in self.disk_particles],
+        particles = [x for _, x in sorted(zip([i.distance for i in self.disk_particles],
                                                                     self.disk_particles))]
         surface_densities = []
         for index, p in enumerate(particles):
