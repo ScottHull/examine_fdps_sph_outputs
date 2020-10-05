@@ -22,9 +22,11 @@ class ParticleMap:
                                   target_iron=self.__center_on_target_iron)
         if center:
             self.earth_center = find_center(x=self.output[3], y=self.output[4],
-                                            z=self.output[5], mass=self.output[2], resolution=self.centering_resolution,
-                                            delta_x=self.centering_delta,
-                                            delta_y=self.centering_delta, delta_z=self.centering_delta)
+                                            z=self.output[5], mass=self.output[2], particle_ids=self.output[1],
+                                            resolution=self.centering_resolution,
+                                            delta_x=self.centering_delta, delta_y=self.centering_delta,
+                                            delta_z=self.centering_delta,
+                                            target_iron_centering=self.__center_on_target_iron)
         else:
             self.earth_center = self.com
         self.a = (12713.6 / 2.0) * 1000.0  # present-day equitorial radius of the Earth in m

@@ -30,8 +30,9 @@ def __assign_particle_to_profile(profile_list, density_list, particle_position):
                 break
 
 
-def find_center(x, y, z, mass, resolution, delta_x, delta_y, delta_z):
-    com = center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass)
+def find_center(x, y, z, mass, particle_ids, resolution, delta_x, delta_y, delta_z, target_iron_centering=False):
+    com = center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass, particle_ids=particle_ids,
+                         target_iron=target_iron_centering)
     print("Finding center...")
     x_profile = list(np.arange(com[0] - delta_x, com[0] + delta_x, resolution))
     y_profile = list(np.arange(com[1] - delta_y, com[1] + delta_y, resolution))
