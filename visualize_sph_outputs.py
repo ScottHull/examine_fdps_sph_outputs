@@ -185,7 +185,8 @@ mov = BuildMovie(
     num_processes=20,
     focus_process=None,
     file_name="sph_output.mp4",
-    center=True
+    center=True,
+    center_on_target_iron=False
 )
 
 mov.build_animation(save=True)
