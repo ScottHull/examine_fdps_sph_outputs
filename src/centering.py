@@ -6,6 +6,12 @@ def center_of_mass(x_coords, y_coords, z_coords, masses, particle_ids, target_ir
         target_iron_id = 1
         masses = np.array([i for index, i in enumerate(masses) if particle_ids[index] == target_iron_id],
                           dtype=np.float32)
+        x_coords = np.array([i for index, i in enumerate(x_coords) if particle_ids[index] == target_iron_id],
+                          dtype=np.float32)
+        y_coords = np.array([i for index, i in enumerate(y_coords) if particle_ids[index] == target_iron_id],
+                            dtype=np.float32)
+        z_coords = np.array([i for index, i in enumerate(z_coords) if particle_ids[index] == target_iron_id],
+                            dtype=np.float32)
     else:
         masses = np.array(masses, dtype=np.float32)
     total_mass = float(np.sum(masses))
