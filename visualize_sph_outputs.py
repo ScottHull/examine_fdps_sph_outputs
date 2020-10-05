@@ -12,7 +12,8 @@ from src.centering import center_of_mass
 class BuildMovie:
 
     def __init__(self, output_path, to_path, num_files, fps=10, start_from=0, new_sim=True, colorize_particles=True,
-                 dimension='3', file_name="sph_output.mp4", num_processes=1, focus_process=None, center=True):
+                 dimension='3', file_name="sph_output.mp4", num_processes=1, focus_process=None, center=True,
+                 center_on_target_iron=False):
         self.output_path = output_path
         self.to_path = to_path
         self.file_name = file_name
@@ -27,6 +28,7 @@ class BuildMovie:
         self.curr_process = 0
         self.focus_process = focus_process
         self.center = center
+        self.__center_on_target_iron = center_on_target_iron
         self.file_format = "results.{}_{}_{}.dat"
         self.color_map = {
             0: 'red',
@@ -118,7 +120,8 @@ class BuildMovie:
                 self.curr_process = proc
                 print(self.__get_filename())
             if self.center:
-                com = center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass)
+                com = center_of_mass(x_coords=x, y_coords=y, z_coords=z, masses=mass, particle_ids=particle_id,
+                                     target_iron=self.__center_on_target_iron)
                 x = x - com[0]
                 y = y - com[1]
                 z = z - com[2]
