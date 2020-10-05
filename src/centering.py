@@ -1,8 +1,11 @@
 import numpy as np
 
 
-def center_of_mass(x_coords, y_coords, z_coords, masses):
-    masses = np.array(masses, dtype=np.float32)
+def center_of_mass(x_coords, y_coords, z_coords, masses, particle_ids, target_iron=False):
+    if target_iron:
+        pass
+    else:
+        masses = np.array(masses, dtype=np.float32)
     total_mass = float(np.sum(masses))
     x_center = sum([a * b for a, b in zip(x_coords, masses)]) / total_mass
     y_center = sum([a * b for a, b in zip(y_coords, masses)]) / total_mass

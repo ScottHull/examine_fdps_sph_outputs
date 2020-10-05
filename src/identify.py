@@ -11,13 +11,15 @@ import numpy as np
 class ParticleMap:
 
     def __init__(self, output_path, center=True, centering_resolution=1e5, centering_delta=1e7,
-                 number_expected_bodies=1):
+                 number_expected_bodies=1, center_on_target_iron=False):
         self.centering_resolution = centering_resolution
         self.centering_delta = centering_delta
         self.num_bodies = number_expected_bodies
+        self.__center_on_target_iron = center_on_target_iron
         self.output = pd.read_csv(output_path, skiprows=2, header=None, delimiter="\t")
         self.com = center_of_mass(x_coords=self.output[3], y_coords=self.output[4],
-                                  z_coords=self.output[5], masses=self.output[2])
+                                  z_coords=self.output[5], masses=self.output[2], particle_ids=self.output[1],
+                                  target_iron=self.__center_on_target_iron)
         if center:
             self.earth_center = find_center(x=self.output[3], y=self.output[4],
                                             z=self.output[5], mass=self.output[2], resolution=self.centering_resolution,
