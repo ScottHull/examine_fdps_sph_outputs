@@ -3,7 +3,9 @@ import numpy as np
 
 def center_of_mass(x_coords, y_coords, z_coords, masses, particle_ids, target_iron=False):
     if target_iron:
-        pass
+        target_iron_id = 1
+        masses = np.array([i for index, i in enumerate(masses) if particle_ids[index] == target_iron_id],
+                          dtype=np.float32)
     else:
         masses = np.array(masses, dtype=np.float32)
     total_mass = float(np.sum(masses))
