@@ -112,7 +112,6 @@ class ParticleMap:
                         p.assigned_body = None
                         NEW_MASS_ESCAPED += p.mass
                         NEW_Z_ANGULAR_MOMENTUM_ESCAPED += p.angular_momentum_vector[2]
-            print(NEW_MASS_PROTOPLANET, self.a, NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET)
             moment_of_inertia_protoplanet = (2.0 / 5.0) * NEW_MASS_PROTOPLANET * (self.a ** 2)
             angular_velocity_protoplanet = NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET / moment_of_inertia_protoplanet
             keplerian_velocity_protoplanet = sqrt((G * NEW_MASS_PROTOPLANET) / self.a ** 3)
