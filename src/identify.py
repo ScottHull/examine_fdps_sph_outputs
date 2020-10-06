@@ -11,7 +11,7 @@ import numpy as np
 class ParticleMap:
 
     def __init__(self, output_path, center=True, centering_resolution=1e5, centering_delta=1e7,
-                 number_expected_bodies=1, center_on_target_iron=False):
+                 number_expected_bodies=1, center_on_target_iron=False, plot=False):
         self.centering_resolution = centering_resolution
         self.centering_delta = centering_delta
         self.num_bodies = number_expected_bodies
@@ -33,6 +33,7 @@ class ParticleMap:
         self.b = (12756.2 / 2.0) * 1000.0  # present-day polar radius of the Earth in m
         self.oblateness = self.calc_oblateness(a=self.a, b=self.b)
         self.mass_protoearth = self.calc_mass_protoearth(a=self.a, b=self.b)
+        self.plot = plot
 
     def calc_oblateness(self, a, b):
         return (a - b) / b
@@ -178,7 +179,9 @@ class ParticleMap:
                 resolution=self.centering_resolution,
                 delta_x = self.centering_delta,
                 delta_y=self.centering_delta,
-                delta_z=self.centering_delta
+                delta_z=self.centering_delta,
+                particle_ids=[p.particle_id for p in target_removed_particles],
+                target_iron_centering=self.__center_on_target_iron
             )
             for p in target_removed_particles:
                 p.position_vector[0] -= self.earth_center[0]
@@ -186,5 +189,16 @@ class ParticleMap:
                 p.position_vector[2] -= self.earth_center[2]
             impactor = self.__solve(particles=target_removed_particles, planet_label=impactor_label)
             print("Finished solving impactor!")
+
+        if self.plot:
+            plots.scatter_particles(
+                x=[p.position_vector[0] for p in particles],
+                y=[p.position_vector[1] for p in particles],
+                tags=[p.particle_id for p in particles],
+                x_label="x",
+                y_label="y",
+                a=self.a,
+                b=self.b
+            )
 
         return particles

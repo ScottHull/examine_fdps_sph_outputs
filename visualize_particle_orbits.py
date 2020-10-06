@@ -1,4 +1,4 @@
-from orbitalelements import Particle
+from src.orbitalelements import Particle
 from math import pi, sqrt
 import pandas as pd
 import numpy as np
