@@ -340,3 +340,5 @@ def plot_velocity(particles, a, b):
     ax.legend()
 
     return ax
+
+def plot_energies(particles):
