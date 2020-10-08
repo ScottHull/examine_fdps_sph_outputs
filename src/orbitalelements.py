@@ -29,6 +29,8 @@ class Particle:
         self.argument_of_periapsis = self.__argument_of_periapsis()
         # self.true_anomaly = self.__true_anomaly()
         self.periapsis = self.__periapsis()
+        self.alpha = 0
+        self.mass_reduced = 0
 
 
     def __angular_momentum(self):
@@ -46,10 +48,9 @@ class Particle:
 
     def __eccentricity(self):
         L = np.linalg.norm(self.angular_momentum_vector)
-        E = self.orbital_energy
-        alpha = self.__G * self.mass * self.mass_grav_body
-        m_reduced = (self.mass * self.mass_grav_body) / (self.mass + self.mass_grav_body)
-        return sqrt(1.0 + ((2.0 * E * (L**2)) / (m_reduced * (alpha**2))))
+        self.alpha = - self.__G * self.mass * self.mass_grav_body
+        self.mass_reduced = (self.mass * self.mass_grav_body) / (self.mass + self.mass_grav_body)
+        return sqrt(1.0 + ((2.0 * self.orbital_energy * (L**2)) / (self.mass_reduced * (self.alpha**2))))
 
     def __eccentricity_vector(self):
         mu = self.__G * self.mass_grav_body

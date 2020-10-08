@@ -90,14 +90,16 @@ class ParticleMap:
             NEW_MASS_ESCAPED = 0.0
             NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
             for p in particles:
-                if p.distance <= self.a:  # the particle's radial position is inside of the protoplanetary equatorial radius and is part of the planet
+                if abs(p.position_vector[0]) <= self.a and abs(p.position_vector[2]) <= self.a and abs(
+                        p.position_vector[
+                            1]) <= self.b:  # the particle's radial position is inside of the protoplanetary polar and equatorial radii and is part of the planet
                     NUM_PARTICLES_WITHIN_RADIAL_DISTANCE += 1
                     NEW_MASS_PROTOPLANET += p.mass
                     NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
                     p.label = "PLANET"
                     p.assigned_body = planet_label
                 else:  # the particle's radial position is not within the planet
-                    if p.eccentricity < 1.0:  # elliptic orbit, will remain in the disk
+                    if p.eccentricity <= 1.0:  # elliptic orbit, will remain in the disk
                         if abs(
                                 p.periapsis) <= self.a:  # the particle's periapsis is < the equatorial radius and will eventually fall on the planet and become part of the planet
                             NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE += 1
@@ -151,6 +153,17 @@ class ParticleMap:
                     p.recalculate_elements(mass_grav_body=self.mass_protoearth)
                 except:
                     particles.remove(p)
+            plots.plot_eccentricity_elements(
+                particles=particles,
+                a=self.a,
+                b=self.b
+            )
+            plots.plot_velocity(
+                particles=particles,
+                a=self.a,
+                b=self.b
+            )
+            plt.show()
 
     def solve(self):
         print("Beginning solution iteration...")
@@ -177,7 +190,7 @@ class ParticleMap:
                 z=[p.position_vector[2] for p in target_removed_particles],
                 mass=[p.mass for p in target_removed_particles],
                 resolution=self.centering_resolution,
-                delta_x = self.centering_delta,
+                delta_x=self.centering_delta,
                 delta_y=self.centering_delta,
                 delta_z=self.centering_delta,
                 particle_ids=[p.particle_id for p in target_removed_particles],
@@ -197,6 +210,16 @@ class ParticleMap:
                 tags=[p.particle_id for p in particles],
                 x_label="x",
                 y_label="y",
+                a=self.a,
+                b=self.b
+            )
+            plots.colorcode_orbits(
+                particles=particles,
+                a=self.a,
+                b=self.b
+            )
+            plots.plot_eccentricities(
+                particles=particles,
                 a=self.a,
                 b=self.b
             )

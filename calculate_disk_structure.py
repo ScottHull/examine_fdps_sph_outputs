@@ -4,9 +4,9 @@ from matplotlib.patches import Ellipse
 from src.identify import ParticleMap
 from src.structure import Structure
 
-sph_file = "/Users/scotthull/Desktop/merged_100.dat"
+sph_file = "merged_800.dat"
 sph_df = pd.read_csv(sph_file, header=None, skiprows=2, delimiter="\t")
-pm = ParticleMap(output_path=sph_file, center_on_target_iron=True)
+pm = ParticleMap(output_path=sph_file, center_on_target_iron=True, plot=True)
 particle_map = pm.solve()
 disk_particles = [p for p in particle_map if p.label == "DISK"]
 
