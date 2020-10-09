@@ -149,18 +149,12 @@ def plot_eccentricities(particles, a, b):
 
 def plot_eccentricity_elements(particles, a, b):
     fig = plt.figure()
-    ax_angular_momentum = fig.add_subplot(411)
-    ax_orbital_energy = fig.add_subplot(412)
-    ax_alpha = fig.add_subplot(413)
-    ax_mass_reduced = fig.add_subplot(414)
+    ax_angular_momentum = fig.add_subplot(211)
+    ax_orbital_energy = fig.add_subplot(212)
     ax_angular_momentum.set_ylabel("L")
     ax_orbital_energy.set_ylabel("E")
-    ax_alpha.set_ylabel("alpha")
-    ax_mass_reduced.set_ylabel("mass_red")
     ax_angular_momentum.grid()
     ax_orbital_energy.grid()
-    ax_alpha.grid()
-    ax_mass_reduced.grid()
 
     ax_angular_momentum.scatter(
         [p.distance for p in particles if p.eccentricity > 1.0],
@@ -228,74 +222,8 @@ def plot_eccentricity_elements(particles, a, b):
         label="DISK"
     )
 
-    ax_alpha.scatter(
-        [p.distance for p in particles if p.eccentricity > 1.0],
-        [p.alpha for p in particles if p.eccentricity > 1.0],
-        c='red',
-        marker="+",
-        label="ESCAPE"
-    )
-    ax_alpha.scatter(
-        [p.distance for p in particles if
-         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
-        [p.alpha for p in particles if
-         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
-        c='blue',
-        marker="+",
-        label="DISTANCE WITHIN PLANET"
-    )
-    ax_alpha.scatter(
-        [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
-        [p.alpha for p in particles if
-         p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
-        c='green',
-        marker="+",
-        label="PERIAPSIS INSIDE PLANET"
-    )
-    ax_alpha.scatter(
-        [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
-        [p.alpha for p in particles if
-         p.eccentricity <= 1.0 and abs(p.periapsis) > a],
-        c='pink',
-        marker="+",
-        label="DISK"
-    )
-
-    ax_mass_reduced.scatter(
-        [p.distance for p in particles if p.eccentricity > 1.0],
-        [p.mass_reduced for p in particles if p.eccentricity > 1.0],
-        c='red',
-        marker="+",
-        label="ESCAPE"
-    )
-    ax_mass_reduced.scatter(
-        [p.distance for p in particles if
-         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
-        [p.mass_reduced for p in particles if
-         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
-        c='blue',
-        marker="+",
-        label="DISTANCE WITHIN PLANET"
-    )
-    ax_mass_reduced.scatter(
-        [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
-        [p.mass_reduced for p in particles if
-         p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
-        c='green',
-        marker="+",
-        label="PERIAPSIS INSIDE PLANET"
-    )
-    ax_mass_reduced.scatter(
-        [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
-        [p.mass_reduced for p in particles if
-         p.eccentricity <= 1.0 and abs(p.periapsis) > a],
-        c='pink',
-        marker="+",
-        label="DISK"
-    )
-
     ax_angular_momentum.legend()
-    ax_mass_reduced.set_xlabel("Distance")
+    ax_orbital_energy.set_xlabel("Distance")
     return fig
 
 
