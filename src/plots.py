@@ -334,11 +334,82 @@ def plot_velocity(particles, a, b):
     )
 
     ax.set_xlabel("Radial Distance From Earth Center")
-    ax.set_ylabel("Orbital VELOCITY")
+    ax.set_ylabel("Orbital Velocity")
     ax.set_title("PARTICLE ORBITAL VELOCITIES")
     ax.grid()
     ax.legend()
 
     return ax
 
-def plot_energies(particles):
+def plot_energies(particles, a, b):
+    ax = plt.figure().add_subplot(111)
+    ax.scatter(
+        [p.distance for p in particles if p.eccentricity > 1.0],
+        [p.potential_energy for p in particles if p.eccentricity > 1.0],
+        c='red',
+        marker="+",
+        label="ESCAPE (PE)"
+    )
+    ax.scatter(
+        [p.distance for p in particles if p.eccentricity > 1.0],
+        [p.kinetic_energy for p in particles if p.eccentricity > 1.0],
+        c='red',
+        marker="o",
+        label="ESCAPE (KE)"
+    )
+    ax.scatter(
+        [p.distance for p in particles if
+         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
+        [p.potential_energy for p in particles if
+         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
+        c='blue',
+        marker="+",
+        label="DISTANCE WITHIN PLANET (PE)"
+    )
+    ax.scatter(
+        [p.distance for p in particles if
+         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
+        [p.kinetic_energy for p in particles if
+         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
+        c='blue',
+        marker="o",
+        label="DISTANCE WITHIN PLANET (KE)"
+    )
+    ax.scatter(
+        [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+        [p.potential_energy for p in particles if
+         p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+        c='green',
+        marker="+",
+        label="PERIAPSIS INSIDE PLANET (PE)"
+    )
+    ax.scatter(
+        [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+        [p.kinetic_energy for p in particles if
+         p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+        c='green',
+        marker="o",
+        label="PERIAPSIS INSIDE PLANET (KE)"
+    )
+    ax.scatter(
+        [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+        [p.potential_energy for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+        c='pink',
+        marker="+",
+        label="DISK (PE)"
+    )
+    ax.scatter(
+        [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+        [p.kinetic_energy for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+        c='pink',
+        marker="o",
+        label="DISK (KE)"
+    )
+
+    ax.set_xlabel("Radial Distance From Earth Center")
+    ax.set_ylabel("Orbital Energies")
+    ax.set_title("PARTICLE ORBITAL ENERGIES")
+    ax.grid()
+    ax.legend()
+
+    return ax

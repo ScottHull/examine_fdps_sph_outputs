@@ -31,6 +31,8 @@ class Particle:
         self.periapsis = self.__periapsis()
         self.alpha = 0
         self.mass_reduced = 0
+        self.kinetic_energy = 0
+        self.potential_energy = 0
 
 
     def __angular_momentum(self):
@@ -41,10 +43,10 @@ class Particle:
 
     def __total_orbital_energy(self):
         # kinetic energy, KE = 1/2 m v^2
-        term1 = (1.0 / 2.0) * self.mass * (np.linalg.norm(self.velocity_vector)**2)
+        self.kinetic_energy = (1.0 / 2.0) * self.mass * (np.linalg.norm(self.velocity_vector)**2)
         # vectorized gravitational potential energy, PE = (G M_1 M_2) / r
-        term2 = (self.__G * self.mass_grav_body * self.mass) / np.linalg.norm(self.position_vector)
-        return term1 - term2
+        self.potential_energy = - (self.__G * self.mass_grav_body * self.mass) / np.linalg.norm(self.position_vector)
+        return self.kinetic_energy + self.potential_energy
 
     def __eccentricity(self):
         L = np.linalg.norm(self.angular_momentum_vector)
