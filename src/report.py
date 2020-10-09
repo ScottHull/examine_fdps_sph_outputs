@@ -6,8 +6,8 @@ def make_report(particles, time, to_directory="/particle_outputs"):
     if not os.path.exists(os.getcwd() + to_directory):
         os.mkdir(os.getcwd() + to_directory)
     pd.DataFrame({
-        "particle_id": [p.particle_id for p in particles],
-        "tag": [p.tag for p in particles],
+        "particle_id": [p.particle_name for p in particles],
+        "tag": [p.particle_id for p in particles],
         "x": [p.position_vector[0] for p in particles],
         "y": [p.position_vector[1] for p in particles],
         "z": [p.position_vector[2] for p in particles],

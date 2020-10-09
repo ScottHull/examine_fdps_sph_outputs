@@ -57,6 +57,7 @@ class ParticleMap:
             velocity_vector = [self.output[6][row], self.output[7][row], self.output[8][row]]
             try:
                 p = Particle(
+                    particle_name=self.output[0][row],
                     particle_id=particle_id,
                     position_vector=position_vector,
                     velocity_vector=velocity_vector,
