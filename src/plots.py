@@ -13,7 +13,7 @@ def plot_heatmap(x, y, z, a, b, center):
     ax.add_artist(e)
     cbar = plt.colorbar(sc, ax=ax)
 
-    return ax
+    return fig
 
 
 def plot_particle_density_heatmap(x, y):
@@ -30,11 +30,12 @@ def plot_particle_density_heatmap(x, y):
     ax.set_xlim(x.min(), x.max())
     ax.set_ylim(y.min(), y.max())
 
-    return ax
+    return fig
 
 
 def scatter_particles(x, y, tags, x_label, y_label, a=None, b=None):
-    ax = plt.figure().add_subplot(111)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
 
     target_silicate_x = [x[index] for index, i in enumerate(tags) if i == 0]
     target_silicate_y = [y[index] for index, i in enumerate(tags) if i == 0]
@@ -59,11 +60,12 @@ def scatter_particles(x, y, tags, x_label, y_label, a=None, b=None):
     ax.grid()
     ax.legend()
 
-    return ax
+    return fig
 
 
 def colorcode_orbits(particles, a, b):
-    ax = plt.figure().add_subplot(111)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
     ax.scatter(
         [p.position_vector[0] for p in particles if p.eccentricity > 1.0],
         [p.position_vector[1] for p in particles if p.eccentricity > 1.0],
@@ -103,11 +105,12 @@ def colorcode_orbits(particles, a, b):
     ax.grid()
     ax.legend()
 
-    return ax
+    return fig
 
 
 def plot_eccentricities(particles, a, b):
-    ax = plt.figure().add_subplot(111)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
     ax.scatter(
         [p.distance for p in particles if p.eccentricity > 1.0],
         [p.eccentricity for p in particles if p.eccentricity > 1.0],
@@ -145,7 +148,7 @@ def plot_eccentricities(particles, a, b):
     ax.grid()
     ax.legend()
 
-    return ax
+    return fig
 
 
 def plot_eccentricity_elements(particles, a, b):
@@ -229,7 +232,9 @@ def plot_eccentricity_elements(particles, a, b):
 
 
 def plot_velocity(particles, a, b):
-    ax = plt.figure().add_subplot(111)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
     ax.scatter(
         [p.distance for p in particles if p.eccentricity > 1.0],
         [np.linalg.norm(p.velocity_vector) for p in particles if p.eccentricity > 1.0],
@@ -268,10 +273,12 @@ def plot_velocity(particles, a, b):
     ax.grid()
     ax.legend()
 
-    return ax
+    return fig
 
 def plot_energies(particles, a, b):
-    ax = plt.figure().add_subplot(111)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    
     ax.scatter(
         [p.distance for p in particles if p.eccentricity > 1.0],
         [p.potential_energy for p in particles if p.eccentricity > 1.0],
@@ -341,7 +348,7 @@ def plot_energies(particles, a, b):
     ax.grid()
     ax.legend()
 
-    return ax
+    return fig
 
 def animate(start_time, end_time, interval, path, filename="animation.mp4", fps=30):
     frames = [path + "/{}.png".format(time) for time in np.arange(start_time, end_time + interval, interval)]
