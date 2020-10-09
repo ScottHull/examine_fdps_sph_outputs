@@ -21,7 +21,7 @@ disk_structure_eccentricity_path = os.getcwd() + "/eccentricity_structure"
 for time in np.arange(start_time, end_time + interval, interval):
     paths = [eccentricity_plot_path, disk_structure_path, disk_structure_eccentricity_path]
     for i in paths:
-        if not os.path.exists(os.getcwd() + "/eccentricity"):
+        if not os.path.exists(i):
             shutil.rmtree(i)
         os.mkdir(i)
     print("Generating report for time: {}".format(time))
