@@ -158,7 +158,7 @@ class ParticleMap:
                 a=self.a,
                 b=self.b
             )
-            plots.plot_velocity(
+            plots.plot_energies(
                 particles=particles,
                 a=self.a,
                 b=self.b
