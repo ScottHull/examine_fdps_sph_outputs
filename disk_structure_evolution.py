@@ -18,5 +18,5 @@ for time in np.arange(start_time, end_time + interval, interval):
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=True)
     particle_map = pm.solve()
-    make_report(particles=particle_map, time=time, to_directory="/particle_outputs")
+    make_report(particles=particle_map, time=time)
     os.remove(f)
