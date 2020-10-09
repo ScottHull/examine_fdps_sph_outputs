@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 from scipy.stats.kde import gaussian_kde
 import numpy as np
+import moviepy.editor as mpy
 
 
 def plot_heatmap(x, y, z, a, b, center):
@@ -341,3 +342,11 @@ def plot_energies(particles, a, b):
     ax.legend()
 
     return ax
+
+def animate(start_time, end_time, interval, path, filename="animation.mp4", fps=30):
+    frames = [path + "/{}.png".format(time) for time in np.arange(start_time, end_time + interval, interval)]
+    animation = mpy.ImageSequenceClip(frames, fps=fps, load_images=True)
+    animation.write_videofile(filename, fps=fps)
+
+
+
