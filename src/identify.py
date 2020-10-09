@@ -153,17 +153,17 @@ class ParticleMap:
                     p.recalculate_elements(mass_grav_body=self.mass_protoearth)
                 except:
                     particles.remove(p)
-            plots.plot_eccentricity_elements(
-                particles=particles,
-                a=self.a,
-                b=self.b
-            )
-            plots.plot_energies(
-                particles=particles,
-                a=self.a,
-                b=self.b
-            )
-            plt.show()
+            # plots.plot_eccentricity_elements(
+            #     particles=particles,
+            #     a=self.a,
+            #     b=self.b
+            # )
+            # plots.plot_energies(
+            #     particles=particles,
+            #     a=self.a,
+            #     b=self.b
+            # )
+            # plt.show()
 
     def solve(self):
         print("Beginning solution iteration...")
