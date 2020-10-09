@@ -31,7 +31,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     # make_report(particles=particle_map, time=time)
     os.remove(f)
     ax = plots.plot_eccentricities(particles=particle_map, a=pm.a, b=pm.b)
-    plt.savefig(eccentricity_plot_path + "/{}.png".format(time), format='png')
+    ax.savefig(eccentricity_plot_path + "/{}.png".format(time), format='png')
     plt.close()
     ax = plots.scatter_particles(
                 x=[p.position_vector[0] for p in particle_map],
@@ -42,14 +42,14 @@ for time in np.arange(start_time, end_time + interval, interval):
                 a=pm.a,
                 b=pm.b
             )
-    plt.savefig(disk_structure_path + "/{}.png".format(time), format='png')
+    ax.savefig(disk_structure_path + "/{}.png".format(time), format='png')
     plt.close()
     ax = plots.colorcode_orbits(
                 particles=particle_map,
                 a=pm.a,
                 b=pm.b
             )
-    plt.savefig(disk_structure_eccentricity_path + "/{}.png".format(time), format='png')
+    ax.savefig(disk_structure_eccentricity_path + "/{}.png".format(time), format='png')
     plt.close()
 
 plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=eccentricity_plot_path,
