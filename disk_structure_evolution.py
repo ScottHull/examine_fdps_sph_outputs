@@ -18,12 +18,13 @@ eccentricity_plot_path = os.getcwd() + "/eccentricity"
 disk_structure_path = os.getcwd() + "/structure"
 disk_structure_eccentricity_path = os.getcwd() + "/eccentricity_structure"
 
+paths = [eccentricity_plot_path, disk_structure_path, disk_structure_eccentricity_path]
+for i in paths:
+    if os.path.exists(i):
+        shutil.rmtree(i)
+    os.mkdir(i)
+
 for time in np.arange(start_time, end_time + interval, interval):
-    paths = [eccentricity_plot_path, disk_structure_path, disk_structure_eccentricity_path]
-    for i in paths:
-        if os.path.exists(i):
-            shutil.rmtree(i)
-        os.mkdir(i)
     combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False)
