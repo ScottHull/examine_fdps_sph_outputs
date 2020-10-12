@@ -6,15 +6,17 @@ from math import pi, sqrt
 import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 import numpy as np
+import statistics
 
 
 class ParticleMap:
 
     def __init__(self, output_path, center=True, centering_resolution=1e5, centering_delta=1e7,
-                 number_expected_bodies=1, center_on_target_iron=False, plot=False):
+                 number_expected_bodies=1, center_on_target_iron=False, plot=False, relative_velocity=False):
         self.centering_resolution = centering_resolution
         self.centering_delta = centering_delta
         self.num_bodies = number_expected_bodies
+        self.__relative_velocity = relative_velocity
         self.__center_on_target_iron = center_on_target_iron
         self.output = pd.read_csv(output_path, skiprows=2, header=None, delimiter="\t")
         self.com = center_of_mass(x_coords=self.output[3], y_coords=self.output[4],
@@ -149,8 +151,19 @@ class ParticleMap:
                                                     NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE,
                                                     NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING)
             )
+            if self.__relative_velocity:
+                self.target_velocity = [
+                    statistics.mean([p.velocity_vector[0] for p in particles if p.label == "TARGET"]),
+                    statistics.mean([p.velocity_vector[1] for p in particles if p.label == "TARGET"]),
+                    statistics.mean([p.velocity_vector[2] for p in particles if p.label == "TARGET"])
+                ]
             for p in particles:
                 try:
+                    p.relative_velocity_vector = [
+                        p.velocity_vector[0] - self.target_velocity[0],
+                        p.velocity_vector[1] - self.target_velocity[1],
+                        p.velocity_vector[2] - self.target_velocity[2]
+                    ]
                     p.recalculate_elements(mass_grav_body=self.mass_protoearth)
                 except:
                     particles.remove(p)

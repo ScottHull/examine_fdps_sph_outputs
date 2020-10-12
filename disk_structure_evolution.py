@@ -8,7 +8,7 @@ import src.plots as plots
 import matplotlib.pyplot as plt
 import shutil
 
-start_time = 0
+start_time = 50
 end_time = 1000
 interval = 50
 number_processes = 100

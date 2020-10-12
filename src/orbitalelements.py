@@ -12,6 +12,7 @@ class Particle:
         self.particle_id = particle_id
         self.position_vector = position_vector
         self.velocity_vector = velocity_vector
+        self.relative_velocity_vector = self.velocity_vector
         self.distance = np.linalg.norm(position_vector)
         self.mass = float(mass)
         self.density = float(density)
@@ -37,14 +38,14 @@ class Particle:
 
 
     def __angular_momentum(self):
-        return self.mass * np.cross(self.position_vector, self.velocity_vector)
+        return self.mass * np.cross(self.position_vector, self.relative_velocity_vector)
 
     def __node_vector(self):
         return np.cross([0, 0, self.position_vector[0]], self.angular_momentum_vector)
 
     def __total_orbital_energy(self):
         # kinetic energy, KE = 1/2 m v^2
-        self.kinetic_energy = (1.0 / 2.0) * self.mass * (np.linalg.norm(self.velocity_vector)**2)
+        self.kinetic_energy = (1.0 / 2.0) * self.mass * (np.linalg.norm(self.relative_velocity_vector)**2)
         # vectorized gravitational potential energy, PE = (G M_1 M_2) / r
         self.potential_energy = - (self.__G * self.mass_grav_body * self.mass) / np.linalg.norm(self.position_vector)
         return self.kinetic_energy + self.potential_energy
@@ -57,9 +58,9 @@ class Particle:
 
     def __eccentricity_vector(self):
         mu = self.__G * self.mass_grav_body
-        term1 = ((((np.linalg.norm(self.velocity_vector))**2) / mu) - (1.0 / self.distance)) * \
+        term1 = ((((np.linalg.norm(self.relative_velocity_vector))**2) / mu) - (1.0 / self.distance)) * \
                 np.array(self.position_vector)
-        term2 = ((np.dot(self.position_vector, self.velocity_vector) / mu)) * np.array(self.velocity_vector)
+        term2 = ((np.dot(self.position_vector, self.relative_velocity_vector) / mu)) * np.array(self.relative_velocity_vector)
         return term1 - term2
 
     def __semi_major_axis(self):
