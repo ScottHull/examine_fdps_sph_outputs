@@ -153,9 +153,9 @@ class ParticleMap:
             )
             if self.__relative_velocity:
                 self.target_velocity = [
-                    statistics.mean([p.velocity_vector[0] for p in particles if p.label == "TARGET"]),
-                    statistics.mean([p.velocity_vector[1] for p in particles if p.label == "TARGET"]),
-                    statistics.mean([p.velocity_vector[2] for p in particles if p.label == "TARGET"])
+                    statistics.mean([p.velocity_vector[0] for p in particles if p.label == "PLANET"]),
+                    statistics.mean([p.velocity_vector[1] for p in particles if p.label == "PLANET"]),
+                    statistics.mean([p.velocity_vector[2] for p in particles if p.label == "PLANET"])
                 ]
             for p in particles:
                 try:
