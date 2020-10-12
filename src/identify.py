@@ -160,6 +160,7 @@ class ParticleMap:
             for p in particles:
                 try:
                     if self.__relative_velocity:
+                        print(p.velocity_vector[0], self.target_velocity[0], p.velocity_vector[0] - self.target_velocity[0])
                         p.relative_velocity_vector = [
                             p.velocity_vector[0] - self.target_velocity[0],
                             p.velocity_vector[1] - self.target_velocity[1],
