@@ -159,11 +159,12 @@ class ParticleMap:
                 ]
             for p in particles:
                 try:
-                    p.relative_velocity_vector = [
-                        p.velocity_vector[0] - self.target_velocity[0],
-                        p.velocity_vector[1] - self.target_velocity[1],
-                        p.velocity_vector[2] - self.target_velocity[2]
-                    ]
+                    if self.__relative_velocity:
+                        p.relative_velocity_vector = [
+                            p.velocity_vector[0] - self.target_velocity[0],
+                            p.velocity_vector[1] - self.target_velocity[1],
+                            p.velocity_vector[2] - self.target_velocity[2]
+                        ]
                     p.recalculate_elements(mass_grav_body=self.mass_protoearth)
                 except:
                     particles.remove(p)
