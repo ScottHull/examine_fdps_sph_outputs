@@ -33,7 +33,7 @@ def plot_particle_density_heatmap(x, y):
     return fig
 
 
-def scatter_particles(x, y, tags, x_label, y_label, a=None, b=None):
+def scatter_particles(x, y, tags, x_label, y_label, a=None, b=None, center_plot=False):
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
@@ -60,10 +60,14 @@ def scatter_particles(x, y, tags, x_label, y_label, a=None, b=None):
     ax.grid()
     ax.legend()
 
+    if center_plot:
+        ax.set_xlim(-0.5e8, 0.5e8)
+        ax.set_ylim(-0.5e8, 0.5e8)
+
     return fig
 
 
-def colorcode_orbits(particles, a, b):
+def colorcode_orbits(particles, a, b, center_plot=False):
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.scatter(
@@ -104,6 +108,10 @@ def colorcode_orbits(particles, a, b):
     ax.set_title("PARTICLE ORBITS")
     ax.grid()
     ax.legend()
+
+    if center_plot:
+        ax.set_xlim(-0.5e8, 0.5e8)
+        ax.set_ylim(-0.5e8, 0.5e8)
 
     return fig
 

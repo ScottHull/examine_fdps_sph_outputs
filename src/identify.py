@@ -12,12 +12,14 @@ import statistics
 class ParticleMap:
 
     def __init__(self, output_path, center=True, centering_resolution=1e5, centering_delta=1e7,
-                 number_expected_bodies=1, center_on_target_iron=False, plot=False, relative_velocity=False):
+                 number_expected_bodies=1, center_on_target_iron=False, plot=False, relative_velocity=False,
+                 center_plot=False):
         self.centering_resolution = centering_resolution
         self.centering_delta = centering_delta
         self.num_bodies = number_expected_bodies
         self.__relative_velocity = relative_velocity
         self.__center_on_target_iron = center_on_target_iron
+        self.__center_plot = center_plot
         self.output = pd.read_csv(output_path, skiprows=2, header=None, delimiter="\t")
         self.com = center_of_mass(x_coords=self.output[3], y_coords=self.output[4],
                                   z_coords=self.output[5], masses=self.output[2], particle_ids=self.output[1],
@@ -160,7 +162,6 @@ class ParticleMap:
             for p in particles:
                 try:
                     if self.__relative_velocity:
-                        print(p.velocity_vector[0], self.target_velocity[0], p.velocity_vector[0] - self.target_velocity[0])
                         p.relative_velocity_vector = [
                             p.velocity_vector[0] - self.target_velocity[0],
                             p.velocity_vector[1] - self.target_velocity[1],
@@ -227,12 +228,14 @@ class ParticleMap:
                 x_label="x",
                 y_label="y",
                 a=self.a,
-                b=self.b
+                b=self.b,
+                center_plot=self.__center_plot
             )
             plots.colorcode_orbits(
                 particles=particles,
                 a=self.a,
-                b=self.b
+                b=self.b,
+                center_plot=self.__center_plot
             )
             plots.plot_eccentricities(
                 particles=particles,
