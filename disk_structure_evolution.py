@@ -27,7 +27,7 @@ for i in paths:
 for time in np.arange(start_time, end_time + interval, interval):
     combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
     f = os.getcwd() + "/merged_{}.dat".format(time)
-    pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False)
+    pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True)
     particle_map = pm.solve()
     # make_report(particles=particle_map, time=time)
     os.remove(f)
