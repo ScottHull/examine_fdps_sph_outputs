@@ -41,14 +41,16 @@ for time in np.arange(start_time, end_time + interval, interval):
                 x_label="x",
                 y_label="y",
                 a=pm.a,
-                b=pm.b
+                b=pm.b,
+                center_plot=True
             )
     fig.savefig(disk_structure_path + "/{}.png".format(time), format='png')
     plt.close()
     fig = plots.colorcode_orbits(
                 particles=particle_map,
                 a=pm.a,
-                b=pm.b
+                b=pm.b,
+                center_plot=True
             )
     fig.savefig(disk_structure_eccentricity_path + "/{}.png".format(time), format='png')
     plt.close()
