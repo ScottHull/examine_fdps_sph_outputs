@@ -1,11 +1,20 @@
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 from src.identify import ParticleMap
 from src.structure import Structure
+from src.combine import CombineFile
 
-sph_file = "/Users/scotthull/Desktop/merged_800.dat"
+path_to_outputs = "/scratch/shull4/GI2/"
+number_processes = 100
+time = 4000
+
+
+combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
+sph_file = os.getcwd() + "/merged_{}.dat".format(time)
 sph_df = pd.read_csv(sph_file, header=None, skiprows=2, delimiter="\t")
+os.remove(sph_file)
 pm = ParticleMap(output_path=sph_file, center_on_target_iron=True, plot=True, relative_velocity=False, center_plot=True)
 particle_map = pm.solve()
 disk_particles = [p for p in particle_map if p.label == "DISK"]
