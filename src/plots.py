@@ -369,6 +369,7 @@ def animate(start_time, end_time, interval, path, filename="animation.mp4", fps=
 def plot_vfm(phase_curve_1_x, phase_curve_1_y, particles_color, phase_curve_2_x, phase_curve_2_y, particles_x,
              particles_y, xlabel, ylabel, cbar_label, phase_curve_1_label="sol-liq", phase_curve_2_label="liq-vap"):
     fig = plt.figure()
+    plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
     cm = plt.cm.get_cmap('RdYlBu')
 
@@ -376,11 +377,12 @@ def plot_vfm(phase_curve_1_x, phase_curve_1_y, particles_color, phase_curve_2_x,
     cbar = plt.colorbar(sc)
     ax.plot(phase_curve_1_x, phase_curve_1_y, linewidth=2.0, label=phase_curve_1_label)
     ax.plot(phase_curve_2_x, phase_curve_2_y, linewidth=2.0, label=phase_curve_2_label)
-    cbar.ax.set_ylabel(cbar_label, rotation=270)
+    cbar.set_label(cbar_label)
     ax.set_title("VAPOR MASS FRACTION")
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.grid()
     ax.legend()
+    fig.tight_layout()
 
     return fig
