@@ -283,10 +283,11 @@ def plot_velocity(particles, a, b):
 
     return fig
 
+
 def plot_energies(particles, a, b):
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    
+
     ax.scatter(
         [p.distance for p in particles if p.eccentricity > 1.0],
         [p.potential_energy for p in particles if p.eccentricity > 1.0],
@@ -358,20 +359,24 @@ def plot_energies(particles, a, b):
 
     return fig
 
+
 def animate(start_time, end_time, interval, path, filename="animation.mp4", fps=30):
     frames = [path + "/{}.png".format(time) for time in np.arange(start_time, end_time + interval, interval)]
     animation = mpy.ImageSequenceClip(frames, fps=fps, load_images=True)
     animation.write_videofile(filename, fps=fps)
 
 
-def plot_vfm(phase_curve_1_x, phase_curve_1_y, phase_curve_2_x, phase_curve_2_y, particles_x, particles_y,
-             xlabel, ylabel, phase_curve_1_label="sol-liq", phase_curve_2_label="liq-vap"):
+def plot_vfm(phase_curve_1_x, phase_curve_1_y, particles_color, phase_curve_2_x, phase_curve_2_y, particles_x,
+             particles_y, xlabel, ylabel, cbar_label, phase_curve_1_label="sol-liq", phase_curve_2_label="liq-vap"):
     fig = plt.figure()
     ax = fig.add_subplot(111)
+    cm = plt.cm.get_cmap('RdYlBu')
 
+    sc = ax.scatter(particles_x, particles_y, c=particles_color, marker="+", cmap=cm)
+    cbar = plt.colorbar(sc)
     ax.plot(phase_curve_1_x, phase_curve_1_y, linewidth=2.0, label=phase_curve_1_label)
     ax.plot(phase_curve_2_x, phase_curve_2_y, linewidth=2.0, label=phase_curve_2_label)
-    ax.scatter(particles_x, particles_y, color='black', marker="+")
+    cbar.ax.set_ylabel(cbar_label, rotation=270)
     ax.set_title("VAPOR MASS FRACTION")
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)

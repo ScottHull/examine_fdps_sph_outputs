@@ -29,8 +29,10 @@ fig = plots.plot_vfm(
     phase_curve_2_y=s.phase_df['temperature'],
     particles_x=[p.entropy for p in particle_map],
     particles_y=[p.temperature for p in particle_map],
+    particles_color=[p.distance for p in particle_map],
     xlabel="Entropy (S)",
     ylabel="Temperature (T [deg K])",
+    cbar_label="Radial Distance From Target Center",
     phase_curve_1_label="sol-liq",
     phase_curve_2_label="liq-gas"
 )
