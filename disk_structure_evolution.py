@@ -39,23 +39,23 @@ for time in np.arange(start_time, end_time + interval, interval):
     fig.savefig(eccentricity_plot_path + "/{}.png".format(time), format='png')
     plt.close()
     fig = plots.scatter_particles(
-                x=[p.position_vector[0] for p in particle_map],
-                y=[p.position_vector[1] for p in particle_map],
-                tags=[p.particle_id for p in particle_map],
-                x_label="x",
-                y_label="y",
-                a=pm.a,
-                b=pm.b,
-                center_plot=True
-            )
+        x=[p.position_vector[0] for p in particle_map],
+        y=[p.position_vector[1] for p in particle_map],
+        tags=[p.particle_id for p in particle_map],
+        x_label="x",
+        y_label="y",
+        a=pm.a,
+        b=pm.b,
+        center_plot=True
+    )
     fig.savefig(disk_structure_path + "/{}.png".format(time), format='png')
     plt.close()
     fig = plots.colorcode_orbits(
-                particles=particle_map,
-                a=pm.a,
-                b=pm.b,
-                center_plot=True
-            )
+        particles=particle_map,
+        a=pm.a,
+        b=pm.b,
+        center_plot=True
+    )
     fig.savefig(disk_structure_eccentricity_path + "/{}.png".format(time), format='png')
     plt.close()
     fig = plots.plot_vfm(
@@ -83,4 +83,3 @@ plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=
               filename="structure_eccentricities.mp4", fps=5)
 plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=vmf_path,
               filename="vmf.mp4", fps=5)
-

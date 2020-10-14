@@ -12,7 +12,6 @@ path_to_outputs = "/scratch/shull4/GI2/"
 number_processes = 100
 time = 4000
 
-
 combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
 sph_file = os.getcwd() + "/merged_{}.dat".format(time)
 sph_df = pd.read_csv(sph_file, header=None, skiprows=2, delimiter="\t")
@@ -39,7 +38,7 @@ fig = plots.plot_vfm(
 )
 fig.savefig(os.getcwd() + "/vmf_{}.png".format(time), format="png")
 plt.close()
-fig = plt.figure(figsize=(16,9))
+fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 ax.scatter(
     [p.distance / 1000.0 for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
