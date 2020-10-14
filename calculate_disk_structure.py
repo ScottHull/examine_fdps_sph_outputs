@@ -34,7 +34,7 @@ fig = plots.plot_vfm(
     phase_curve_1_label="sol-liq",
     phase_curve_2_label="liq-gas"
 )
-fig.save(os.getcwd() + "/vmf_{}.png".format(time), format="png")
+fig.savefig(os.getcwd() + "/vmf_{}.png".format(time), format="png")
 print(vmf)
 # surface_densities, sorted_distances = s.calc_disk_surface_density()
 #
