@@ -22,7 +22,7 @@ os.remove(sph_file)
 
 s = Structure(disk_particles=disk_particles, phase="duniteS2")
 vmf = s.calc_vapor_mass_fraction()
-ax = plots.plot_vfm(
+fig = plots.plot_vfm(
     phase_curve_1_x=s.phase_df['entropy_sol_liq'],
     phase_curve_1_y=s.phase_df['temperature'],
     phase_curve_2_x=s.phase_df['entropy_vap'],
@@ -34,6 +34,7 @@ ax = plots.plot_vfm(
     phase_curve_1_label="sol-liq",
     phase_curve_2_label="liq-gas"
 )
+fig.save(os.getcwd() + "/vmf_{}.png".format(time), format="png")
 print(vmf)
 # surface_densities, sorted_distances = s.calc_disk_surface_density()
 #
@@ -44,4 +45,3 @@ print(vmf)
 # ax.set_title("Disk + Escaping Particles Surface Density")
 # ax.grid()
 #
-plt.show()
