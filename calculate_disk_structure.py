@@ -50,9 +50,7 @@ ax.set_ylabel("Entropy")
 ax.grid()
 fig.savefig(os.getcwd() + "/{}_distance_vs_distance.png".format(time), format="png")
 fig.clear()
-print("Vapor Mass Fraction: {}\nDisk Angular Momentum: {}\nDisk Mass:{}".format(
-    s.calc_vapor_mass_fraction(target_label="DISK"), s.calc_total_angular_momentum(target_label="DISK"),
-    s.calc_total_mass(target_label="DISK")))
+
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.scatter(
@@ -67,6 +65,10 @@ ax.set_ylabel("Angular Momentum")
 ax.grid()
 fig.savefig(os.getcwd() + "/{}_angular_momentum.png".format(time), format="png")
 fig.clear()
+
+print("Vapor Mass Fraction: {}\nDisk Angular Momentum: {}\nDisk Mass: {}".format(
+    s.calc_vapor_mass_fraction(target_label="DISK"), s.calc_total_angular_momentum(target_label="DISK"),
+    s.calc_total_mass(target_label="DISK")))
 
 # surface_densities, sorted_distances = s.calc_disk_surface_density()
 #
