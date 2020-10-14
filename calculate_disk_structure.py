@@ -6,7 +6,6 @@ from src.identify import ParticleMap
 from src.structure import Structure
 from src.combine import CombineFile
 import src.plots as plots
-import matplotlib.pyplot as plt
 
 path_to_outputs = "/scratch/shull4/GI2/"
 number_processes = 100
@@ -21,7 +20,6 @@ disk_particles = [p for p in particle_map if p.label == "DISK"]
 os.remove(sph_file)
 
 s = Structure(disk_particles=disk_particles, phase="duniteS2")
-vmf = s.calc_vapor_mass_fraction(target_label="DISK")
 fig = plots.plot_vfm(
     phase_curve_1_x=s.phase_df['entropy_sol_liq'],
     phase_curve_1_y=s.phase_df['temperature'],
@@ -50,7 +48,10 @@ ax.set_xlabel("Radial Distance from Target Center (km)")
 ax.set_ylabel("Entropy")
 ax.grid()
 fig.savefig(os.getcwd() + "/{}_distance_vs_distance.png".format(time), format="png")
-print(vmf)
+print("Vapor Mass Fraction: {}\nDisk Angular Momentum: {}\nDisk Mass:{}".format(
+    s.calc_vapor_mass_fraction(target_label="DISK"), s.calc_total_angular_momentum(target_label="DISK"),
+    s.calc_total_mass(target_label="DISK")))
+
 # surface_densities, sorted_distances = s.calc_disk_surface_density()
 #
 # ax = plt.figure().add_subplot(111)

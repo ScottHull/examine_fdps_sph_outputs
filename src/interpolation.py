@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def __get_neighbors(val, array):
     # returns array index value of neighbors
     if val < array[0]:
@@ -11,6 +12,7 @@ def __get_neighbors(val, array):
             if i < val <= array[index + 1]:
                 return index + 1, index
 
+
 def interpolate1d(val, val_array, interp_array):
     sorted_interp_array = [x for _, x in sorted(zip(val_array, interp_array))]
     sorted_val_array = list(reversed(val_array))
@@ -21,6 +23,7 @@ def interpolate1d(val, val_array, interp_array):
 
     return (((val_neighbors[1] - val) / (val_neighbors[1] - val_neighbors[0])) * interp_neighbors[0]) + \
            (((val_neighbors[0] - val) / (val_neighbors[1] - val_neighbors[0])) * interp_neighbors[1])
+
 
 class GenericTrilinearInterpolation:
 
@@ -135,7 +138,7 @@ class GenericTrilinearInterpolation:
             return (min_distance_index, min_distance_index + 1)
 
     def get_var3_neighbor_values(self, s11, s12, s21, s22, lower_var1_restricted_indices,
-                                   upper_var1_restricted_indices):
+                                 upper_var1_restricted_indices):
         """
         Get the 4 nearest var3 values
         s11: the index position of the lower var2 neighbor at var1 d1
@@ -159,10 +162,10 @@ class GenericTrilinearInterpolation:
 
     def bilinear_interpolate(self, x1, x2, x, y1, y2, y, q11, q12, q21, q22):
         f = (q11 * (x2 - self.var1) * (y2 - self.var2) +
-                q21 * (self.var1 - x1) * (y2 - self.var2) +
-                q12 * (x2 - self.var1) * (self.var2 - y1) +
-                q22 * (self.var1 - x1) * (self.var2 - y1)
-                ) / ((x2 - x1) * (y2 - y1) + 0.0)
+             q21 * (self.var1 - x1) * (y2 - self.var2) +
+             q12 * (x2 - self.var1) * (self.var2 - y1) +
+             q22 * (self.var1 - x1) * (self.var2 - y1)
+             ) / ((x2 - x1) * (y2 - y1) + 0.0)
         return f
 
     def linear_interpolate(self, x1, x2, x, q1, q2):
@@ -177,9 +180,9 @@ class GenericTrilinearInterpolation:
         # d1 indices will give the index range for var1 which gives the 'lower' nearest neighbor
         # d2 indices will give the index range for var1 which gives the 'upper' nearest neighbor
         d1_indices = self.restrict_var1_indices_to_single_var1(var1_array=self.var1_array, given_var1=self.var1,
-                                                                bound='lower')
+                                                               bound='lower')
         d2_indices = self.restrict_var1_indices_to_single_var1(var1_array=self.var1_array, given_var1=self.var1,
-                                                                bound='upper')
+                                                               bound='upper')
 
         # now, restrict the var1 array based on d1_indices and d2_indices
         var1_1_array = self.var1_array[d1_indices[0]:d1_indices[1]]
@@ -192,20 +195,19 @@ class GenericTrilinearInterpolation:
 
         # because we need nearest var3 neighbors for interpolation, we get the var3 values at the same index location as the var2 values
         var3_neighbors = self.get_var3_neighbor_values(s11=lower_var2_neighbors[0], s12=lower_var2_neighbors[1],
-                                                      s21=upper_var2_neighbors[0], s22=upper_var2_neighbors[1],
-                                                      lower_var1_restricted_indices=d1_indices,
-                                                      upper_var1_restricted_indices=d2_indices)
+                                                       s21=upper_var2_neighbors[0], s22=upper_var2_neighbors[1],
+                                                       lower_var1_restricted_indices=d1_indices,
+                                                       upper_var1_restricted_indices=d2_indices)
 
         # package the neighbor values up for use for interpolation
-        var1_neighbor_values = (self.var1_array[d1_indices[0]:d1_indices[1]][0], self.var1_array[d2_indices[0]:d2_indices[1]][0])
+        var1_neighbor_values = (
+        self.var1_array[d1_indices[0]:d1_indices[1]][0], self.var1_array[d2_indices[0]:d2_indices[1]][0])
         restricted_var2_array_lower = self.var2_array[d1_indices[0]:d1_indices[1]]
         restricted_var2_array_upper = self.var2_array[d2_indices[0]:d2_indices[1]]
         var2_neighbor_values = (restricted_var2_array_lower[lower_var2_neighbors[0]],
-                                   restricted_var2_array_lower[lower_var2_neighbors[1]],
-                                   restricted_var2_array_upper[upper_var2_neighbors[0]],
-                                   restricted_var2_array_upper[upper_var2_neighbors[1]])
-
-
+                                restricted_var2_array_lower[lower_var2_neighbors[1]],
+                                restricted_var2_array_upper[upper_var2_neighbors[0]],
+                                restricted_var2_array_upper[upper_var2_neighbors[1]])
 
         return (var1_neighbor_values, var2_neighbor_values, var3_neighbors)
 
@@ -244,7 +246,6 @@ class GenericTrilinearInterpolation:
             u = self.u1
         else:
             u = self.linear_interpolate(x1=self.p1, x2=self.p2, x=self.var1, q1=self.u1, q2=self.u2)
-
 
         # print("***************")
         # print(self.var1)

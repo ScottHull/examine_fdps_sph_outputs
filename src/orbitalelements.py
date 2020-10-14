@@ -1,6 +1,7 @@
 from math import sqrt, acos, sin, cos, exp
 import numpy as np
 
+
 class Particle:
 
     def __init__(self, position_vector, velocity_vector, mass, density, mass_grav_body, particle_id,
@@ -36,7 +37,6 @@ class Particle:
         self.kinetic_energy = 0
         self.potential_energy = 0
 
-
     def __angular_momentum(self):
         return self.mass * np.cross(self.position_vector, self.relative_velocity_vector)
 
@@ -45,7 +45,7 @@ class Particle:
 
     def __total_orbital_energy(self):
         # kinetic energy, KE = 1/2 m v^2
-        self.kinetic_energy = (1.0 / 2.0) * self.mass * (np.linalg.norm(self.relative_velocity_vector)**2)
+        self.kinetic_energy = (1.0 / 2.0) * self.mass * (np.linalg.norm(self.relative_velocity_vector) ** 2)
         # vectorized gravitational potential energy, PE = (G M_1 M_2) / r
         self.potential_energy = - (self.__G * self.mass_grav_body * self.mass) / np.linalg.norm(self.position_vector)
         return self.kinetic_energy + self.potential_energy
@@ -54,13 +54,14 @@ class Particle:
         L = np.linalg.norm(self.angular_momentum_vector)
         self.alpha = - self.__G * self.mass * self.mass_grav_body
         self.mass_reduced = (self.mass * self.mass_grav_body) / (self.mass + self.mass_grav_body)
-        return sqrt(1.0 + ((2.0 * self.orbital_energy * (L**2)) / (self.mass_reduced * (self.alpha**2))))
+        return sqrt(1.0 + ((2.0 * self.orbital_energy * (L ** 2)) / (self.mass_reduced * (self.alpha ** 2))))
 
     def __eccentricity_vector(self):
         mu = self.__G * self.mass_grav_body
-        term1 = ((((np.linalg.norm(self.relative_velocity_vector))**2) / mu) - (1.0 / self.distance)) * \
+        term1 = ((((np.linalg.norm(self.relative_velocity_vector)) ** 2) / mu) - (1.0 / self.distance)) * \
                 np.array(self.position_vector)
-        term2 = ((np.dot(self.position_vector, self.relative_velocity_vector) / mu)) * np.array(self.relative_velocity_vector)
+        term2 = ((np.dot(self.position_vector, self.relative_velocity_vector) / mu)) * np.array(
+            self.relative_velocity_vector)
         return term1 - term2
 
     def __semi_major_axis(self):

@@ -2,6 +2,7 @@ import pandas as pd
 import csv
 import os
 
+
 class CombineFile:
 
     def __init__(self, num_processes, time, output_path):
