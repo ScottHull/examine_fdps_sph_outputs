@@ -19,9 +19,9 @@ particle_map = pm.solve()
 disk_particles = [p for p in particle_map if p.label == "DISK"]
 os.remove(sph_file)
 
-# s = Structure(disk_particles=disk_particles)
-# vmf = s.calc_vapor_mass_fraction()
-# print(vmf)
+s = Structure(disk_particles=disk_particles)
+vmf = s.calc_vapor_mass_fraction()
+print(vmf)
 # surface_densities, sorted_distances = s.calc_disk_surface_density()
 #
 # ax = plt.figure().add_subplot(111)
