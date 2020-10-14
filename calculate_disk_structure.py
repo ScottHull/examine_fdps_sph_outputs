@@ -6,6 +6,7 @@ from src.identify import ParticleMap
 from src.structure import Structure
 from src.combine import CombineFile
 import src.plots as plots
+import matplotlib.pyplot as plt
 
 path_to_outputs = "/scratch/shull4/GI2/"
 number_processes = 100
@@ -37,6 +38,19 @@ fig = plots.plot_vfm(
     phase_curve_2_label="liq-gas"
 )
 fig.savefig(os.getcwd() + "/vmf_{}.png".format(time), format="png")
+plt.close()
+fig = plt.figure(figsize=(16,9))
+ax = fig.add_subplot(111)
+ax.scatter(
+    [p.distance / 1000.0 for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
+    [p.entropy for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
+    marker="+",
+    color='black'
+)
+ax.set_xlabel("Radial Distance from Target Center (km)")
+ax.set_ylabel("Entropy")
+ax.grid()
+fig.savefig(os.getcwd() + "/{}_distance_vs_distance.png".format(time), format="png")
 print(vmf)
 # surface_densities, sorted_distances = s.calc_disk_surface_density()
 #
