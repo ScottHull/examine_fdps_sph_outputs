@@ -19,7 +19,7 @@ particle_map = pm.solve()
 disk_particles = [p for p in particle_map if p.label == "DISK"]
 os.remove(sph_file)
 
-s = Structure(disk_particles=disk_particles, phase="duniteS2")
+s = Structure(particles=disk_particles, phase="duniteS2")
 fig = plots.plot_vfm(
     phase_curve_1_x=s.phase_df['entropy_sol_liq'],
     phase_curve_1_y=s.phase_df['temperature'],
