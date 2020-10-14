@@ -56,9 +56,9 @@ for time in np.arange(start_time, end_time + interval, interval):
     plt.close()
 
 plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=eccentricity_plot_path,
-              filename="eccentricities.mp4")
+              filename="eccentricities.mp4", fps=5)
 plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=disk_structure_path,
-              filename="structure.mp4")
+              filename="structure.mp4", fps=5)
 plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=disk_structure_eccentricity_path,
-              filename="structure_eccentricities.mp4")
+              filename="structure_eccentricities.mp4", fps=5)
 

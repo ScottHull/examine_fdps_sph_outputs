@@ -61,8 +61,8 @@ def scatter_particles(x, y, tags, x_label, y_label, a=None, b=None, center_plot=
     ax.legend()
 
     if center_plot:
-        ax.set_xlim(-0.5e8, 0.5e8)
-        ax.set_ylim(-0.5e8, 0.5e8)
+        ax.set_xlim(-5e8, 5e8)
+        ax.set_ylim(-5e8, 5e8)
 
     return fig
 
@@ -110,8 +110,8 @@ def colorcode_orbits(particles, a, b, center_plot=False):
     ax.legend()
 
     if center_plot:
-        ax.set_xlim(-0.5e8, 0.5e8)
-        ax.set_ylim(-0.5e8, 0.5e8)
+        ax.set_xlim(-5e8, 5e8)
+        ax.set_ylim(-5e8, 5e8)
 
     return fig
 
