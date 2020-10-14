@@ -13,23 +13,24 @@ class Structure:
                                         names=["temperature", "density_sol_liq", "density_vap", "pressure",
                                                "entropy_sol_liq", "entropy_vap"])
 
-    def calc_vapor_mass_fraction(self):
+    def calc_vapor_mass_fraction(self, target_label=None):
         num_particles = 0
         vapor_mass_fraction = 0
         for i in self.disk_particles:
-            num_particles += 1
-            entropy_i = i.entropy
-            temperature_i = i.temperature
-            entropy_liq = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
-                                        interp_array=self.phase_df['entropy_sol_liq'])
-            entropy_vap = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
-                                        interp_array=self.phase_df['entropy_vap'])
-            if entropy_i < entropy_liq:
-                vapor_mass_fraction += 0.0
-            elif entropy_liq <= entropy_i <= entropy_vap:
-                vapor_mass_fraction += (entropy_i - entropy_liq) / (entropy_vap - entropy_liq)
-            elif entropy_i > entropy_vap:
-                vapor_mass_fraction += 1.0
+            if (target_label is not None and i.label == target_label) or target_label is None:
+                num_particles += 1
+                entropy_i = i.entropy
+                temperature_i = i.temperature
+                entropy_liq = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
+                                            interp_array=self.phase_df['entropy_sol_liq'])
+                entropy_vap = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
+                                            interp_array=self.phase_df['entropy_vap'])
+                if entropy_i < entropy_liq:
+                    vapor_mass_fraction += 0.0
+                elif entropy_liq <= entropy_i <= entropy_vap:
+                    vapor_mass_fraction += (entropy_i - entropy_liq) / (entropy_vap - entropy_liq)
+                elif entropy_i > entropy_vap:
+                    vapor_mass_fraction += 1.0
         vapor_mass_fraction = vapor_mass_fraction / num_particles
 
         return vapor_mass_fraction

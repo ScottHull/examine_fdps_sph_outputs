@@ -32,7 +32,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True, center_plot=True)
     particle_map = pm.solve()
     s = Structure(disk_particles=particle_map, phase="duniteS2")
-    # vmf = s.calc_vapor_mass_fraction()
+    # vmf = s.calc_vapor_mass_fraction(target_label="DISK")
     # make_report(particles=particle_map, time=time)
     os.remove(f)
     fig = plots.plot_eccentricities(particles=particle_map, a=pm.a, b=pm.b)
@@ -63,9 +63,9 @@ for time in np.arange(start_time, end_time + interval, interval):
         phase_curve_1_y=s.phase_df['temperature'],
         phase_curve_2_x=s.phase_df['entropy_vap'],
         phase_curve_2_y=s.phase_df['temperature'],
-        particles_x=[p.entropy for p in particle_map],
-        particles_y=[p.temperature for p in particle_map],
-        particles_color=[p.distance for p in particle_map],
+        particles_x=[p.entropy for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
+        particles_y=[p.temperature for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
+        particles_color=[p.distance for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
         xlabel="Entropy (S)",
         ylabel="Temperature (T [deg K])",
         cbar_label="Radial Distance From Target Center",
