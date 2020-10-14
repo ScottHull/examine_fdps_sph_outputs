@@ -5,6 +5,7 @@ from matplotlib.patches import Ellipse
 from src.identify import ParticleMap
 from src.structure import Structure
 from src.combine import CombineFile
+import src.plots as plots
 
 path_to_outputs = "/scratch/shull4/GI2/"
 number_processes = 100
@@ -19,8 +20,20 @@ particle_map = pm.solve()
 disk_particles = [p for p in particle_map if p.label == "DISK"]
 os.remove(sph_file)
 
-s = Structure(disk_particles=disk_particles)
+s = Structure(disk_particles=disk_particles, phase="duniteS2")
 vmf = s.calc_vapor_mass_fraction()
+ax = plots.plot_vfm(
+    phase_curve_1_x=s.phase_df['entropy_sol_liq'],
+    phase_curve_1_y=s.phase_df['temperature'],
+    phase_curve_2_x=s.phase_df['entropy_vap'],
+    phase_curve_2_y=s.phase_df['temperature'],
+    particles_x=[p.entropy for p in particle_map],
+    particles_y=[p.temperature for p in particle_map],
+    xlabel="Entropy (S)",
+    ylabel="Temperature (T [deg K])",
+    phase_curve_1_label="sol-liq",
+    phase_curve_2_label="liq-gas"
+)
 print(vmf)
 # surface_densities, sorted_distances = s.calc_disk_surface_density()
 #
@@ -31,4 +44,4 @@ print(vmf)
 # ax.set_title("Disk + Escaping Particles Surface Density")
 # ax.grid()
 #
-# plt.show()
+plt.show()

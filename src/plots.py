@@ -13,7 +13,7 @@ def plot_heatmap(x, y, z, a, b, center):
     ax.add_artist(e)
     cbar = plt.colorbar(sc, ax=ax)
 
-    return fig
+    return ax
 
 
 def plot_particle_density_heatmap(x, y):
@@ -30,7 +30,7 @@ def plot_particle_density_heatmap(x, y):
     ax.set_xlim(x.min(), x.max())
     ax.set_ylim(y.min(), y.max())
 
-    return fig
+    return ax
 
 
 def scatter_particles(x, y, tags, x_label, y_label, a=None, b=None, center_plot=False):
@@ -364,4 +364,18 @@ def animate(start_time, end_time, interval, path, filename="animation.mp4", fps=
     animation.write_videofile(filename, fps=fps)
 
 
+def plot_vfm(phase_curve_1_x, phase_curve_1_y, phase_curve_2_x, phase_curve_2_y, particles_x, particles_y,
+             xlabel, ylabel, phase_curve_1_label="sol-liq", phase_curve_2_label="liq-vap"):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
 
+    ax.plot(phase_curve_1_x, phase_curve_1_y, linewidth=2.0, label=phase_curve_1_label)
+    ax.plot(phase_curve_2_x, phase_curve_2_y, linewidth=2.0, label=phase_curve_2_label)
+    ax.scatter(particles_x, particles_y, color='black', marker="+")
+    ax.set_title("VAPOR MASS FRACTION")
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.grid()
+    ax.legend()
+
+    return fig
