@@ -26,9 +26,10 @@ particles = ParticleMap(output_path=sph_file, center_on_target_iron=False, plot=
 
 entropy_interpolation = [
     (p.density, p.internal_energy, p.entropy, GenericTrilinearInterpolation(var1_array=density, var2_array=energy,
-                                                                 var3_array=entropy,
-                                                                 var1=p.density, var2=p.internal_energy,
-                                                                 grid_length=80).interpolate()) for p in particles]
+                                                                            var3_array=entropy,
+                                                                            var1=p.density, var2=p.internal_energy,
+                                                                            grid_length=80).interpolate()) for p in
+    particles if p.particle_id % 2 == 0]
 entropy_errors = [(i[3] - i[2]) / i[2] for i in entropy_interpolation]
 
 fig = plt.figure(figsize=(16, 9))
