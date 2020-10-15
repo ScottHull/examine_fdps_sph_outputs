@@ -26,13 +26,13 @@ with open(sph_file, 'r') as infile:
     reader = csv.reader(infile, delimiter="\t")
     time = next(reader)
     header = next(reader)
+    print(time)
+    print(header)
     header_line = (",".join(str(i) for i in header))
     outfile.write(time[0] + "\n")
     outfile.write(header_line + "\n")
     for row in reader:
-        print(row[0])
         if row[0] in disk_particles_names:
-            print("Found {}".format(row[0]))
             line = (",".join(str(i) for i in row))
             outfile.write(line + "\n")
 
