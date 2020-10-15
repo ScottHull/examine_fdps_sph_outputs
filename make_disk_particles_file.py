@@ -13,7 +13,7 @@ sph_file = os.getcwd() + "/merged_{}.dat".format(time)
 sph_df = pd.read_csv(sph_file, header=None, skiprows=2, delimiter="\t")
 pm = ParticleMap(output_path=sph_file, center_on_target_iron=True, plot=True, relative_velocity=True, center_plot=True)
 particle_map = pm.solve()
-disk_particles_names = [p.particle_name for p in particle_map if p.label == "DISK"]
+disk_particles_names = [str(p.particle_name) for p in particle_map if p.label == "DISK"]
 print("Disk Particle Count: {}".format(len(disk_particles_names)))
 
 outfile_name = os.getcwd() + "/{}_diskparticles.csv".format(time)
@@ -33,7 +33,7 @@ with open(sph_file, 'r') as infile:
     outfile.write(num_particles[0] + "\n")
     outfile.write(header_line + "\n")
     for row in reader:
-        if row[0] in disk_particles_names:
+        if str(row[0]) in disk_particles_names:
             line = (",".join(str(i) for i in row))
             outfile.write(line + "\n")
 
