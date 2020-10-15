@@ -27,7 +27,7 @@ with open(sph_file, 'r') as infile:
     time = next(reader)
     header = next(reader)
     header_line = (",".join(str(i) for i in header))
-    outfile.write(time + "\n")
+    outfile.write(time[0] + "\n")
     outfile.write(header_line + "\n")
     for row in reader:
         print(row[0])
