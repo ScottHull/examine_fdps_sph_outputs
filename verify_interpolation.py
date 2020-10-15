@@ -29,12 +29,13 @@ entropy_interpolation = [
                                                                  var3_array=entropy,
                                                                  var1=p.density, var2=p.internal_energy,
                                                                  grid_length=80).interpolate()) for p in particles]
+entropy_errors = [(i[3] - i[2]) / i[2] for i in entropy_interpolation]
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 ax.scatter(
-    [i[0] for i in entropy_interpolation],
-    [i[2] for i in entropy_interpolation],
+    [i[0] for index, i in enumerate(entropy_interpolation) if entropy_errors[index] < 100],
+    [i[2] for index, i in enumerate(entropy_interpolation) if entropy_errors[index] < 100],
     marker="+",
     color="red",
     label="C++ INTERPOLATION"
@@ -58,7 +59,7 @@ fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 ax.scatter(
     [i[0] for i in entropy_interpolation],
-    [(i[3] - i[2]) / i[2]  for i in entropy_interpolation],
+    [(i[3] - i[2]) / i[2] for i in entropy_interpolation],
     marker="+",
     color="black",
 )
