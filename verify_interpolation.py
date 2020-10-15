@@ -43,7 +43,7 @@ ax.scatter(
     [i[0] for i in entropy_interpolation],
     [i[3] for i in entropy_interpolation],
     marker="+",
-    color="red",
+    color="blue",
     label="PYTHON INTERPOLATION"
 )
 ax.set_xlabel("DENSITY")
