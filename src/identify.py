@@ -55,14 +55,13 @@ class ParticleMap:
         particles = []
         grav_mass = self.calc_mass_protoearth(a=self.a, b=self.b)
         for row in self.output.index:
-            particle_id = int(self.output[1][row])
             position_vector = [self.output[3][row] - self.earth_center[0], self.output[4][row] - self.earth_center[1],
                                self.output[5][row] - self.earth_center[2]]
             velocity_vector = [self.output[6][row], self.output[7][row], self.output[8][row]]
             try:
                 p = Particle(
-                    particle_name=self.output[0][row],
-                    particle_id=particle_id,
+                    particle_name=int(self.output[0][row]),
+                    particle_id=int(self.output[1][row]),
                     position_vector=position_vector,
                     velocity_vector=velocity_vector,
                     mass=self.output[2][row],
