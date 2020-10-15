@@ -60,13 +60,11 @@ ax.scatter(
     [i[0] for i in entropy_interpolation],
     [(i[3] - i[2]) / i[2]  for i in entropy_interpolation],
     marker="+",
-    color="red",
-    label="C++ INTERPOLATION"
+    color="black",
 )
 ax.set_xlabel("DENSITY")
 ax.set_ylabel("PYTHON-C++ INTERPOLATION ERROR")
 ax.set_title("PYTHON-C++ INTERPOLATION ERROR")
 ax.grid()
-ax.legend()
 fig.savefig("{}_verify_interpolation_error.png".format(time), format="png")
 fig.clear()
