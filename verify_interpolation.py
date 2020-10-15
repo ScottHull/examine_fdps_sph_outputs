@@ -108,5 +108,3 @@ ax.set_title("PYTHON-C++ INTERPOLATION ERROR")
 ax.grid()
 fig.savefig("{}_verify_interpolation_error.png".format(time), format="png")
 fig.clear()
-
-for i in
