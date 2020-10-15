@@ -33,7 +33,7 @@ entropy_interpolation = [
 entropy_errors = [(i[3] - i[2]) / i[2] for i in entropy_interpolation]
 
 for index, i in enumerate(entropy_interpolation):
-    if entropy_errors[index] > 0.02
+    if entropy_errors[index] > 0.02:
         print([i[0], i[1], i[2], i[3]])
 
 fig = plt.figure(figsize=(16, 9))
