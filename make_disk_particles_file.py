@@ -37,4 +37,5 @@ with open(sph_file, 'r') as infile:
             line = (",".join(str(i) for i in row))
             outfile.write(line + "\n")
 
+outfile.close()
 os.remove(sph_file)
