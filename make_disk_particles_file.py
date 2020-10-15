@@ -26,12 +26,8 @@ with open(sph_file, 'r') as infile:
     reader = csv.reader(infile, delimiter="\t")
     time = next(reader)
     num_particles = next(reader)
-    header = next(reader)
-    print(header)
-    header_line = (",".join(str(i) for i in header))
     outfile.write(time[0] + "\n")
     outfile.write(num_particles[0] + "\n")
-    outfile.write(header_line + "\n")
     for row in reader:
         if str(row[0]) in disk_particles_names:
             line = (",".join(str(i) for i in row))
