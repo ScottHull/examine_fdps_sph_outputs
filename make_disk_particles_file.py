@@ -16,12 +16,18 @@ particle_map = pm.solve()
 disk_particles_names = [p.particle_name for p in particle_map if p.label == "DISK"]
 print("Disk Particle Count: {}".format(len(disk_particles_names)))
 
-outfile = open(os.getcwd() + "/{}_diskparticles.csv".format(time), 'w')
+outfile_name = os.getcwd() + "/{}_diskparticles.csv".format(time)
+if outfile_name in os.listdir(os.getcwd()):
+    os.remove(outfile_name)
+
+outfile = open(outfile_name, 'w')
 
 with open(sph_file, 'r') as infile:
-    reader = csv.reader(infile)
+    reader = csv.reader(infile, delimiter="\t")
+    time = next(reader)
     header = next(reader)
     header_line = (",".join(str(i) for i in header))
+    outfile.write(time + "\n")
     outfile.write(header_line + "\n")
     for row in reader:
         print(row[0])
