@@ -59,6 +59,40 @@ fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 ax.scatter(
     [i[0] for i in entropy_interpolation],
+    [i[3] for i in entropy_interpolation],
+    marker="+",
+    color="blue",
+    label="PYTHON INTERPOLATION"
+)
+ax.set_xlabel("DENSITY")
+ax.set_ylabel("ENTROPY")
+ax.set_title("VERIFY PYTHON INTERPOLATION")
+ax.grid()
+ax.legend()
+fig.savefig("{}_python_interpolation.png".format(time), format="png")
+fig.clear()
+
+fig = plt.figure(figsize=(16, 9))
+ax = fig.add_subplot(111)
+ax.scatter(
+    [i[0] for index, i in enumerate(entropy_interpolation) if entropy_errors[index] < 100],
+    [i[2] for index, i in enumerate(entropy_interpolation) if entropy_errors[index] < 100],
+    marker="+",
+    color="red",
+    label="C++ INTERPOLATION"
+)
+ax.set_xlabel("DENSITY")
+ax.set_ylabel("ENTROPY")
+ax.set_title("VERIFY C++ INTERPOLATION")
+ax.grid()
+ax.legend()
+fig.savefig("{}_c_interpolation.png".format(time), format="png")
+fig.clear()
+
+fig = plt.figure(figsize=(16, 9))
+ax = fig.add_subplot(111)
+ax.scatter(
+    [i[0] for i in entropy_interpolation],
     [(i[3] - i[2]) / i[2] for i in entropy_interpolation],
     marker="+",
     color="black",
