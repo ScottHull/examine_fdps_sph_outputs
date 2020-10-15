@@ -21,8 +21,8 @@ soundspeed = list(eos_df[4])
 combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
 sph_file = os.getcwd() + "/merged_{}.dat".format(time)
 sph_df = pd.read_csv(sph_file, header=None, skiprows=2, delimiter="\t")
-particles = ParticleMap(output_path=sph_file, center_on_target_iron=True, plot=True, relative_velocity=True,
-                        center_plot=True).collect_all_particles()
+particles = ParticleMap(output_path=sph_file, center_on_target_iron=False, plot=False, relative_velocity=False,
+                        center_plot=False).collect_all_particles()
 
 entropy_interpolation = [
     (p.density, p.internal_energy, p.entropy, GenericTrilinearInterpolation(var1_array=density, var2_array=energy,
