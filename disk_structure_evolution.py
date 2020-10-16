@@ -20,7 +20,7 @@ disk_structure_path = os.getcwd() + "/structure"
 disk_structure_eccentricity_path = os.getcwd() + "/eccentricity_structure"
 vmf_path = os.getcwd() + "/vmf"
 
-paths = [eccentricity_plot_path, disk_structure_path, disk_structure_eccentricity_path]
+paths = [eccentricity_plot_path, disk_structure_path, disk_structure_eccentricity_path, vmf_path]
 for i in paths:
     if os.path.exists(i):
         shutil.rmtree(i)
