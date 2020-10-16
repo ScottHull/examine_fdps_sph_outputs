@@ -74,7 +74,7 @@ def scatter_particles(x, y, tags, x_label, y_label, z=None, z_label=None, a=None
         ax = Axes3D(fig)
         ax.scatter(target_silicate_x, target_silicate_y, target_silicate_z, marker="+", color="red",
                    label="Target Silicate")
-        ax.scatter(target_iron_x, target_iron_y, target_silicate_z, marker="+", color="blue", label="Target Iron")
+        ax.scatter(target_iron_x, target_iron_y, target_iron_z, marker="+", color="blue", label="Target Iron")
         ax.scatter(impactor_silicate_x, impactor_silicate_y, impactor_silicate_z, marker="+", color="green",
                    label="Impactor Silicate")
         ax.scatter(impactor_iron_x, impactor_iron_y, impactor_iron_z, marker="+", color="pink", label="Impactor Iron")

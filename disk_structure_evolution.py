@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import shutil
 
 start_time = 50
-end_time = 1000
+end_time = 5000
 interval = 50
 number_processes = 100
 
@@ -31,7 +31,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True, center_plot=True)
     particle_map = pm.solve()
-    s = Structure(disk_particles=particle_map, phase="duniteS2")
+    s = Structure(particles=particle_map, phase="duniteS2")
     # vmf = s.calc_vapor_mass_fraction(target_label="DISK")
     # make_report(particles=particle_map, time=time)
     os.remove(f)
@@ -46,7 +46,9 @@ for time in np.arange(start_time, end_time + interval, interval):
         y_label="y",
         a=pm.a,
         b=pm.b,
-        center_plot=True
+        center_plot=True,
+        z=[p.position_vector[2] for p in particle_map],
+        z_label="z"
     )
     fig.savefig(disk_structure_path + "/{}.png".format(time), format='png')
     plt.close()
@@ -54,7 +56,8 @@ for time in np.arange(start_time, end_time + interval, interval):
         particles=particle_map,
         a=pm.a,
         b=pm.b,
-        center_plot=True
+        center_plot=True,
+        z=True
     )
     fig.savefig(disk_structure_eccentricity_path + "/{}.png".format(time), format='png')
     plt.close()
