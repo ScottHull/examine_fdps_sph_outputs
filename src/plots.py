@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.patches import Ellipse
 from scipy.stats.kde import gaussian_kde
 import numpy as np
@@ -33,85 +34,168 @@ def plot_particle_density_heatmap(x, y):
     return ax
 
 
-def scatter_particles(x, y, tags, x_label, y_label, a=None, b=None, center_plot=False):
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-
+def scatter_particles(x, y, tags, x_label, y_label, z=None, z_label=None, a=None, b=None, center_plot=False):
     target_silicate_x = [x[index] for index, i in enumerate(tags) if i == 0]
     target_silicate_y = [y[index] for index, i in enumerate(tags) if i == 0]
+    target_silicate_z = [z[index] for index, i in enumerate(tags) if i == 0]
     target_iron_x = [x[index] for index, i in enumerate(tags) if i == 1]
     target_iron_y = [y[index] for index, i in enumerate(tags) if i == 1]
+    target_iron_z = [z[index] for index, i in enumerate(tags) if i == 1]
     impactor_silicate_x = [x[index] for index, i in enumerate(tags) if i == 2]
     impactor_silicate_y = [y[index] for index, i in enumerate(tags) if i == 2]
+    impactor_silicate_z = [z[index] for index, i in enumerate(tags) if i == 2]
     impactor_iron_x = [x[index] for index, i in enumerate(tags) if i == 3]
     impactor_iron_y = [y[index] for index, i in enumerate(tags) if i == 3]
+    impactor_iron_z = [z[index] for index, i in enumerate(tags) if i == 3]
 
-    ax.scatter(target_silicate_x, target_silicate_y, marker="+", color="red", label="Target Silicate")
-    ax.scatter(target_iron_x, target_iron_y, marker="+", color="blue", label="Target Iron")
-    ax.scatter(impactor_silicate_x, impactor_silicate_y, marker="+", color="green", label="Impactor Silicate")
-    ax.scatter(impactor_iron_x, impactor_iron_y, marker="+", color="pink", label="Impactor Iron")
+    fig = plt.figure()
 
-    if a is not None and b is not None:
-        e = Ellipse(xy=(0, 0), width=a * 2.0, height=b * 2.0, alpha=0.3, color="blue")
-        ax.add_artist(e)
+    if z is None:
+        ax = fig.add_subplot(111)
+        ax.scatter(target_silicate_x, target_silicate_y, marker="+", color="red", label="Target Silicate")
+        ax.scatter(target_iron_x, target_iron_y, marker="+", color="blue", label="Target Iron")
+        ax.scatter(impactor_silicate_x, impactor_silicate_y, marker="+", color="green", label="Impactor Silicate")
+        ax.scatter(impactor_iron_x, impactor_iron_y, marker="+", color="pink", label="Impactor Iron")
 
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
-    ax.grid()
-    ax.legend()
+        if a is not None and b is not None:
+            e = Ellipse(xy=(0, 0), width=a * 2.0, height=b * 2.0, alpha=0.3, color="blue")
+            ax.add_artist(e)
 
-    if center_plot:
-        ax.set_xlim(-2e8, 2e8)
-        ax.set_ylim(-2e8, 2e8)
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
+        ax.grid()
+        ax.legend()
+
+        if center_plot:
+            ax.set_xlim(-2e8, 2e8)
+            ax.set_ylim(-2e8, 2e8)
+
+    else:
+        ax = Axes3D(fig)
+        ax.scatter(target_silicate_x, target_silicate_y, target_silicate_z, marker="+", color="red",
+                   label="Target Silicate")
+        ax.scatter(target_iron_x, target_iron_y, target_silicate_z, marker="+", color="blue", label="Target Iron")
+        ax.scatter(impactor_silicate_x, impactor_silicate_y, impactor_silicate_z, marker="+", color="green",
+                   label="Impactor Silicate")
+        ax.scatter(impactor_iron_x, impactor_iron_y, impactor_iron_z, marker="+", color="pink", label="Impactor Iron")
+
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
+        ax.set_zlabel(z_label)
+        ax.grid()
+        ax.legend()
+
+        if center_plot:
+            ax.set_xlim(-2e8, 2e8)
+            ax.set_ylim(-2e8, 2e8)
+            ax.set_ylim(-2e8, 2e8)
 
     return fig
 
 
-def colorcode_orbits(particles, a, b, center_plot=False):
+def colorcode_orbits(particles, a, b, z=None, center_plot=False):
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax.scatter(
-        [p.position_vector[0] for p in particles if p.eccentricity > 1.0],
-        [p.position_vector[1] for p in particles if p.eccentricity > 1.0],
-        c='red',
-        marker="+",
-        label="ESCAPE"
-    )
-    ax.scatter(
-        [p.position_vector[0] for p in particles if
-         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
-        [p.position_vector[1] for p in particles if
-         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
-        c='blue',
-        marker="+",
-        label="DISTANCE WITHIN PLANET"
-    )
-    ax.scatter(
-        [p.position_vector[0] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
-        [p.position_vector[1] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
-        c='green',
-        marker="+",
-        label="PERIAPSIS INSIDE PLANET"
-    )
-    ax.scatter(
-        [p.position_vector[0] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
-        [p.position_vector[1] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
-        c='pink',
-        marker="+",
-        label="DISK"
-    )
-    if a is not None and b is not None:
-        e = Ellipse(xy=(0, 0), width=a * 2.0, height=b * 2.0, alpha=0.3, color="blue")
-        ax.add_artist(e)
-    ax.set_xlabel("x")
-    ax.set_ylabel("y")
-    ax.set_title("PARTICLE ORBITS")
-    ax.grid()
-    ax.legend()
+    if z is None:
+        ax.scatter(
+            [p.position_vector[0] for p in particles if p.eccentricity > 1.0],
+            [p.position_vector[1] for p in particles if p.eccentricity > 1.0],
+            c='red',
+            marker="+",
+            label="ESCAPE"
+        )
+        ax.scatter(
+            [p.position_vector[0] for p in particles if
+             abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
+            [p.position_vector[1] for p in particles if
+             abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
+            c='blue',
+            marker="+",
+            label="DISTANCE WITHIN PLANET"
+        )
+        ax.scatter(
+            [p.position_vector[0] for p in particles if
+             p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+            [p.position_vector[1] for p in particles if
+             p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+            c='green',
+            marker="+",
+            label="PERIAPSIS INSIDE PLANET"
+        )
+        ax.scatter(
+            [p.position_vector[0] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+            [p.position_vector[1] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+            c='pink',
+            marker="+",
+            label="DISK"
+        )
+        if a is not None and b is not None:
+            e = Ellipse(xy=(0, 0), width=a * 2.0, height=b * 2.0, alpha=0.3, color="blue")
+            ax.add_artist(e)
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_title("PARTICLE ORBITS")
+        ax.grid()
+        ax.legend()
 
-    if center_plot:
-        ax.set_xlim(-2e8, 2e8)
-        ax.set_ylim(-2e8, 2e8)
+        if center_plot:
+            ax.set_xlim(-2e8, 2e8)
+            ax.set_ylim(-2e8, 2e8)
+
+    else:
+        ax = Axes3D(fig)
+        ax.scatter(
+            [p.position_vector[0] for p in particles if p.eccentricity > 1.0],
+            [p.position_vector[1] for p in particles if p.eccentricity > 1.0],
+            [p.position_vector[2] for p in particles if p.eccentricity > 1.0],
+            c='red',
+            marker="+",
+            label="ESCAPE"
+        )
+        ax.scatter(
+            [p.position_vector[0] for p in particles if
+             abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
+            [p.position_vector[1] for p in particles if
+             abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
+            [p.position_vector[2] for p in particles if
+             abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
+            c='blue',
+            marker="+",
+            label="DISTANCE WITHIN PLANET"
+        )
+        ax.scatter(
+            [p.position_vector[0] for p in particles if
+             p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+            [p.position_vector[1] for p in particles if
+             p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+            [p.position_vector[2] for p in particles if
+             p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+            c='green',
+            marker="+",
+            label="PERIAPSIS INSIDE PLANET"
+        )
+        ax.scatter(
+            [p.position_vector[0] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+            [p.position_vector[1] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+            [p.position_vector[2] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+            c='pink',
+            marker="+",
+            label="DISK"
+        )
+        if a is not None and b is not None:
+            e = Ellipse(xy=(0, 0), width=a * 2.0, height=b * 2.0, alpha=0.3, color="blue")
+            ax.add_artist(e)
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_zlabel("z")
+        ax.set_title("PARTICLE ORBITS")
+        ax.grid()
+        ax.legend()
+
+        if center_plot:
+            ax.set_xlim(-2e8, 2e8)
+            ax.set_ylim(-2e8, 2e8)
+            ax.set_zlim(-2e8, 2e8)
 
     return fig
 
