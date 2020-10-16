@@ -182,9 +182,7 @@ def colorcode_orbits(particles, a, b, z=None, center_plot=False):
             marker="+",
             label="DISK"
         )
-        if a is not None and b is not None:
-            e = Ellipse(xy=(0, 0), width=a * 2.0, height=b * 2.0, alpha=0.3, color="blue")
-            ax.add_artist(e)
+
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_zlabel("z")
