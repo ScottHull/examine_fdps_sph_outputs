@@ -83,7 +83,7 @@ def scatter_particles(x, y, tags, x_label, y_label, z=None, z_label=None, a=None
         ax.set_ylabel(y_label)
         ax.set_zlabel(z_label)
         ax.grid()
-        ax.legend()
+        ax.legend(loc="lower right")
 
         if center_plot:
             ax.set_xlim(-2e8, 2e8)
@@ -188,7 +188,7 @@ def colorcode_orbits(particles, a, b, z=None, center_plot=False):
         ax.set_zlabel("z")
         ax.set_title("PARTICLE ORBITS")
         ax.grid()
-        ax.legend()
+        ax.legend(loc="lower right")
 
         if center_plot:
             ax.set_xlim(-2e8, 2e8)
@@ -236,7 +236,7 @@ def plot_eccentricities(particles, a, b):
     ax.set_ylabel("Orbital Eccentricity")
     ax.set_title("PARTICLE ORBITAL ECCENTRICITIES")
     ax.grid()
-    ax.legend()
+    ax.legend(loc="upper right")
 
     return fig
 
