@@ -88,7 +88,7 @@ def scatter_particles(x, y, tags, x_label, y_label, z=None, z_label=None, a=None
         if center_plot:
             ax.set_xlim(-2e8, 2e8)
             ax.set_ylim(-2e8, 2e8)
-            ax.set_ylim(-2e8, 2e8)
+            ax.set_zlim(-2e8, 2e8)
 
     return fig
 
