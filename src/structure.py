@@ -31,6 +31,8 @@ class Structure:
                     vapor_mass_fraction += (entropy_i - entropy_liq) / (entropy_vap - entropy_liq)
                 elif entropy_i > entropy_vap:
                     vapor_mass_fraction += 1.0
+        if num_particles == 0:
+            return None
         vapor_mass_fraction = vapor_mass_fraction / num_particles
 
         return vapor_mass_fraction
