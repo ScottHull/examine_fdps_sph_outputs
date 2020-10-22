@@ -78,6 +78,20 @@ for time in np.arange(start_time, end_time + interval, interval):
     fig.savefig(vmf_path + "/{}.png".format(time), format='png')
     plt.close()
 
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.scatter(
+        [p.density for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
+        [p.entropy for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
+        marker="+",
+        color='black'
+    )
+    ax.set_xlabel("Density")
+    ax.set_ylabel("Entropy")
+    ax.grid()
+    fig.savefig("{}_density_entropy.png".format(time), format='png')
+    plt.close()
+
 plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=eccentricity_plot_path,
               filename="eccentricities.mp4", fps=5)
 plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=disk_structure_path,
