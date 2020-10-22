@@ -14,7 +14,7 @@ end_time = 5000
 interval = 50
 number_processes = 100
 
-path_to_outputs = "/scratch/shull4/GI/"
+path_to_outputs = "/scratch/shull4/GI"
 eccentricity_plot_path = os.getcwd() + "/eccentricity"
 disk_structure_path = os.getcwd() + "/structure"
 disk_structure_eccentricity_path = os.getcwd() + "/eccentricity_structure"
@@ -80,11 +80,18 @@ for time in np.arange(start_time, end_time + interval, interval):
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
+    eos_df = pd.read_fwf("src/eos/dunite4.rho_u.txt", header=None, skiprows=2)
+    ax.scatter(
+        eos_df[0],
+        eos_df[5],
+        marker="+",
+        color="blue"
+    )
     ax.scatter(
         [p.density for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
         [p.entropy for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
         marker="+",
-        color='black'
+        color='red'
     )
     ax.set_xlabel("Density")
     ax.set_ylabel("Entropy")
