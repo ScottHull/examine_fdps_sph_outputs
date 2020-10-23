@@ -16,7 +16,7 @@ combined_file = CombineFile(num_processes=number_processes, time=time, output_pa
 f = os.getcwd() + "/merged_{}.dat".format(time)
 pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True, center_plot=True)
 particle_map = pm.solve()
-s = Structure(particles=particle_map, phase="dunite4")
+s = Structure(particles=particle_map, phase="duniteS2")
 
 def get_phase_curve_temperature_from_entropy(entropy_value, entropy_list, temperature_list):
     index = list(entropy_list).index(entropy_value)
@@ -36,14 +36,14 @@ while selected_particles < max_plot_particles:
                                     interp_array=s.phase_df['entropy_sol_liq'])
         entropy_vap = interpolate1d(val=p.temperature, val_array=s.phase_df['temperature'],
                                     interp_array=s.phase_df['entropy_vap'])
-        temp_liq = get_phase_curve_temperature_from_entropy(entropy_value=entropy_liq,
-                                                            temperature_list=s.phase_df['temperature'],
-                                                            entropy_list=s.phase_df['entropy_sol_liq'])
-        temp_vap = get_phase_curve_temperature_from_entropy(entropy_value=entropy_liq,
-                                                            temperature_list=s.phase_df['temperature'],
-                                                            entropy_list=s.phase_df['entropy_vap'])
-        sol_liq_interp.append((entropy_liq, temp_liq))
-        liq_vap_interp.append((entropy_vap, temp_vap))
+        # temp_liq = get_phase_curve_temperature_from_entropy(entropy_value=entropy_liq,
+        #                                                     temperature_list=s.phase_df['temperature'],
+        #                                                     entropy_list=s.phase_df['entropy_sol_liq'])
+        # temp_vap = get_phase_curve_temperature_from_entropy(entropy_value=entropy_liq,
+        #                                                     temperature_list=s.phase_df['temperature'],
+        #                                                     entropy_list=s.phase_df['entropy_vap'])
+        sol_liq_interp.append((entropy_liq, p.temperature))
+        liq_vap_interp.append((entropy_vap, p.temperature))
         selected_particles += 1
 
 
