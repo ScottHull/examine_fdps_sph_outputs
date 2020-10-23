@@ -12,6 +12,10 @@ class Structure:
             self.phase_df = pd.read_fwf("src/phase_data/duniteS_vapour_curve.txt", skiprows=1,
                                         names=["temperature", "density_sol_liq", "density_vap", "pressure",
                                                "entropy_sol_liq", "entropy_vap"])
+        else:
+            self.phase_df = pd.read_fwf("src/phase_data/dunite4_vapour_curve.txt", skiprows=1,
+                                        names=["temperature", "density_sol_liq", "density_vap", "pressure",
+                                               "entropy_sol_liq", "entropy_vap"])
 
     def calc_vapor_mass_fraction(self, target_label=None):
         num_particles = 0

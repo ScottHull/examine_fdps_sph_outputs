@@ -60,6 +60,6 @@ class CombineFile:
         return merged_df
 
 
-m = CombineFile(num_processes=100, time=1253, output_path="/scratch/shull4/GI_neg_energy")
-m.combine()
+# m = CombineFile(num_processes=20, time=1000, output_path="/Users/scotthull/Desktop/target_small")
+# m.combine()
 
