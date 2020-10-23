@@ -257,3 +257,19 @@ class GenericTrilinearInterpolation:
         # print(u)
 
         return u
+
+
+class NearestNeighbor1D:
+
+    def __init__(self):
+        pass
+
+    def __distance(self, given_val, test_val):
+        return abs(given_val - test_val)
+
+    def neighbor(self, given_val, array):
+        return min(self.__distance(given_val=given_val, test_val=i) for i in array)
+
+    def neighbor_index(self, given_val, array):
+        neighbor = self.neighbor(given_val=given_val, array=array)
+        return array.index(neighbor)

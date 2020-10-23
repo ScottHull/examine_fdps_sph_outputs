@@ -1,7 +1,7 @@
 import pandas as pd
 from math import pi
 import numpy as np
-from src.interpolation import interpolate1d
+from src.interpolation import interpolate1d, NearestNeighbor1D
 
 
 class Structure:
@@ -18,6 +18,7 @@ class Structure:
                                                "entropy_sol_liq", "entropy_vap"])
 
     def calc_vapor_mass_fraction(self, target_label=None):
+        nearest_neighbor = NearestNeighbor1D()
         num_particles = 0
         vapor_mass_fraction = 0
         for i in self.particles:
@@ -25,10 +26,14 @@ class Structure:
                 num_particles += 1
                 entropy_i = i.entropy
                 temperature_i = i.temperature
-                entropy_liq = interpolate1d(val=temperature_i, val_array=self.phase_df['entropy_sol_liq'],
-                                            interp_array=self.phase_df['temperature'])
-                entropy_vap = interpolate1d(val=temperature_i, val_array=self.phase_df['entropy_vap'],
-                                            interp_array=self.phase_df['temperature'])
+                # entropy_liq = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
+                #                             interp_array=self.phase_df['entropy_sol_liq'])
+                # entropy_vap = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
+                #                             interp_array=self.phase_df['entropy_vap'])
+                nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=temperature_i,
+                                                                       array=self.phase_df['temperature'])
+                entropy_liq = self.phase_df['entropy_sol_liq'][nearest_temperature_index]
+                entropy_vap = self.phase_df['entropy_vap'][nearest_temperature_index]
                 if entropy_i < entropy_liq:
                     vapor_mass_fraction += 0.0
                 elif entropy_liq <= entropy_i <= entropy_vap:
