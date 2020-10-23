@@ -74,12 +74,10 @@ for index, p in enumerate(rand_particles):
         linewidth=1.5
     )
     ax.plot(
-        ax.plot(
-            [p.entropy, vap[0]],
-            [p.temperature, vap[1]],
-            color='purple',
-            linewidth=1.5
-        )
+        [p.entropy, vap[0]],
+        [p.temperature, vap[1]],
+        color='purple',
+        linewidth=1.5
     )
 
 ax.plot(
