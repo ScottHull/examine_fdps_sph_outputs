@@ -25,10 +25,10 @@ class Structure:
                 num_particles += 1
                 entropy_i = i.entropy
                 temperature_i = i.temperature
-                entropy_liq = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
-                                            interp_array=self.phase_df['entropy_sol_liq'])
-                entropy_vap = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
-                                            interp_array=self.phase_df['entropy_vap'])
+                entropy_liq = interpolate1d(val=temperature_i, val_array=self.phase_df['entropy_sol_liq'],
+                                            interp_array=self.phase_df['temperature'])
+                entropy_vap = interpolate1d(val=temperature_i, val_array=self.phase_df['entropy_vap'],
+                                            interp_array=self.phase_df['temperature'])
                 if entropy_i < entropy_liq:
                     vapor_mass_fraction += 0.0
                 elif entropy_liq <= entropy_i <= entropy_vap:
