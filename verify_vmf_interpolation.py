@@ -54,6 +54,7 @@ sc = ax.scatter(
     [p.entropy for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
     [p.temperature for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
     c=[p.distance for p in particle_map if p.label == "DISK" and p.particle_id % 2 == 0],
+    marker="+",
     alpha=0.1
 )
 cbar = plt.colorbar(sc)
