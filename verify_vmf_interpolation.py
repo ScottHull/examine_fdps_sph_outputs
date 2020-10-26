@@ -1,5 +1,5 @@
 import os
-from src.interpolation import interpolate1d
+from src.interpolation import interpolate1d, NearestNeighbor1D
 from src.identify import ParticleMap
 from src.combine import CombineFile
 from src.structure import Structure
@@ -36,14 +36,17 @@ while selected_particles < max_plot_particles:
         #                             interp_array=s.phase_df['entropy_sol_liq'])
         # entropy_vap = interpolate1d(val=p.temperature, val_array=s.phase_df['temperature'],
         #                             interp_array=s.phase_df['entropy_vap'])
-        temp_liq = get_phase_curve_temperature_from_entropy(entropy_value=p.entropy,
-                                                            temperature_list=s.phase_df['temperature'],
-                                                            entropy_list=s.phase_df['entropy_sol_liq'])
-        temp_vap = get_phase_curve_temperature_from_entropy(entropy_value=p.entropy,
-                                                            temperature_list=s.phase_df['temperature'],
-                                                            entropy_list=s.phase_df['entropy_vap'])
-        sol_liq_interp.append((p.entropy, temp_liq))
-        liq_vap_interp.append((p.entropy, temp_vap))
+        # temp_liq = get_phase_curve_temperature_from_entropy(entropy_value=entropy_liq,
+        #                                                     temperature_list=s.phase_df['temperature'],
+        #                                                     entropy_list=s.phase_df['entropy_sol_liq'])
+        # temp_vap = get_phase_curve_temperature_from_entropy(entropy_value=entropy_liq,
+        #                                                     temperature_list=s.phase_df['temperature'],
+        #                                                     entropy_list=s.phase_df['entropy_vap'])
+        nearest_temp_index = NearestNeighbor1D().neighbor_index(given_val=p.temperature, array=s.phase_df['temperature'])
+        entropy_liq = s.phase_df['entropy_sol_liq'][nearest_temp_index]
+        entropy_vap = s.phase_df['vap'][nearest_temp_index]
+        sol_liq_interp.append((entropy_liq, s.phase_df['temperature'][nearest_temp_index]))
+        liq_vap_interp.append((entropy_vap, s.phase_df['temperature'][nearest_temp_index]))
         selected_particles += 1
 
 
