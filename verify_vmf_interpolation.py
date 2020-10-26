@@ -42,7 +42,8 @@ while selected_particles < max_plot_particles:
         # temp_vap = get_phase_curve_temperature_from_entropy(entropy_value=entropy_liq,
         #                                                     temperature_list=s.phase_df['temperature'],
         #                                                     entropy_list=s.phase_df['entropy_vap'])
-        nearest_temp_index = NearestNeighbor1D().neighbor_index(given_val=p.temperature, array=list(s.phase_df['temperature']))
+        nearest_temp_index = NearestNeighbor1D().neighbor_index(given_val=p.temperature,
+                                                                array=list(s.phase_df['temperature']))
         entropy_liq = s.phase_df['entropy_sol_liq'][nearest_temp_index]
         entropy_vap = s.phase_df['vap'][nearest_temp_index]
         sol_liq_interp.append((entropy_liq, s.phase_df['temperature'][nearest_temp_index]))
