@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import shutil
 from random import randint
 
-time = 1000
+time = 5000
 number_processes = 100
 path_to_outputs = "/scratch/shull4/GI"
 max_plot_particles = 10
@@ -32,18 +32,18 @@ while selected_particles < max_plot_particles:
     p = particle_map[rand]
     if p.label == "DISK" and p.particle_id % 2 == 0:
         rand_particles.append(p)
-        entropy_liq = interpolate1d(val=p.temperature, val_array=s.phase_df['temperature'],
-                                    interp_array=s.phase_df['entropy_sol_liq'])
-        entropy_vap = interpolate1d(val=p.temperature, val_array=s.phase_df['temperature'],
-                                    interp_array=s.phase_df['entropy_vap'])
-        # temp_liq = get_phase_curve_temperature_from_entropy(entropy_value=entropy_liq,
-        #                                                     temperature_list=s.phase_df['temperature'],
-        #                                                     entropy_list=s.phase_df['entropy_sol_liq'])
-        # temp_vap = get_phase_curve_temperature_from_entropy(entropy_value=entropy_liq,
-        #                                                     temperature_list=s.phase_df['temperature'],
-        #                                                     entropy_list=s.phase_df['entropy_vap'])
-        sol_liq_interp.append((entropy_liq, p.temperature))
-        liq_vap_interp.append((entropy_vap, p.temperature))
+        # entropy_liq = interpolate1d(val=p.temperature, val_array=s.phase_df['temperature'],
+        #                             interp_array=s.phase_df['entropy_sol_liq'])
+        # entropy_vap = interpolate1d(val=p.temperature, val_array=s.phase_df['temperature'],
+        #                             interp_array=s.phase_df['entropy_vap'])
+        temp_liq = get_phase_curve_temperature_from_entropy(entropy_value=p.entropy,
+                                                            temperature_list=s.phase_df['temperature'],
+                                                            entropy_list=s.phase_df['entropy_sol_liq'])
+        temp_vap = get_phase_curve_temperature_from_entropy(entropy_value=p.entropy,
+                                                            temperature_list=s.phase_df['temperature'],
+                                                            entropy_list=s.phase_df['entropy_vap'])
+        sol_liq_interp.append((p.entropy, temp_liq))
+        liq_vap_interp.append((p.entropy, temp_vap))
         selected_particles += 1
 
 
@@ -94,8 +94,8 @@ ax.plot(
     label="Liq-Vap Phase Boundary"
 )
 cbar.set_label("Radial Distance from Target Center")
-ax.set_xlabel("Temperature")
-ax.set_ylabel("Entropy")
+ax.set_xlabel("Entropy")
+ax.set_ylabel("Temperature")
 ax.grid()
 ax.legend()
 fig.savefig("verify_entropy_interp.png", format="png")
