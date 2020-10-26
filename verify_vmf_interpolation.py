@@ -76,7 +76,7 @@ for index, p in enumerate(rand_particles):
         [p.entropy, liq[0]],
         [p.temperature, liq[1]],
         color='red',
-        linewidth=1.5
+        linewidth=1.5,
     )
     ax.plot(
         [p.entropy, vap[0]],
@@ -92,7 +92,7 @@ ax.plot(
     label="Sol-Liq Phase Boundary"
 )
 ax.plot(
-    s.phase_df['entropy_sol_liq'],
+    s.phase_df['entropy_vap'],
     s.phase_df['temperature'],
     linewidth=2.0,
     label="Liq-Vap Phase Boundary"
