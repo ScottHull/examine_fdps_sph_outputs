@@ -97,6 +97,7 @@ ax.plot(
     linewidth=2.0,
     label="Liq-Vap Phase Boundary"
 )
+ax.set_xlim(0, 10000)
 cbar.set_label("Radial Distance from Target Center")
 ax.set_xlabel("Entropy")
 ax.set_ylabel("Temperature")
