@@ -45,7 +45,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     cbar.set_label("Particle Tag")
     ax.set_xlabel("Distance from Target Center (km)")
     ax.set_ylabel("Entropy")
-    ax.title("Iteration: {}".format(time))
+    ax.set_title("Iteration: {}".format(time))
     ax.grid()
     fig.savefig(entropy_plot_path + "/{}.png".format(time), format="png")
 
