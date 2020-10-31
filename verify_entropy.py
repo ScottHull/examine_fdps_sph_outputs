@@ -46,6 +46,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax.set_xlabel("Distance from Target Center (km)")
     ax.set_ylabel("Entropy")
     ax.set_title("Iteration: {}".format(time))
+    ax.set_xlim(0, 20000)
     ax.grid()
     fig.savefig(entropy_plot_path + "/{}.png".format(time), format="png")
 
