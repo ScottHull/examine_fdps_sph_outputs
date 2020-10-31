@@ -49,6 +49,6 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax.grid()
     fig.savefig(entropy_plot_path + "/{}.png".format(time), format="png")
 
-    plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=entropy_plot_path,
-                  filename="entropy_evolution.mp4", fps=5)
+plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=entropy_plot_path,
+              filename="entropy_evolution.mp4", fps=5)
 
