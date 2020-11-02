@@ -36,17 +36,18 @@ for time in np.arange(start_time, end_time + interval, interval):
     fig = plt.figure()
     ax = fig.add_subplot(111)
     sc = ax.scatter(
-        [p.distance / 1000.0 for p in particle_map],
-        [p.entropy for p in particle_map],
-        c=[p.particle_id for p in particle_map],
+        [p.distance / 1000.0 for p in particle_map if p.label == "DISK"],
+        [p.entropy for p in particle_map if p.label == "DISK"],
+        c=[p.particle_id for p in particle_map if p.label == "DISK"],
         marker="+"
     )
     cbar = plt.colorbar(sc)
     cbar.set_label("Particle Tag")
     ax.set_xlabel("Distance from Target Center (km)")
     ax.set_ylabel("Entropy")
-    ax.set_title("Iteration: {}".format(time))
+    ax.set_title("Iteration: {} (Disk Particles Only)".format(time))
     ax.set_xlim(0, 20000)
+    ax.set_ylim(0, 10000)
     ax.grid()
     fig.savefig(entropy_plot_path + "/{}.png".format(time), format="png")
 
