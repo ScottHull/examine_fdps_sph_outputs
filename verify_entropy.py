@@ -33,7 +33,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     # make_report(particles=particle_map, time=time)
     os.remove(f)
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
     sc = ax.scatter(
         [p.distance / 1000.0 for p in particle_map if p.label == "DISK"],
@@ -46,7 +46,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax.set_xlabel("Distance from Target Center (km)")
     ax.set_ylabel("Entropy")
     ax.set_title("Iteration: {} (Disk Particles Only)".format(time))
-    ax.set_xlim(0, 20000)
+    # ax.set_xlim(0, 60000)
     ax.set_ylim(0, 10000)
     ax.grid()
     fig.savefig(entropy_plot_path + "/{}.png".format(time), format="png")
