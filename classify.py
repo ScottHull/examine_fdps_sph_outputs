@@ -17,7 +17,7 @@ number_processes = 100
 path_to_outputs = "/scratch/shull4/GI"
 outfile_plot_path = "/scratch/shull4/outfiles"
 
-paths = [entropy_plot_path]
+paths = [outfile_plot_path]
 for i in paths:
     if os.path.exists(i):
         shutil.rmtree(i)
