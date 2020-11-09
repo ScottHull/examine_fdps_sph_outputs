@@ -39,6 +39,7 @@ ax = fig.add_subplot(111)
 times = []
 distances = []
 entropies = []
+ids = [particle_map[i].particle_name for i in rand_selected_particles_indices]
 
 for time in np.arange(start_time, end_time + interval, interval):
     combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
@@ -49,15 +50,16 @@ for time in np.arange(start_time, end_time + interval, interval):
     times += [time for t in rand_selected_particles_indices]
     distances += [particle_map[p].distance / 1000.0 for p in rand_selected_particles_indices]
     entropies += [particle_map[p].entropy for p in rand_selected_particles_indices]
+    ids += [particle_map[i].particle_name for i in rand_selected_particles_indices]
 
 sc = ax.scatter(
     times,
     entropies,
-    c=distances,
+    c=ids,
     marker="+"
 )
 cbar = plt.colorbar(sc)
-cbar.set_label("Radial Distance From Target Center")
+cbar.set_label("Particle ID")
 ax.set_xlabel("Time Iteration")
 ax.set_ylabel("Entropy")
 # ax.set_xlim(0, 60000)
