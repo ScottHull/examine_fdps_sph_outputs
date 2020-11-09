@@ -39,7 +39,7 @@ ax = fig.add_subplot(111)
 times = []
 distances = []
 entropies = []
-ids = [particle_map[i].particle_name for i in rand_selected_particles_indices]
+ids = []
 
 for time in np.arange(start_time, end_time + interval, interval):
     combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()

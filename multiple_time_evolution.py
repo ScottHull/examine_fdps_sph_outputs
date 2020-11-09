@@ -44,7 +44,7 @@ entropies_1 = []
 times_2 = []
 distances_2 = []
 entropies_2 = []
-ids = [particle_map[i].particle_name for i in rand_selected_particles_indices]
+ids = []
 
 for time in np.arange(start_time, end_time + interval, interval):
     combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs_1).combine()
