@@ -79,7 +79,7 @@ for time in np.arange(start_time, end_time + interval, interval):
 #     c=ids,
 # )
 for i in d.keys():
-    ax.scatter(
+    ax.plot(
         d[i]['times'],
         d[i]['entropy'],
     )

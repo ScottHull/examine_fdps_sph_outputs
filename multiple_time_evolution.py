@@ -122,12 +122,12 @@ def get_cmap(n, name='hsv'):
 cmap = get_cmap(len(d[1].keys()))
 for i in d[1].keys():
     c = cmap(i)
-    ax.scatter(
+    ax.plot(
         d[1][i]['times'],
         d[1][i]['entropy'],
         c=c
     )
-    ax2.scatter(
+    ax2.plot(
         d[2][i]['times'],
         d[2][i]['entropy'],
         c=c
