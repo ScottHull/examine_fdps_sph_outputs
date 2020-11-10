@@ -36,6 +36,14 @@ rand_selected_particles_indices = [randint(0, len(disk_particles) - 1) for i in 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
 
+d = {}
+for i in rand_selected_particles_indices:
+    d.update({i: {
+        "distance": [],
+        "entropy": [],
+        "id": [],
+        "times": []
+    }})
 times = []
 distances = []
 entropies = []
@@ -47,19 +55,29 @@ for time in np.arange(start_time, end_time + interval, interval):
     pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True, center_plot=True)
     particle_map = pm.solve()
     os.remove(f)
-    times += [time for t in rand_selected_particles_indices]
-    distances += [particle_map[p].distance / 1000.0 for p in rand_selected_particles_indices]
-    entropies += [particle_map[p].entropy for p in rand_selected_particles_indices]
-    ids += [particle_map[i].particle_name for i in rand_selected_particles_indices]
+    for i in rand_selected_particles_indices:
+        d[i]["distance"].append(particle_map[i].distance / 1000.0)
+        d[i]["entropy"].append(particle_map[i].entropy)
+        d[i]["id"].append(particle_map[i].particle_name)
+        d[i]["times"].append(time)
+    # times += [time for t in rand_selected_particles_indices]
+    # distances += [particle_map[p].distance / 1000.0 for p in rand_selected_particles_indices]
+    # entropies += [particle_map[p].entropy for p in rand_selected_particles_indices]
+    # ids += [particle_map[i].particle_name for i in rand_selected_particles_indices]
 
-sc = ax.scatter(
-    times,
-    entropies,
-    c=ids,
-    marker="+"
-)
-cbar = plt.colorbar(sc)
-cbar.set_label("Particle ID")
+# sc = ax.scatter(
+#     times,
+#     entropies,
+#     c=ids,
+# )
+for i in d.keys():
+    ax.scatter(
+        d[i]['times'],
+        d[i]['entropy'],
+    )
+
+# cbar = plt.colorbar(sc)
+# cbar.set_label("Particle ID")
 ax.set_xlabel("Time Iteration")
 ax.set_ylabel("Entropy")
 # ax.set_xlim(0, 60000)

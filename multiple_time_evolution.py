@@ -70,13 +70,11 @@ sc = ax.scatter(
     times_1,
     entropies_1,
     c=ids,
-    marker="+"
 )
 ax2.scatter(
     times_2,
     entropies_2,
     c=ids,
-    marker="+"
 )
 cbar = plt.colorbar(sc)
 cbar.set_label("Particle ID")
