@@ -12,9 +12,10 @@ from random import randint
 
 start_time = 0
 end_time = 5000
-interval = 50
+interval = 500
 number_processes = 100
-num_rand_particles = 50
+num_rand_particles = 10
+entropy_lim = 7000
 
 path_to_outputs = "/scratch/shull4/GI"
 entropy_plot_path = os.getcwd() + "/entropy"
@@ -26,12 +27,19 @@ for i in paths:
     os.mkdir(i)
 
 rand_particles = []
+rand_selected_particles_indices = []
 combined_file = CombineFile(num_processes=number_processes, time=end_time, output_path=path_to_outputs).combine()
 f = os.getcwd() + "/merged_{}.dat".format(end_time)
 pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True, center_plot=True)
 particle_map = pm.solve()
 disk_particles = [p for p in particle_map if p.label == "DISK"]
-rand_selected_particles_indices = [randint(0, len(disk_particles) - 1) for i in range(0, num_rand_particles)]
+found_particles = 0
+while found_particles < num_rand_particles:
+    rand_index = randint(0, len(disk_particles) - 1)
+    rand_particle = particle_map[rand_index]
+    if rand_particle.entropy >= entropy_lim:
+        rand_selected_particles_indices.append(rand_index)
+        found_particles += 1
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
