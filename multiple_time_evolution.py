@@ -12,9 +12,9 @@ from random import randint
 
 start_time = 0
 end_time = 5000
-interval = 50
+interval = 500
 number_processes = 100
-num_rand_particles = 50
+num_rand_particles = 10
 
 path_to_outputs_1 = "/scratch/shull4/GI"
 path_to_outputs_2 = "/scratch/shull4/GI2"
@@ -38,6 +38,22 @@ fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(211)
 ax2 = fig.add_subplot(212)
 
+d = {}
+for i in rand_selected_particles_indices:
+    d.update({
+        1: {i: {
+            "distance": [],
+            "entropy": [],
+            "id": [],
+            "times": []
+        }},
+        2: {i: {
+            "distance": [],
+            "entropy": [],
+            "id": [],
+            "times": []
+        }}
+    })
 times_1 = []
 distances_1 = []
 entropies_1 = []
@@ -52,35 +68,68 @@ for time in np.arange(start_time, end_time + interval, interval):
     pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True, center_plot=True)
     particle_map = pm.solve()
     os.remove(f)
-    times_1 += [time for t in rand_selected_particles_indices]
-    distances_1 += [particle_map[p].distance / 1000.0 for p in rand_selected_particles_indices]
-    entropies_1 += [particle_map[p].entropy for p in rand_selected_particles_indices]
-    ids += [particle_map[i].particle_name for i in rand_selected_particles_indices]
+    for i in rand_selected_particles_indices:
+        d[1][i]["distance"].append(particle_map[i].distance / 1000.0)
+        d[1][i]["entropy"].append(particle_map[i].entropy)
+        d[1][i]["id"].append(particle_map[i].particle_name)
+        d[1][i]["times"].append(time)
+    # times_1 += [time for t in rand_selected_particles_indices]
+    # distances_1 += [particle_map[p].distance / 1000.0 for p in rand_selected_particles_indices]
+    # entropies_1 += [particle_map[p].entropy for p in rand_selected_particles_indices]
+    # ids += [particle_map[i].particle_name for i in rand_selected_particles_indices]
 
     combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs_2).combine()
     f = os.getcwd() + "/merged_{}.dat".format(time)
     pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True, center_plot=True)
     particle_map = pm.solve()
     os.remove(f)
-    times_2 += [time for t in rand_selected_particles_indices]
-    distances_2 += [particle_map[p].distance / 1000.0 for p in rand_selected_particles_indices]
-    entropies_2 += [particle_map[p].entropy for p in rand_selected_particles_indices]
+    for i in rand_selected_particles_indices:
+        d[2][i]["distance"].append(particle_map[i].distance / 1000.0)
+        d[2][i]["entropy"].append(particle_map[i].entropy)
+        d[2][i]["id"].append(particle_map[i].particle_name)
+        d[2][i]["times"].append(time)
+    # times_2 += [time for t in rand_selected_particles_indices]
+    # distances_2 += [particle_map[p].distance / 1000.0 for p in rand_selected_particles_indices]
+    # entropies_2 += [particle_map[p].entropy for p in rand_selected_particles_indices]
 
-sc = ax.scatter(
-    times_1,
-    entropies_1,
-    c=ids,
-)
-ax2.scatter(
-    times_2,
-    entropies_2,
-    c=ids,
-)
-cbar = plt.colorbar(sc)
-cbar.set_label("Particle ID")
-ax.set_xlabel("Time Iteration")
+
+def get_cmap(n, name='hsv'):
+    '''Returns a function that maps each index in 0, 1, ..., n-1 to a distinct
+    RGB color; the keyword argument name must be a standard mpl colormap name.'''
+    return plt.cm.get_cmap(name, n)
+
+
+# sc = ax.scatter(
+#     times_1,
+#     entropies_1,
+#     c=ids,
+# )
+# ax2.scatter(
+#     times_2,
+#     entropies_2,
+#     c=ids,
+# )
+# cbar = plt.colorbar(sc)
+# cbar.set_label("Particle ID")
+cmap = get_cmap(len(d[1].keys()))
+for i in d[1].keys():
+    c = cmap(i)
+    ax.scatter(
+        d[1][i]['times'],
+        d[1][i]['entropy'],
+        c=c
+    )
+    ax2.scatter(
+        d[2][i]['times'],
+        d[2][i]['entropy'],
+        c=c
+    )
+ax2.set_xlabel("Time Iteration")
 ax.set_ylabel("Entropy")
+ax2.set_ylabel("Entropy")
 # ax.set_xlim(0, 60000)
 ax.set_ylim(0, 10000)
+ax2.set_ylim(0, 10000)
 ax.grid()
-fig.savefig("entropy_as_func_of_time.png", format="png")
+ax2.grid()
+fig.savefig("multiple_entropy_as_func_of_time.png", format="png")
