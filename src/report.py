@@ -3,9 +3,6 @@ import pandas as pd
 
 
 def make_report(particles, time, to_directory="/particle_outputs"):
-    if not os.path.exists(os.getcwd() + to_directory):
-        os.mkdir(os.getcwd() + to_directory)
-    path = os.getcwd() + to_directory
     pd.DataFrame({
         "particle_id": [p.particle_name for p in particles],
         "tag": [p.particle_id for p in particles],
@@ -23,4 +20,4 @@ def make_report(particles, time, to_directory="/particle_outputs"):
         "entropy": [p.entopy for p in particles],
         "temperature": [p.temperature for p in particles],
         "mass_grav_body": [p.mass_grav_body for p in particles]
-    }).to_csv(path + "/{}.csv".format(time))
+    }).to_csv(to_directory + "/{}.csv".format(time))
