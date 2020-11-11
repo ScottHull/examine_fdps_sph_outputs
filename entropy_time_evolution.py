@@ -98,7 +98,7 @@ ax.grid()
 fig.savefig("entropy_as_func_of_time.png", format="png")
 
 fig = plt.figure()
-ax = ax.add_subplot(111)
+ax = fig.add_subplot(111)
 for i in d.keys():
     ax.plot(
         d[i]['times'],
@@ -112,7 +112,7 @@ ax.grid()
 fig.savefig("density_as_func_of_time.png", format="png")
 
 fig = plt.figure()
-ax = ax.add_subplot(111)
+ax = fig.add_subplot(111)
 for i in d.keys():
     ax.plot(
         d[i]['times'],
