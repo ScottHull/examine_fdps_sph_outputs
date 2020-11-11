@@ -49,7 +49,9 @@ for i in rand_selected_particles_indices:
         "distance": [],
         "entropy": [],
         "id": [],
-        "times": []
+        "times": [],
+        "density": [],
+        "internal_energy": []
     }})
 times = []
 distances = []
@@ -68,6 +70,8 @@ for time in np.arange(start_time, end_time + interval, interval):
         d[i]["entropy"].append(p.entropy)
         d[i]["id"].append(p.particle_name)
         d[i]["times"].append(time)
+        d[i]["density"].append((p.density))
+        d[i]["internal_energy"].append((p.internal_energy))
     # times += [time for t in rand_selected_particles_indices]
     # distances += [particle_map[p].distance / 1000.0 for p in rand_selected_particles_indices]
     # entropies += [particle_map[p].entropy for p in rand_selected_particles_indices]
@@ -92,3 +96,31 @@ ax.set_ylabel("Entropy")
 ax.set_ylim(0, 10000)
 ax.grid()
 fig.savefig("entropy_as_func_of_time.png", format="png")
+
+fig = plt.figure()
+ax = ax.add_subplot(111)
+for i in d.keys():
+    ax.plot(
+        d[i]['times'],
+        d[i]['density'],
+    )
+ax.set_xlabel("Time Iteration")
+ax.set_ylabel("Density")
+# ax.set_xlim(0, 60000)
+# ax.set_ylim(0, 10000)
+ax.grid()
+fig.savefig("density_as_func_of_time.png", format="png")
+
+fig = plt.figure()
+ax = ax.add_subplot(111)
+for i in d.keys():
+    ax.plot(
+        d[i]['times'],
+        d[i]['internal_energy'],
+    )
+ax.set_xlabel("Time Iteration")
+ax.set_ylabel("Internal Energy")
+# ax.set_xlim(0, 60000)
+# ax.set_ylim(0, 10000)
+ax.grid()
+fig.savefig("internal_energy_as_func_of_time.png", format="png")
