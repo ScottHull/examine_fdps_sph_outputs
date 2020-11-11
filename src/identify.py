@@ -250,5 +250,22 @@ class ParticleMapFromFiles:
         self.path = path
 
     def read(self, time):
-        pd.read_csv(self.path + "/{}.csv".format())
-
+        particles = []
+        df = pd.read_csv(self.path + "/{}.csv".format(time))
+        for row in df.index:
+            position_vector = [df["x"][row], df["y"][row], df["z"][row]]
+            velocity_vector = [df["v_x"][row], df["v_y"][row], df["v_z"][row]]
+            p = Particle(
+                particle_name=df["particle_id"][row],
+                particle_id=df["tag"][row],
+                position_vector=position_vector,
+                velocity_vector=velocity_vector,
+                mass=df["mass"][row],
+                density=df["density"][row],
+                internal_energy=df["internal_energy"][row],
+                entropy=df["entropy"][row],
+                temperature=df["temperature"][row],
+                mass_grav_body=df["mass_grav_body"]
+            )
+            particles.append(p)
+        return particles
