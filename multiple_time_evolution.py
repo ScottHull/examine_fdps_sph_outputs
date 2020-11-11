@@ -38,7 +38,7 @@ found_particles = 0
 while found_particles < num_rand_particles:
     rand_index = randint(0, len(disk_particles) - 1)
     rand_particle = disk_particles[rand_index]
-    if rand_particle.entropy >= entropy_lim:
+    if rand_particle.entropy >= entropy_lim and rand_particle.particle_name not in rand_selected_particles_indices:
         rand_selected_particles_indices.append(rand_particle.particle_name)
         found_particles += 1
 
