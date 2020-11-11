@@ -243,3 +243,12 @@ class ParticleMap:
             )
 
         return particles
+
+class ParticleMapFromFiles:
+
+    def __init__(self, path):
+        self.path = path
+
+    def read(self, time):
+        pd.read_csv(self.path + "/{}.csv".format())
+

@@ -37,9 +37,9 @@ disk_particles = [p for p in particle_map if p.label == "DISK"]
 found_particles = 0
 while found_particles < num_rand_particles:
     rand_index = randint(0, len(disk_particles) - 1)
-    rand_particle = particle_map[rand_index]
+    rand_particle = disk_particles[rand_index]
     if rand_particle.entropy >= entropy_lim:
-        rand_selected_particles_indices.append(rand_index)
+        rand_selected_particles_indices.append(rand_particle.particle_name)
         found_particles += 1
 
 fig = plt.figure(figsize=(16, 9))
@@ -77,9 +77,10 @@ for time in np.arange(start_time, end_time + interval, interval):
     particle_map = pm.solve()
     os.remove(f)
     for i in rand_selected_particles_indices:
-        d[1][i]["distance"].append(particle_map[i].distance / 1000.0)
-        d[1][i]["entropy"].append(particle_map[i].entropy)
-        d[1][i]["id"].append(particle_map[i].particle_name)
+        p = [p for p in particle_map if p.particle_name == i][0]
+        d[1][i]["distance"].append(p.distance / 1000.0)
+        d[1][i]["entropy"].append(p.entropy)
+        d[1][i]["id"].append(p.particle_name)
         d[1][i]["times"].append(time)
     # times_1 += [time for t in rand_selected_particles_indices]
     # distances_1 += [particle_map[p].distance / 1000.0 for p in rand_selected_particles_indices]
@@ -92,9 +93,10 @@ for time in np.arange(start_time, end_time + interval, interval):
     particle_map = pm.solve()
     os.remove(f)
     for i in rand_selected_particles_indices:
-        d[2][i]["distance"].append(particle_map[i].distance / 1000.0)
-        d[2][i]["entropy"].append(particle_map[i].entropy)
-        d[2][i]["id"].append(particle_map[i].particle_name)
+        p = [p for p in particle_map if p.particle_name == i][0]
+        d[2][i]["distance"].append(p.distance / 1000.0)
+        d[2][i]["entropy"].append(p.entropy)
+        d[2][i]["id"].append(p.particle_name)
         d[2][i]["times"].append(time)
     # times_2 += [time for t in rand_selected_particles_indices]
     # distances_2 += [particle_map[p].distance / 1000.0 for p in rand_selected_particles_indices]
