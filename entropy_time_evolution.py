@@ -26,7 +26,6 @@ for i in paths:
         shutil.rmtree(i)
     os.mkdir(i)
 
-rand_particles = []
 rand_selected_particles_indices = []
 combined_file = CombineFile(num_processes=number_processes, time=end_time, output_path=path_to_outputs).combine()
 f = os.getcwd() + "/merged_{}.dat".format(end_time)
@@ -37,7 +36,7 @@ found_particles = 0
 while found_particles < num_rand_particles:
     rand_index = randint(0, len(disk_particles) - 1)
     rand_particle = disk_particles[rand_index]
-    if rand_particle.entropy >= entropy_lim:
+    if rand_particle.entropy >= entropy_lim and rand_particle.particle_name not in rand_selected_particles_indices:
         rand_selected_particles_indices.append(rand_particle.particle_name)
         found_particles += 1
 
