@@ -17,7 +17,7 @@ def make_report(particles, time, to_directory="/particle_outputs"):
         "mass": [p.mass for p in particles],
         "internal_energy": [p.internal_energy for p in particles],
         "density": [p.density for p in particles],
-        "entropy": [p.entopy for p in particles],
+        "entropy": [p.entropy for p in particles],
         "temperature": [p.temperature for p in particles],
         "mass_grav_body": [p.mass_grav_body for p in particles]
     }).to_csv(to_directory + "/{}.csv".format(time))
