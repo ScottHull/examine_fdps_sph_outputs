@@ -46,22 +46,17 @@ fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(211)
 ax2 = fig.add_subplot(212)
 
-d = {}
+d = {1: {}, 2:{}}
 for i in rand_selected_particles_indices:
-    d.update({
-        1: {i: {
+    for key in d.keys():
+        d[key].update({i: {
             "distance": [],
             "entropy": [],
             "id": [],
-            "times": []
-        }},
-        2: {i: {
-            "distance": [],
-            "entropy": [],
-            "id": [],
-            "times": []
-        }}
-    })
+            "times": [],
+            "density": [],
+            "internal_energy": []
+        }})
 times_1 = []
 distances_1 = []
 entropies_1 = []
