@@ -140,13 +140,13 @@ class BuildMovie:
             ax.set_xbound(-5e7, 5e7)
             ax.set_ybound(-5e7, 5e7)
             # ax.axis('equal')
-            if savefig:
-                ax.set_title("Iteration: {}".format(self.curr_file))
-                print("Built scene: {}".format(self.curr_file))
-                fig.savefig(self.to_path + "/output_{}.png".format(self.curr_file), format='png', dpi=100)
-                self.curr_file += 1
-            else:
-                plt.show()
+        if savefig:
+            ax.set_title("Iteration: {}".format(self.curr_file))
+            print("Built scene: {}".format(self.curr_file))
+            fig.savefig(self.to_path + "/output_{}.png".format(self.curr_file), format='png', dpi=100)
+            self.curr_file += 1
+        else:
+            plt.show()
 
         fig.clear()
         plt.close(fig)
