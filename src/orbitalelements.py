@@ -5,7 +5,7 @@ import numpy as np
 class Particle:
 
     def __init__(self, position_vector, velocity_vector, mass, density, mass_grav_body, particle_id,
-                 temperature, entropy, internal_energy, particle_name=None):
+                 temperature, entropy, internal_energy, particle_name=None, relative_velocity_vector=None):
         self.__G = 6.674 * 10 ** -11
         self.label = None
         self.assigned_body = None
@@ -13,7 +13,10 @@ class Particle:
         self.particle_id = particle_id
         self.position_vector = position_vector
         self.velocity_vector = velocity_vector
-        self.relative_velocity_vector = self.velocity_vector
+        if relative_velocity_vector is None:
+            self.relative_velocity_vector = self.velocity_vector
+        else:
+            self.relative_velocity_vector = relative_velocity_vector
         self.distance = np.linalg.norm(position_vector)
         self.mass = float(mass)
         self.density = float(density)

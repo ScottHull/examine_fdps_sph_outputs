@@ -9,3 +9,5 @@ path = "/scratch/shull4/GI_outfiles"
 
 for time in np.arange(start_time, end_time + interval, interval):
     particles = pd.read_csv(path + "/{}.csv".format(time))
+    disk_particles = particles.loc[particles[''] == some_value]
+
