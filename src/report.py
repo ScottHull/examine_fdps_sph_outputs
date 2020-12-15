@@ -6,6 +6,7 @@ def make_report(particles, time, to_directory="/particle_outputs"):
     pd.DataFrame({
         "particle_id": [p.particle_name for p in particles],
         "tag": [p.particle_id for p in particles],
+        "label": [p.label for p in particles],
         "x": [p.position_vector[0] for p in particles],
         "y": [p.position_vector[1] for p in particles],
         "z": [p.position_vector[2] for p in particles],
