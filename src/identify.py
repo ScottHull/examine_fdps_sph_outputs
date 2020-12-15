@@ -269,5 +269,6 @@ class ParticleMapFromFiles:
                 temperature=df["temperature"][row],
                 mass_grav_body=df["mass_grav_body"][row]
             )
+            p.label = df["label"][row]
             particles.append(p)
         return particles
