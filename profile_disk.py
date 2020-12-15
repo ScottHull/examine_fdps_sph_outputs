@@ -50,10 +50,10 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.plot(np.arange(start_time, end_time + interval, interval), planet_masses, linewidth=2.0,
         color="green", label="Planet Mass")
-ax.plot(np.arange(start_time, end_time + interval, interval), disk_masses, linewidth=2.0,
-        color="blue", label="Disk Mass")
 ax.plot(np.arange(start_time, end_time + interval, interval), escaping_masses, linewidth=2.0,
         color="red", label="Escaping Mass")
+ax.plot(np.arange(start_time, end_time + interval, interval), disk_masses, linewidth=2.0,
+        color="blue", label="Disk Mass")
 ax.set_xlabel("Time (iteration)")
 ax.set_ylabel("Mass")
 ax.set_title("Disk and Escaping Mass")
@@ -65,10 +65,10 @@ fig.clear()
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.scatter(disk_end_positions, disk_entropies[-1], marker="+",
-        color="blue", label="Disk Entropy")
 ax.scatter(escaping_end_positions, escaping_entropies[-1], marker="+",
         color="red", label="Escaping Entropy")
+ax.scatter(disk_end_positions, disk_entropies[-1], marker="+",
+        color="blue", label="Disk Entropy")
 ax.set_xlabel("Time (iteration)")
 ax.set_ylabel("Entropy")
 ax.set_title("Disk and Escaping Entropy at Iteration {}".format(end_time))
