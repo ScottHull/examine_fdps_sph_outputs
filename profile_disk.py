@@ -18,10 +18,12 @@ escaping_entropies = []
 disk_end_positions = []
 escaping_end_positions = []
 for time in np.arange(start_time, end_time + interval, interval):
+    print("At iteration: {}".format(time))
     particle_map = ParticleMapFromFiles(path=path).read(time=time)
     disk_particles = [i for i in particle_map if i.label == "DISK"]
     escaping_particles = [i for i in particle_map if i.label == "ESCAPE"]
     disk_masses.append(sum([i.mass for i in disk_particles]))
+    escaping_masses.append(sum([i.mass for i in disk_particles]))
     disk_entropy = [i.entropy for i in disk_particles]
     escape_entropy = [i.entropy for i in escaping_particles]
     if len(disk_particles) > 0:
