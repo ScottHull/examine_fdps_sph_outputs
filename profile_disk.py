@@ -24,8 +24,14 @@ for time in np.arange(start_time, end_time + interval, interval):
     disk_masses.append(sum([i.mass for i in disk_particles]))
     disk_entropy = [i.entropy for i in disk_particles]
     escape_entropy = [i.entropy for i in escaping_particles]
-    avg_disk_entropies.append(sum(disk_entropy) / len(disk_particles))
-    avg_escaping_entropies.append(sum(escape_entropy) / len(escaping_particles))
+    if len(disk_particles) > 0:
+        avg_disk_entropies.append(sum(disk_entropy) / len(disk_particles))
+    else:
+        avg_disk_entropies.append(0)
+    if len(escaping_particles) > 0:
+        avg_escaping_entropies.append(sum(escape_entropy) / len(escaping_particles))
+    else:
+        avg_escaping_entropies.append(0)
     disk_entropies.append(disk_entropies)
     escaping_entropies.append(escape_entropy)
 
