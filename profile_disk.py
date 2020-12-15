@@ -7,7 +7,7 @@ from src.identify import ParticleMapFromFiles
 start_time = 0
 end_time = 5000
 interval = 100
-path = "/scratch/shull4/GI_outputs"
+path = "/scratch/shull4/GI_outfiles"
 
 disk_masses = []
 escaping_masses = []
