@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 from src.identify import ParticleMapFromFiles
 
 # this code works reports.py outputs for pre-profiled simulations
-start_time = 5000
+start_time = 0
 end_time = 5000
-interval = 1
-path = "/Users/scotthull/Desktop"
+interval = 100
+path = "/scratch/shull4/GI_outputs"
 
 disk_masses = []
 escaping_masses = []
