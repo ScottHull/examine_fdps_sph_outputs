@@ -43,8 +43,8 @@ for time in np.arange(start_time, end_time + interval, interval):
     escaping_entropies.append(escape_entropy)
     planet_entropies.append(planet_entropy)
     if time == end_time:
-        disk_end_positions = [i.distance for i in disk_particles]
-        escaping_end_positions = [i.distance for i in escaping_particles]
+        disk_end_positions = [i.distance / 1000.0 for i in disk_particles]
+        escaping_end_positions = [i.distance / 1000.0 for i in escaping_particles]
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -69,7 +69,7 @@ ax.scatter(escaping_end_positions, escaping_entropies[-1], marker="+",
         color="red", label="Escaping Entropy", alpha=0.3)
 ax.scatter(disk_end_positions, disk_entropies[-1], marker="+",
         color="blue", label="Disk Entropy", alpha=0.3)
-ax.set_xlabel("Time (iteration)")
+ax.set_xlabel("Distance From Planet Center (km)")
 ax.set_ylabel("Entropy")
 ax.set_title("Disk and Escaping Entropy at Iteration {}".format(end_time))
 ax.grid()
