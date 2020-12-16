@@ -37,7 +37,13 @@ for time in np.arange(start_time, end_time + interval, interval):
     # vmf = s.calc_vapor_mass_fraction(target_label="DISK")
     # make_report(particles=particle_map, time=time)
     # os.remove(f)
-    fig = plots.plot_eccentricities(particles=particle_map, a=pm.a, b=pm.b)
+    fig = plots.plot_eccentricities(
+        particles=particle_map,
+        # a=pm.a,
+        # b=pm.b
+        a=1e6,
+        b=1e6,
+    )
     fig.savefig(eccentricity_plot_path + "/{}.png".format(time), format='png')
     plt.close()
     fig = plots.scatter_particles(
