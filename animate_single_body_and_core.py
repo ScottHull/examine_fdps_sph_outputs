@@ -40,6 +40,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     iron_z = [i for index, i in enumerate(z) if tag[index] == 1]
 
     fig = plt.figure()
+    fig.set_size_inches(18.5, 10.5)
     ax_silicate = fig.add_subplot(121, projection='3d')
     ax_iron = fig.add_subplot(122, projection='3d')
     ax_silicate.scatter(
