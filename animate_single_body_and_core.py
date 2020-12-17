@@ -32,12 +32,12 @@ for time in np.arange(start_time, end_time + interval, interval):
     os.remove(sph_file)
     tag, x, y, z = df[1], df[3], df[4], df[5]
 
-    silicate_x = [i for index, i in x if tag[index] == 0]
-    silicate_y = [i for index, i in y if tag[index] == 0]
-    silicate_z = [i for index, i in z if tag[index] == 0]
-    iron_x = [i for index, i in x if tag[index] == 1]
-    iron_y = [i for index, i in y if tag[index] == 1]
-    iron_z = [i for index, i in z if tag[index] == 1]
+    silicate_x = [i for index, i in enumerate(x) if tag[index] == 0]
+    silicate_y = [i for index, i in enumerate(y) if tag[index] == 0]
+    silicate_z = [i for index, i in enumerate(z) if tag[index] == 0]
+    iron_x = [i for index, i in enumerate(x) if tag[index] == 1]
+    iron_y = [i for index, i in enumerate(y) if tag[index] == 1]
+    iron_z = [i for index, i in enumerate(z) if tag[index] == 1]
 
     fig = plt.figure()
     ax_silicate = fig.add_subplot(121, projection='3d')
