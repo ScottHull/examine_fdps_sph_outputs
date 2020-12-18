@@ -2,6 +2,7 @@ import os
 import shutil
 from math import sqrt
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import moviepy.editor as mpy
 from src.identify import ParticleMapFromFiles
@@ -11,13 +12,16 @@ end_time = 10
 interval = 1
 path = "/scratch/shull4/GI_outfiles"
 output_path = "mode1_profile_plot_outputs"
+positions_output_path = "mode1_positions_profile_plot_outputs"
+paths = [output_path, positions_output_path]
 
 
-if output_path in os.listdir(os.getcwd()):
-    shutil.rmtree(output_path)
-os.mkdir(output_path)
-os.mkdir(output_path + "/target")
-os.mkdir(output_path + "/impactor")
+for o in paths:
+    if o in os.listdir(os.getcwd()):
+        shutil.rmtree(o)
+    os.mkdir(o)
+    os.mkdir(o + "/target")
+    os.mkdir(o + "/impactor")
 
 def animate(start_time, end_time, interval, output_path, file_name="output.mp4"):
     frames = [output_path + "/{}.png".format(i) for i in np.arange(start_time, end_time + interval, interval)]
@@ -95,7 +99,73 @@ for time in np.arange(start_time, end_time + interval, interval):
     plt.savefig(output_path + "/impactor/{}.png".format(time), format="png")
     plt.close()
 
+    fig = plt.figure()
+    fig.set_size_inches(18.5, 10.5)
+    ax_silicate = fig.add_subplot(121, projection='3d')
+    ax_iron = fig.add_subplot(122, projection='3d')
+    ax_silicate.scatter(
+        [i.position_vector[0] for i in target_silicate],
+        [i.position_vector[1] for i in target_silicate],
+        [i.position_vector[2] for i in target_silicate],
+        color="red",
+        marker="+"
+    )
+    ax_iron.scatter(
+        [i.position_vector[0] for i in target_iron],
+        [i.position_vector[1] for i in target_iron],
+        [i.position_vector[2] for i in target_iron],
+        color="blue",
+        marker="+"
+    )
+    ax_silicate.set_title("Target Silicate: Iteration {}".format(time))
+    ax_iron.set_title("Target Iron: Iteration {}".format(time))
+    ax_silicate.set_xlim(-8000e3, 8000e3)
+    ax_silicate.set_ylim(-8000e3, 8000e3)
+    ax_silicate.set_zlim(-8000e3, 8000e3)
+    ax_iron.set_xlim(-8000e3, 8000e3)
+    ax_iron.set_ylim(-8000e3, 8000e3)
+    ax_iron.set_zlim(-8000e3, 8000e3)
+    plt.tight_layout()
+    plt.savefig(positions_output_path + "/target/{}.png".format(time), format="png")
+    plt.close()
+
+    fig = plt.figure()
+    fig.set_size_inches(18.5, 10.5)
+    ax_silicate = fig.add_subplot(121, projection='3d')
+    ax_iron = fig.add_subplot(122, projection='3d')
+    ax_silicate.scatter(
+        [i.position_vector[0] for i in impactor_silicate],
+        [i.position_vector[1] for i in impactor_silicate],
+        [i.position_vector[2] for i in impactor_silicate],
+        color="red",
+        marker="+"
+    )
+    ax_iron.scatter(
+        [i.position_vector[0] for i in impactor_iron],
+        [i.position_vector[1] for i in impactor_iron],
+        [i.position_vector[2] for i in impactor_iron],
+        color="blue",
+        marker="+"
+    )
+    ax_silicate.set_title("Impactor Silicate: Iteration {}".format(time))
+    ax_iron.set_title("Impactor Iron: Iteration {}".format(time))
+    ax_silicate.set_xlim(-8000e3, 8000e3)
+    ax_silicate.set_ylim(-8000e3, 8000e3)
+    ax_silicate.set_zlim(-8000e3, 8000e3)
+    ax_iron.set_xlim(-8000e3, 8000e3)
+    ax_iron.set_ylim(-8000e3, 8000e3)
+    ax_iron.set_zlim(-8000e3, 8000e3)
+    plt.tight_layout()
+    plt.savefig(positions_output_path + "/impactor/{}.png".format(time), format="png")
+    plt.close()
+
 animate(start_time=start_time, end_time=end_time, interval=interval, output_path=output_path + "/target",
         file_name="target_mode1.mp4")
 animate(start_time=start_time, end_time=end_time, interval=interval, output_path=output_path + "/impactor",
         file_name="impactor_mode1.mp4")
+animate(start_time=start_time, end_time=end_time, interval=interval, output_path=positions_output_path + "/target",
+        file_name="target_profile_mode1.mp4")
+animate(start_time=start_time, end_time=end_time, interval=interval, output_path=positions_output_path + "/impactor",
+        file_name="impactor_profile_mode1.mp4")
+
+shutil.rmtree(output_path)
