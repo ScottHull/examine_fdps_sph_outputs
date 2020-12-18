@@ -95,6 +95,9 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax.set_ylabel("Internal Energy")
     ax.set_title("Iteration: {}".format(time))
     ax.grid()
+    plt.tight_layout()
+    plt.savefig(internal_energy_path + "/{}.png".format(time), format="png")
+    plt.close()
 
 for index, output_path in enumerate(paths):
     fname = fnames[index]
