@@ -1,18 +1,28 @@
 import os
 import shutil
+from math import sqrt
 import matplotlib.pyplot as plt
 import numpy as np
+import moviepy.editor as mpy
 from src.identify import ParticleMapFromFiles
 
 start_time = 0
 end_time = 10
 interval = 1
-path = "/scratch/shull4/GI2_outfiles"
+path = "/scratch/shull4/GI_outfiles"
 output_path = "mode1_profile_plot_outputs"
+
 
 if output_path in os.listdir(os.getcwd()):
     shutil.rmtree(output_path)
 os.mkdir(output_path)
+os.mkdir(output_path + "/target")
+os.mkdir(output_path + "/impactor")
+
+def animate(start_time, end_time, interval, output_path, file_name="output.mp4"):
+    frames = [output_path + "/{}.png".format(i) for i in np.arange(start_time, end_time + interval, interval)]
+    animation = mpy.ImageSequenceClip(frames, fps=2, load_images=True)
+    animation.write_videofile(file_name, fps=2)
 
 for time in np.arange(start_time, end_time + interval, interval):
     particle_map = ParticleMapFromFiles(path=path).read(time=time)
@@ -20,41 +30,70 @@ for time in np.arange(start_time, end_time + interval, interval):
     target_iron_particles = [i for i in particle_map if i.particle_id == 1]
     impactor_silicate_particles = [i for i in particle_map if i.particle_id == 2]
     impactor_iron_particles = [i for i in particle_map if i.particle_id == 3]
-
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.scatter(
-        [i.distance / 1000.0 for i in target_silicate_particles],
-        [i.entropy for i in target_silicate_particles],
-        marker="+",
-        color="red",
-        label="Target Silicate"
+    
+    target_fig = plt.figure()
+    target_fig.set_size_inches(18.5, 10.5)
+    target_silicate = target_fig.add_subplot(121)
+    target_iron = target_fig.add_subplot(122)
+    sc_silicate = target_silicate.scatter(
+        [sqrt(i.position_vector[0]**2 + i.position_vector[1]**2 + i.position_vector[2]**2) / 1000.0 for i in 
+         target_silicate_particles],
+        [i.internal_energy for i in target_silicate_particles],
+        c=[i.entropy for i in target_silicate_particles]
     )
-    ax.scatter(
-        [i.distance / 1000.0 for i in target_iron_particles],
-        [i.entropy for i in target_iron_particles],
-        marker="+",
-        color="blue",
-        label="Target Iron"
+    cbar_silicate = plt.colorbar(sc_silicate)
+    cbar_silicate.set_label("Entropy")
+    target_silicate.set_xlabel("Distance from Target Center (km)")
+    target_silicate.set_ylabel("Internal Energy")
+    target_silicate.set_title("Iteration: {}".format(time))
+    target_silicate.grid()
+    sc_iron = target_iron.scatter(
+        [sqrt(i.position_vector[0] ** 2 + i.position_vector[1] ** 2 + i.position_vector[2] ** 2) / 1000.0 for i in
+         target_iron_particles],
+        [i.internal_energy for i in target_iron_particles],
+        c=[i.entropy for i in target_iron_particles]
     )
-    ax.scatter(
-        [i.distance / 1000.0 for i in impactor_silicate_particles],
-        [i.entropy for i in impactor_silicate_particles],
-        marker="+",
-        color="green",
-        label="Impactor Silicate"
-    )
-    ax.scatter(
-        [i.distance / 1000.0 for i in impactor_iron_particles],
-        [i.entropy for i in impactor_iron_particles],
-        marker="+",
-        color="purple",
-        label="Impactor Iron"
-    )
-    ax.set_xlabel("Distance from Target Center (km)")
-    ax.set_ylabel("Entropy")
-    ax.set_title("Time Iteration: {}".format(time))
-    ax.grid()
-    ax.legend(loc='lower right')
-    plt.savefig(output_path + "/{}.png".format(time))
+    cbar_iron = plt.colorbar(sc_iron)
+    cbar_iron.set_label("Entropy")
+    target_iron.set_xlabel("Distance from Target Center (km)")
+    target_iron.set_title("Iteration: {}".format(time))
+    target_iron.grid()
+    plt.tight_layout()
+    plt.savefig(output_path + "/target/{}.png".format(time), format="png")
     plt.close()
+
+    impactor_fig = plt.figure()
+    impactor_fig.set_size_inches(18.5, 10.5)
+    impactor_silicate = impactor_fig.add_subplot(121)
+    impactor_iron = impactor_fig.add_subplot(122)
+    sc_silicate = impactor_silicate.scatter(
+        [sqrt(i.position_vector[0] ** 2 + i.position_vector[1] ** 2 + i.position_vector[2] ** 2) / 1000.0 for i in
+         impactor_silicate_particles],
+        [i.internal_energy for i in impactor_silicate_particles],
+        c=[i.entropy for i in impactor_silicate_particles]
+    )
+    cbar_silicate = plt.colorbar(sc_silicate)
+    cbar_silicate.set_label("Entropy")
+    impactor_silicate.set_xlabel("Distance from Target Center (km)")
+    impactor_silicate.set_ylabel("Internal Energy")
+    impactor_silicate.set_title("Iteration: {}".format(time))
+    impactor_silicate.grid()
+    sc_iron = impactor_iron.scatter(
+        [sqrt(i.position_vector[0] ** 2 + i.position_vector[1] ** 2 + i.position_vector[2] ** 2) / 1000.0 for i in
+         impactor_iron_particles],
+        [i.internal_energy for i in impactor_iron_particles],
+        c=[i.entropy for i in impactor_iron_particles]
+    )
+    cbar_iron = plt.colorbar(sc_iron)
+    cbar_iron.set_label("Entropy")
+    impactor_iron.set_xlabel("Distance from impactor Center (km)")
+    impactor_iron.set_title("Iteration: {}".format(time))
+    impactor_iron.grid()
+    plt.tight_layout()
+    plt.savefig(output_path + "/impactor/{}.png".format(time), format="png")
+    plt.close()
+
+animate(start_time=start_time, end_time=end_time, interval=interval, output_path=output_path + "/target",
+        file_name="target_mode1.mp4")
+animate(start_time=start_time, end_time=end_time, interval=interval, output_path=output_path + "/impactor",
+        file_name="impactor_mode1.mp4")
