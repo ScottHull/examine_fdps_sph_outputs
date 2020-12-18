@@ -29,7 +29,7 @@ ax.scatter(
     marker="+",
     label="Planet",
 )
-ax.set_xlabel("Distance from Target Center (km)")
+ax.set_xlabel("Distance from Center (km)")
 ax.set_ylabel("Entropy")
 ax.set_title("Distance vs. Entropy at Iteration: {}".format(time))
 ax.grid()
