@@ -15,8 +15,9 @@ number_processes = 100
 path = "/scratch/shull4/impactor"
 generic_output_path = "/scratch/shull4/single_body_animate"
 internal_energy_path = "/scratch/shull4/single_body_animate_internal_energy"
-paths = [generic_output_path, internal_energy_path]
-fnames = ["single_body_output.mp4", "single_body_output_internal_energy.mp4"]
+density_path = "/scratch/shull4/single_body_animate_density"
+paths = [generic_output_path, internal_energy_path, density_path]
+fnames = ["single_body_output.mp4", "single_body_output_internal_energy.mp4", "single_body_output_density.mp4"]
 
 for output_path in paths:
     if os.path.exists(output_path):
@@ -35,7 +36,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     sph_file = os.getcwd() + "/merged_{}.dat".format(time)
     df = pd.read_csv(sph_file, header=None, skiprows=2, delimiter="\t")
     os.remove(sph_file)
-    tag, x, y, z, energy, entropy = df[1], df[3], df[4], df[5], df[10], df[13]
+    tag, x, y, z, energy, entropy, density = df[1], df[3], df[4], df[5], df[10], df[13], df[9]
 
     silicate_x = [i for index, i in enumerate(x) if tag[index] == 0]
     silicate_y = [i for index, i in enumerate(y) if tag[index] == 0]
@@ -44,12 +45,14 @@ for time in np.arange(start_time, end_time + interval, interval):
     silicate_entropy = [i for index, i in enumerate(entropy) if tag[index] == 0]
     silicate_distances = [sqrt(i[0] ** 2 + i[1] ** 2 + i[2] ** 2) / 1000.0 for i in
                           zip(silicate_x, silicate_y, silicate_z)]
+    silicate_densities = [i for index, i in enumerate(density) if tag[index] == 0]
     iron_x = [i for index, i in enumerate(x) if tag[index] == 1]
     iron_y = [i for index, i in enumerate(y) if tag[index] == 1]
     iron_z = [i for index, i in enumerate(z) if tag[index] == 1]
     iron_internal_energy = [i for index, i in enumerate(energy) if tag[index] == 1]
     iron_entropy = [i for index, i in enumerate(entropy) if tag[index] == 1]
     iron_distances = [sqrt(i[0] ** 2 + i[1] ** 2 + i[2] ** 2) / 1000.0 for i in zip(iron_x, iron_y, iron_z)]
+    iron_densities = [i for index, i in enumerate(density) if tag[index] == 1]
 
     fig = plt.figure()
     fig.set_size_inches(18.5, 10.5)
@@ -98,6 +101,25 @@ for time in np.arange(start_time, end_time + interval, interval):
     plt.tight_layout()
     plt.savefig(internal_energy_path + "/{}.png".format(time), format="png")
     plt.close()
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    sc = ax.scatter(
+        silicate_distances + iron_distances,
+        silicate_densities + iron_densities,
+        c=silicate_internal_energy + iron_internal_energy,
+        marker="+"
+    )
+    cbar = plt.colorbar(sc)
+    cbar.set_label("Internal Energy")
+    ax.set_xlabel("Distance from Target Center")
+    ax.set_ylabel("Density")
+    ax.set_title("Iteration: {}".format(time))
+    ax.grid()
+    plt.tight_layout()
+    plt.savefig(density_path + "/{}.png".format(time), format="png")
+    plt.close()
+
 
 for index, output_path in enumerate(paths):
     fname = fnames[index]
