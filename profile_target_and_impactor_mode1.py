@@ -45,7 +45,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     cbar_silicate.set_label("Entropy")
     target_silicate.set_xlabel("Distance from Target Center (km)")
     target_silicate.set_ylabel("Internal Energy")
-    target_silicate.set_title("Iteration: {}".format(time))
+    target_silicate.set_title("Silicate: Iteration: {}".format(time))
     target_silicate.grid()
     sc_iron = target_iron.scatter(
         [sqrt(i.position_vector[0] ** 2 + i.position_vector[1] ** 2 + i.position_vector[2] ** 2) / 1000.0 for i in
@@ -56,7 +56,8 @@ for time in np.arange(start_time, end_time + interval, interval):
     cbar_iron = plt.colorbar(sc_iron)
     cbar_iron.set_label("Entropy")
     target_iron.set_xlabel("Distance from Target Center (km)")
-    target_iron.set_title("Iteration: {}".format(time))
+    target_iron.set_ylabel("Internal Energy")
+    target_iron.set_title("Iron: Iteration: {}".format(time))
     target_iron.grid()
     plt.tight_layout()
     plt.savefig(output_path + "/target/{}.png".format(time), format="png")
@@ -76,7 +77,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     cbar_silicate.set_label("Entropy")
     impactor_silicate.set_xlabel("Distance from Target Center (km)")
     impactor_silicate.set_ylabel("Internal Energy")
-    impactor_silicate.set_title("Iteration: {}".format(time))
+    impactor_silicate.set_title("Silicate: Iteration: {}".format(time))
     impactor_silicate.grid()
     sc_iron = impactor_iron.scatter(
         [sqrt(i.position_vector[0] ** 2 + i.position_vector[1] ** 2 + i.position_vector[2] ** 2) / 1000.0 for i in
@@ -87,7 +88,8 @@ for time in np.arange(start_time, end_time + interval, interval):
     cbar_iron = plt.colorbar(sc_iron)
     cbar_iron.set_label("Entropy")
     impactor_iron.set_xlabel("Distance from impactor Center (km)")
-    impactor_iron.set_title("Iteration: {}".format(time))
+    impactor_iron.set_ylabel("Internal Energy")
+    impactor_iron.set_title("Iron: Iteration: {}".format(time))
     impactor_iron.grid()
     plt.tight_layout()
     plt.savefig(output_path + "/impactor/{}.png".format(time), format="png")
