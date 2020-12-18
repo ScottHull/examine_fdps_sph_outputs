@@ -17,7 +17,7 @@ tempertaure_silicate = list(eos_df_silicate[2])
 pressure_silicate = list(eos_df_silicate[3])
 soundspeed_silicate = list(eos_df_silicate[4])
 
-eos_df_iron = pd.read_fwf("src/eos/iron___.rho_u.txt", header=None, skiprows=2)
+eos_df_iron = pd.read_fwf("src/eos/ironC.rho_u.txt", header=None, skiprows=2)
 density_iron = list(eos_df_iron[0])  # load in the full-length density array from eos_df_iron
 energy_iron = list(eos_df_iron[1])  # load in the full-length energy array from eos_df_iron
 entropy_iron = list(eos_df_iron[5])  # load in the full-length entropy array from eos_df_iron
