@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 path_to_outputs = "/scratch/shull4/impactor/"
 number_processes = 100
-time = 100
+time = 1000
 
 eos_df = pd.read_fwf("src/eos/duniteS2.rho_u.txt", header=None, skiprows=2)
 density = list(eos_df[0])  # load in the full-length density array from eos_df
@@ -36,6 +36,7 @@ for row in sph_df.index:
                                   var3_array=energy,
                                   var1=density_sph, var2=entropy_sph,
                                   grid_length=120).interpolate()
+    interpolated_internal_energy.append(interpolated_val)
 
 
 fig = plt.figure()
