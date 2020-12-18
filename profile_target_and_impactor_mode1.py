@@ -104,16 +104,16 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax_silicate = fig.add_subplot(121, projection='3d')
     ax_iron = fig.add_subplot(122, projection='3d')
     ax_silicate.scatter(
-        [i.position_vector[0] for i in target_silicate],
-        [i.position_vector[1] for i in target_silicate],
-        [i.position_vector[2] for i in target_silicate],
+        [i.position_vector[0] for i in target_silicate_particles],
+        [i.position_vector[1] for i in target_silicate_particles],
+        [i.position_vector[2] for i in target_silicate_particles],
         color="red",
         marker="+"
     )
     ax_iron.scatter(
-        [i.position_vector[0] for i in target_iron],
-        [i.position_vector[1] for i in target_iron],
-        [i.position_vector[2] for i in target_iron],
+        [i.position_vector[0] for i in target_iron_particles],
+        [i.position_vector[1] for i in target_iron_particles],
+        [i.position_vector[2] for i in target_iron_particles],
         color="blue",
         marker="+"
     )
@@ -134,16 +134,16 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax_silicate = fig.add_subplot(121, projection='3d')
     ax_iron = fig.add_subplot(122, projection='3d')
     ax_silicate.scatter(
-        [i.position_vector[0] for i in impactor_silicate],
-        [i.position_vector[1] for i in impactor_silicate],
-        [i.position_vector[2] for i in impactor_silicate],
+        [i.position_vector[0] for i in impactor_silicate_particles],
+        [i.position_vector[1] for i in impactor_silicate_particles],
+        [i.position_vector[2] for i in impactor_silicate_particles],
         color="red",
         marker="+"
     )
     ax_iron.scatter(
-        [i.position_vector[0] for i in impactor_iron],
-        [i.position_vector[1] for i in impactor_iron],
-        [i.position_vector[2] for i in impactor_iron],
+        [i.position_vector[0] for i in impactor_iron_particles],
+        [i.position_vector[1] for i in impactor_iron_particles],
+        [i.position_vector[2] for i in impactor_iron_particles],
         color="blue",
         marker="+"
     )
