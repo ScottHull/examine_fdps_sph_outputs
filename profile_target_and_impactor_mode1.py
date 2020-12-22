@@ -13,7 +13,8 @@ interval = 1
 path = "/scratch/shull4/GI_outfiles"
 output_path = "mode1_profile_plot_outputs"
 positions_output_path = "mode1_positions_profile_plot_outputs"
-paths = [output_path, positions_output_path]
+both_output_path = "mode1_positions_both_profile_plot_outputs"
+paths = [output_path, both_output_path, positions_output_path]
 
 
 for o in paths:
@@ -159,6 +160,39 @@ for time in np.arange(start_time, end_time + interval, interval):
     plt.savefig(positions_output_path + "/impactor/{}.png".format(time), format="png")
     plt.close()
 
+    fig = plt.figure()
+    fig.set_size_inches(18.5, 10.5)
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(
+        [i.position_vector[0] for i in impactor_silicate_particles] + [i.position_vector[0] for i in impactor_iron_particles],
+        [i.position_vector[1] for i in impactor_silicate_particles] + [i.position_vector[1] for i in impactor_iron_particles],
+        [i.position_vector[2] for i in impactor_silicate_particles] + [i.position_vector[2] for i in impactor_iron_particles],
+        color="red",
+        marker="+",
+        label="Impactor"
+    )
+    ax.scatter(
+        [i.position_vector[0] for i in target_silicate_particles] + [i.position_vector[0] for i in target_iron_particles],
+        [i.position_vector[1] for i in target_silicate_particles] + [i.position_vector[1] for i in target_iron_particles],
+        [i.position_vector[2] for i in target_silicate_particles] + [i.position_vector[2] for i in target_iron_particles],
+        color="blue",
+        marker="+",
+        label="Target"
+    )
+    ax.set_title("Iteration {}".format(time))
+    ax.set_xlim(-8000e4, 8000e4)
+    ax.set_ylim(-8000e4, 8000e4)
+    ax.set_zlim(-8000e4, 8000e4)
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_zlabel("z")
+    ax.legend(loc="upper right")
+    plt.tight_layout()
+    plt.savefig(both_output_path + "/{}.png".format(time), format="png")
+    plt.close()
+
+
+
 animate(start_time=start_time, end_time=end_time, interval=interval, output_path=output_path + "/target",
         file_name="target_mode1.mp4")
 animate(start_time=start_time, end_time=end_time, interval=interval, output_path=output_path + "/impactor",
@@ -167,5 +201,7 @@ animate(start_time=start_time, end_time=end_time, interval=interval, output_path
         file_name="target_profile_mode1.mp4")
 animate(start_time=start_time, end_time=end_time, interval=interval, output_path=positions_output_path + "/impactor",
         file_name="impactor_profile_mode1.mp4")
+animate(start_time=start_time, end_time=end_time, interval=interval, output_path=both_output_path,
+        file_name="both_profile_mode1.mp4")
 
 shutil.rmtree(output_path)
