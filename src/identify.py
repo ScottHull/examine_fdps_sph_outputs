@@ -71,6 +71,7 @@ class ParticleMap:
                     entropy=self.output[13][row],
                     temperature=self.output[14][row]
                 )
+                p.pressure = self.output[11][row]
                 particles.append(p)
             except:
                 pass
@@ -270,5 +271,6 @@ class ParticleMapFromFiles:
                 mass_grav_body=df["mass_grav_body"][row]
             )
             p.label = df["label"][row]
+            p.pressure = df['pressure'][row]
             particles.append(p)
         return particles

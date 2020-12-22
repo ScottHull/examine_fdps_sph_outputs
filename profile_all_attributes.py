@@ -11,6 +11,7 @@ target_coordinates = zip(target_df[3], target_df[4], target_df[5])
 target_distances = [sqrt(i[0]**2 + i[1]**2 + i[2]**2) / 1000.0 for i in target_coordinates]
 target_tag = target_df[1]
 target_entropy = target_df[13]
+target_temperature = target_df[14]
 target_internal_energy = target_df[10]
 target_pressure = target_df[11]
 target_density = target_df[9]
@@ -21,6 +22,7 @@ impactor_entropy = impactor_df[13]
 impactor_internal_energy = impactor_df[10]
 impactor_pressure = impactor_df[11]
 impactor_density = impactor_df[9]
+impactor_temperature = impactor_df[14]
 
 target_fig = plt.figure()
 target_fig.set_size_inches(18.5, 10.5)
@@ -179,5 +181,46 @@ impactor_ax_internal_energy.grid()
 impactor_ax_entropy.grid()
 impactor_ax_entropy.legend()
 plt.tight_layout()
+
+temp_fig = plt.figure()
+temp_ax_target = temp_fig.add_subplot(121)
+temp_ax_impactor = temp_fig.add_subplot(122)
+temp_ax_target.scatter(
+    [i for index, i in enumerate(target_distances) if target_tag[index] % 2 == 0],
+    [i for index, i in enumerate(target_temperature) if target_tag[index] % 2 == 0],
+    color="red",
+    marker="+",
+    label="Silicate"
+)
+temp_ax_target.scatter(
+    [i for index, i in enumerate(target_distances) if target_tag[index] % 2 == 1],
+    [i for index, i in enumerate(target_temperature) if target_tag[index] % 2 == 1],
+    color="blue",
+    marker="+",
+    label="Iron"
+)
+temp_ax_impactor.scatter(
+    [i for index, i in enumerate(impactor_distances) if impactor_tag[index] % 2 == 0],
+    [i for index, i in enumerate(impactor_temperature) if impactor_tag[index] % 2 == 0],
+    color="red",
+    marker="+",
+    label="Silicate"
+)
+temp_ax_impactor.scatter(
+    [i for index, i in enumerate(impactor_distances) if impactor_tag[index] % 2 == 1],
+    [i for index, i in enumerate(impactor_temperature) if impactor_tag[index] % 2 == 1],
+    color="blue",
+    marker="+",
+    label="Iron"
+)
+temp_ax_target.set_title("Target")
+temp_ax_impactor.set_title("Impactor")
+temp_ax_target.set_xlabel("Distance from Center (km)")
+temp_ax_impactor.set_xlabel("Distance from Center (km)")
+temp_ax_target.set_ylabel("Temperature")
+temp_ax_impactor.set_ylabel("Temperature")
+temp_ax_target.grid()
+temp_ax_impactor.grid()
+temp_ax_impactor.legend()
 
 plt.show()

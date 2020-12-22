@@ -23,6 +23,7 @@ class Particle:
         self.temperature = float(temperature)
         self.entropy = float(entropy)
         self.internal_energy = float(internal_energy)
+        self.pressure = None
         self.mass_grav_body = mass_grav_body
         self.angular_momentum_vector = self.__angular_momentum()
         self.semi_major_axis = self.__semi_major_axis()
