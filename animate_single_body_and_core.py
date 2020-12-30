@@ -72,8 +72,8 @@ for time in np.arange(start_time, end_time + interval, interval):
         color="blue",
         marker="+"
     )
-    ax_silicate.set_title("Silicate")
-    ax_iron.set_title("Iron")
+    ax_silicate.set_title("Silicate: Iteration {}".format(time))
+    ax_iron.set_title("Iron: Iteration {}".format(time))
     ax_silicate.set_xlim(-8000e3, 8000e3)
     ax_silicate.set_ylim(-8000e3, 8000e3)
     ax_silicate.set_zlim(-8000e3, 8000e3)
