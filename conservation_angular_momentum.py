@@ -23,7 +23,7 @@ for time in np.arange(start_time, end_time + interval, interval):
 ax.plot(
     np.arange(start_time, end_time + interval, interval),
     total_ams,
-    lindwidth=2.0,
+    linewidth=2.0,
     color="black"
 )
 
