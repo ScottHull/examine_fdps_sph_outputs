@@ -26,6 +26,7 @@ class Particle:
         self.pressure = None
         self.mass_grav_body = mass_grav_body
         self.angular_momentum_vector = self.__angular_momentum()
+        self.angular_momentum = 0
         self.semi_major_axis = self.__semi_major_axis()
         self.orbital_energy = self.__total_orbital_energy()
         self.eccentricity = self.__eccentricity()
@@ -42,7 +43,9 @@ class Particle:
         self.potential_energy = 0
 
     def __angular_momentum(self):
-        return self.mass * np.cross(self.position_vector, self.relative_velocity_vector)
+        am = self.mass * np.cross(self.position_vector, self.relative_velocity_vector)
+        self.angular_momentum = sum(am)
+        return am
 
     def __node_vector(self):
         return np.cross([0, 0, self.position_vector[0]], self.angular_momentum_vector)

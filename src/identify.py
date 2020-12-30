@@ -268,9 +268,10 @@ class ParticleMapFromFiles:
                 internal_energy=df["internal_energy"][row],
                 entropy=df["entropy"][row],
                 temperature=df["temperature"][row],
-                mass_grav_body=df["mass_grav_body"][row]
+                mass_grav_body=df["mass_grav_body"][row],
             )
             p.label = df["label"][row]
             p.pressure = df['pressure'][row]
+            p.angular_momentum = df['angular_momentum'][row]
             particles.append(p)
         return particles

@@ -26,7 +26,7 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.scatter(
     np.arange(start_time, end_time + interval, interval),
-    [sqrt(i[0]**2 + i[1]**2 + i[2]**2) for i in coms],
+    [sqrt(i[0]**2 + i[1]**2 + i[2]**2) / 1000.0 for i in coms],
     marker="+",
     color="black"
 )
