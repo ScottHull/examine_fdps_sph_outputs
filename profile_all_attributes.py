@@ -2,8 +2,8 @@ from math import sqrt
 import pandas as pd
 import matplotlib.pyplot as plt
 
-target_path = "/Users/scotthull/Desktop/tar.dat"
-impactor_path = "/Users/scotthull/Desktop/imp.dat"
+target_path = "/Users/scotthull/Desktop/tar 1.dat"
+impactor_path = "/Users/scotthull/Desktop/imp 1.dat"
 
 target_df = pd.read_csv(target_path, header=None, skiprows=2, delimiter="\t")
 impactor_df = pd.read_csv(impactor_path, header=None, skiprows=2, delimiter="\t")
