@@ -15,10 +15,20 @@ ax.set_title("System Angular Momentum as Function of Time")
 ax.grid()
 
 total_ams = []
+total_momentum_x = []
+total_momentum_y = []
+total_momentum_z = []
 for time in np.arange(start_time, end_time + interval, interval):
     particle_map = ParticleMapFromFiles(path=path).read(time=time)
     total_am = sum([p.angular_momentum for p in particle_map])
+    momentum_x = sum([p.momentum_vector[0] for p in particle_map])
+    momentum_y = sum([p.momentum_vector[0] for p in particle_map])
+    momentum_z = sum([p.momentum_vector[0] for p in particle_map])
+    total_mass = sum([p.mass for p in particle_map])
     total_ams.append(total_am)
+    total_momentum_x.append(momentum_x / total_mass)
+    total_momentum_y.append(momentum_y / total_mass)
+    total_momentum_z.append(momentum_z / total_mass)
 
 ax.plot(
     np.arange(start_time, end_time + interval, interval),
@@ -28,4 +38,33 @@ ax.plot(
 )
 
 plt.savefig("total_angular_momentum.png", format='png')
+fig.clear()
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.set_xlabel("Time Iteration")
+ax.set_ylabel("Total Normalized Momentum of System")
+ax.set_title("System Total Momentum as Function of Time")
+ax.grid()
+ax.plot(
+    np.arange(start_time, end_time + interval, interval),
+    total_momentum_x,
+    linewidth=2.0,
+    label="x"
+)
+ax.plot(
+    np.arange(start_time, end_time + interval, interval),
+    total_momentum_y,
+    linewidth=2.0,
+    label="y"
+)
+ax.plot(
+    np.arange(start_time, end_time + interval, interval),
+    total_momentum_z,
+    linewidth=2.0,
+    label="z"
+)
+
+plt.savefig("total_momentum.png", format='png')
+fig.clear()
 

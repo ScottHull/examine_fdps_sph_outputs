@@ -25,5 +25,8 @@ def make_report(particles, time, to_directory="/particle_outputs"):
         "temperature": [p.temperature for p in particles],
         "mass_grav_body": [p.mass_grav_body for p in particles],
         "pressure": [p.pressure for p in particles],
-        "angular_momentum": [p.angular_momentum for p in particles]
+        "angular_momentum": [p.angular_momentum for p in particles],
+        "total_momentum_x": [p.momentum_vector[0] for p in particles],
+        "total_momentum_y": [p.momentum_vector[1] for p in particles],
+        "total_momentum_z": [p.momentum_vector[2] for p in particles],
     }).to_csv(to_directory + "/{}.csv".format(time))

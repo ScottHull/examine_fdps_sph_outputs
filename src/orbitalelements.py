@@ -27,6 +27,7 @@ class Particle:
         self.mass_grav_body = mass_grav_body
         self.angular_momentum_vector = self.__angular_momentum()
         self.angular_momentum = 0
+        self.momentum_vector = self.__total_momentum_vector()
         self.semi_major_axis = self.__semi_major_axis()
         self.orbital_energy = self.__total_orbital_energy()
         self.eccentricity = self.__eccentricity()
@@ -41,6 +42,12 @@ class Particle:
         self.mass_reduced = 0
         self.kinetic_energy = 0
         self.potential_energy = 0
+
+    def __total_momentum_vector(self):
+        m_x = self.mass * self.velocity_vector[0]
+        m_y = self.mass * self.velocity_vector[1]
+        m_z = self.mass * self.velocity_vector[2]
+        return m_x, m_y, m_z
 
     def __angular_momentum(self):
         am = self.mass * np.cross(self.position_vector, self.relative_velocity_vector)
@@ -110,6 +117,7 @@ class Particle:
     def recalculate_elements(self, mass_grav_body):
         self.mass_grav_body = mass_grav_body
         self.angular_momentum_vector = self.__angular_momentum()
+        self.momentum_vector = self.__total_momentum_vector()
         self.semi_major_axis = self.__semi_major_axis()
         self.orbital_energy = self.__total_orbital_energy()
         self.eccentricity = self.__eccentricity()
