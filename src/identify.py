@@ -273,5 +273,6 @@ class ParticleMapFromFiles:
             p.label = df["label"][row]
             p.pressure = df['pressure'][row]
             p.angular_momentum = df['angular_momentum'][row]
+            p.momentum_vector = [df['total_momentum_x'][row], df['total_momentum_y'][row], df['total_momentum_z'][row]]
             particles.append(p)
         return particles
