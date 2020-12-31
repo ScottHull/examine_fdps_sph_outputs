@@ -36,7 +36,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     momentum_y = sum([float(m) * float(v) for m, v in zip(mass, v_y)])
     momentum_z = sum([float(m) * float(v) for m, v in zip(mass, v_z)])
     total_momentum = momentum_x + momentum_y + momentum_z
-    total_mass = sum(mass)
+    total_mass = sum([float(m) for m in mass])
     total_ams.append(total_am / total_mass)
     total_momentum_x.append(momentum_x / total_mass)
     total_momentum_y.append(momentum_y / total_mass)
