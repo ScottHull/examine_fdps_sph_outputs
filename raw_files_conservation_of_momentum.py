@@ -29,8 +29,9 @@ for time in np.arange(start_time, end_time + interval, interval):
     df = pd.read_csv(sph_file, header=None, skiprows=2, delimiter="\t")
     os.remove(sph_file)
     tag, x, y, z, mass, v_x, v_y, v_z = df[1], df[3], df[4], df[5], df[2], df[6], df[7], df[8]
-    total_am = sum([m * np.cross([x_coord, y_coord, z_coord], [vx, vy, vz]) for
-                    m, x_coord, y_coord, z_coord, vx, vy, vz in zip(mass, x, y, z, v_x, v_y, v_z)])
+    total_am = sum(
+        [float(m) * np.cross([float(x_coord), float(y_coord), float(z_coord)], [float(vx), float(vy), float(vz)]) for
+         m, x_coord, y_coord, z_coord, vx, vy, vz in zip(mass, x, y, z, v_x, v_y, v_z)])
     momentum_x = sum([m * v for m, v in zip(mass, v_x)])
     momentum_y = sum([m * v for m, v in zip(mass, v_y)])
     momentum_z = sum([m * v for m, v in zip(mass, v_z)])
@@ -102,4 +103,3 @@ ax.plot(
 )
 plt.savefig("total_momentum.png", format='png')
 fig.clear()
-
