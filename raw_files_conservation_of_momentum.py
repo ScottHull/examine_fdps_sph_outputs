@@ -28,7 +28,8 @@ for time in np.arange(start_time, end_time + interval, interval):
     sph_file = os.getcwd() + "/merged_{}.dat".format(time)
     df = pd.read_csv(sph_file, header=None, skiprows=2, delimiter="\t")
     os.remove(sph_file)
-    tag, x, y, z, mass, v_x, v_y, v_z = df[1], df[3], df[4], df[5], df[2], df[6], df[7], df[8]
+    tag, x, y, z, mass, v_x, v_y, v_z = list(df[1]), list(df[3]), list(df[4]), list(df[5]), list(df[2]), list(
+        df[6]), list(df[7]), list(df[8])
     total_am = sum(
         [float(m) * np.cross([float(x_coord), float(y_coord), float(z_coord)], [float(vx), float(vy), float(vz)]) for
          m, x_coord, y_coord, z_coord, vx, vy, vz in zip(mass, x, y, z, v_x, v_y, v_z)])
