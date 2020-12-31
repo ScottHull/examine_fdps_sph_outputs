@@ -8,6 +8,7 @@ interval = 200
 path = "/scratch/shull4/GI_outfiles"
 
 fig = plt.figure()
+fig.set_size_inches(18.5, 10.5)
 ax = fig.add_subplot(111)
 ax.set_xlabel("Time Iteration")
 ax.set_ylabel("Total Angular Momentum of System")
@@ -27,11 +28,11 @@ for time in np.arange(start_time, end_time + interval, interval):
     momentum_z = sum([p.momentum_vector[2] for p in particle_map])
     total_momentum = momentum_x + momentum_y + momentum_z
     total_mass = sum([p.mass for p in particle_map])
-    total_ams.append(total_am)
+    total_ams.append(total_am / total_mass)
     total_momentum_x.append(momentum_x / total_mass)
     total_momentum_y.append(momentum_y / total_mass)
     total_momentum_z.append(momentum_z / total_mass)
-    total_momentums.append(total_momentum)
+    total_momentums.append(total_momentum / total_mass)
 
 ax.plot(
     np.arange(start_time, end_time + interval, interval),
@@ -44,16 +45,17 @@ plt.savefig("total_angular_momentum.png", format='png')
 fig.clear()
 
 fig = plt.figure()
-ax_x = fig.add_subplot(131)
-ax_y = fig.add_subplot(132)
-ax_z = fig.add_subplot(133)
+fig.set_size_inches(18.5, 10.5)
+ax_x = fig.add_subplot(311)
+ax_y = fig.add_subplot(312)
+ax_z = fig.add_subplot(313)
 ax_z.set_xlabel("Time Iteration")
 ax_x.set_ylabel("Normalized Momentum")
 ax_y.set_ylabel("Normalized Momentum")
 ax_z.set_ylabel("Normalized Momentum")
 ax_x.set_title("x-momentum")
-ax_y.set_title("x-momentum")
-ax_z.set_title("x-momentum")
+ax_y.set_title("y-momentum")
+ax_z.set_title("z-momentum")
 ax_x.grid()
 ax_y.grid()
 ax_z.grid()
@@ -79,6 +81,7 @@ plt.savefig("total_momentum_components.png", format='png')
 fig.clear()
 
 fig = plt.figure()
+fig.set_size_inches(18.5, 10.5)
 ax = fig.add_subplot(111)
 ax.set_xlabel("Time Iteration")
 ax.set_ylabel("Total Normalized Momentum of System")
