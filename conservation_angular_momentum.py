@@ -44,30 +44,37 @@ plt.savefig("total_angular_momentum.png", format='png')
 fig.clear()
 
 fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.set_xlabel("Time Iteration")
-ax.set_ylabel("Total Normalized Momentum of System")
-ax.set_title("System Total Momentum Components as Function of Time")
-ax.grid()
-ax.plot(
+ax_x = fig.add_subplot(131)
+ax_y = fig.add_subplot(132)
+ax_z = fig.add_subplot(133)
+ax_z.set_xlabel("Time Iteration")
+ax_x.set_ylabel("Normalized Momentum")
+ax_y.set_ylabel("Normalized Momentum")
+ax_z.set_ylabel("Normalized Momentum")
+ax_x.set_title("x-momentum")
+ax_y.set_title("x-momentum")
+ax_z.set_title("x-momentum")
+ax_x.grid()
+ax_y.grid()
+ax_z.grid()
+ax_x.plot(
     np.arange(start_time, end_time + interval, interval),
     total_momentum_x,
     linewidth=2.0,
     label="x"
 )
-ax.plot(
+ax_y.plot(
     np.arange(start_time, end_time + interval, interval),
     total_momentum_y,
     linewidth=2.0,
     label="y"
 )
-ax.plot(
+ax_z.plot(
     np.arange(start_time, end_time + interval, interval),
     total_momentum_z,
     linewidth=2.0,
     label="z"
 )
-
 plt.savefig("total_momentum_components.png", format='png')
 fig.clear()
 
