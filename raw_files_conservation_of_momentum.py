@@ -14,12 +14,13 @@ path = "/scratch/shull4/GI_outfiles"
 def calc_angular_momentum(velocity_vector, position_vector, mass):
     velocity_vector = [float(velocity_vector[0]), float(velocity_vector[1]), float(velocity_vector[2])]
     position_vector = [float(position_vector[0]), float(position_vector[1]), float(position_vector[2])]
-    return mass * np.cross(position_vector, velocity_vector)
+    return float(mass) * np.cross(position_vector, velocity_vector)
 
 
 angular_momentum_x = []
 angular_momentum_y = []
 angular_momentum_z = []
+angular_momentum_total = []
 total_momentum_x = []
 total_momentum_y = []
 total_momentum_z = []
@@ -41,6 +42,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     angular_momentum_x.append(sum([i[0] / total_mass for i in ams]))
     angular_momentum_y.append(sum([i[1] / total_mass for i in ams]))
     angular_momentum_z.append(sum([i[2] / total_mass for i in ams]))
+    angular_momentum_total.append(sum([sum(i) / total_mass for i in ams]))
     total_momentum_x.append(momentum_x / total_mass)
     total_momentum_y.append(momentum_y / total_mass)
     total_momentum_z.append(momentum_z / total_mass)
@@ -48,19 +50,23 @@ for time in np.arange(start_time, end_time + interval, interval):
 
 fig = plt.figure()
 fig.set_size_inches(18.5, 10.5)
-ax_x = fig.add_subplot(311)
-ax_y = fig.add_subplot(312)
-ax_z = fig.add_subplot(313)
-ax_z.set_xlabel("Time Iteration")
+ax_x = fig.add_subplot(411)
+ax_y = fig.add_subplot(412)
+ax_z = fig.add_subplot(413)
+ax_total = fig.add_subplot(414)
+ax_total.set_xlabel("Time Iteration")
 ax_x.set_ylabel("Normalized Angular Momentum")
 ax_y.set_ylabel("Normalized Angular Momentum")
 ax_z.set_ylabel("Normalized Angular Momentum")
+ax_total.set_ylabel("Normalized Angular Momentum")
 ax_x.set_title("x angular momentum")
 ax_y.set_title("y angular momentum")
 ax_z.set_title("z angular momentum")
+ax_total.set_title("total angular momentum")
 ax_x.grid()
 ax_y.grid()
 ax_z.grid()
+ax_total.grid()
 ax_x.plot(
     np.arange(start_time, end_time + interval, interval),
     angular_momentum_x,
