@@ -1,4 +1,5 @@
 import os
+from math import sqrt
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -38,11 +39,11 @@ for time in np.arange(start_time, end_time + interval, interval):
     momentum_x = sum([float(m) * float(v) for m, v in zip(mass, v_x)])
     momentum_y = sum([float(m) * float(v) for m, v in zip(mass, v_y)])
     momentum_z = sum([float(m) * float(v) for m, v in zip(mass, v_z)])
-    total_momentum = momentum_x + momentum_y + momentum_z
+    total_momentum = sqrt(momentum_x**2 + momentum_y**2 + momentum_z**2)
     angular_momentum_x.append(sum([i[0] / total_mass for i in ams]))
     angular_momentum_y.append(sum([i[1] / total_mass for i in ams]))
     angular_momentum_z.append(sum([i[2] / total_mass for i in ams]))
-    angular_momentum_total.append(sum([sum(i) / total_mass for i in ams]))
+    angular_momentum_total.append(sum([sqrt(i[0]**2 + i[1]**2 + i[2]**2) / total_mass for i in ams]))
     total_momentum_x.append(momentum_x / total_mass)
     total_momentum_y.append(momentum_y / total_mass)
     total_momentum_z.append(momentum_z / total_mass)
@@ -84,6 +85,12 @@ ax_z.plot(
     angular_momentum_z,
     linewidth=2.0,
     label="z"
+)
+ax_total.plot(
+    np.arange(start_time, end_time + interval, interval),
+    angular_momentum_total,
+    linewidth=2.0,
+    label="total"
 )
 plt.savefig("angular_momentum_components.png", format='png')
 fig.clear()
