@@ -10,15 +10,16 @@ interval = 200
 number_processes = 100
 path = "/scratch/shull4/GI_outfiles"
 
-fig = plt.figure()
-fig.set_size_inches(18.5, 10.5)
-ax = fig.add_subplot(111)
-ax.set_xlabel("Time Iteration")
-ax.set_ylabel("Total Angular Momentum of System")
-ax.set_title("System Angular Momentum as Function of Time")
-ax.grid()
 
-total_ams = []
+def calc_angular_momentum(velocity_vector, position_vector, mass):
+    velocity_vector = [float(velocity_vector[0]), float(velocity_vector[1]), float(velocity_vector[2])]
+    position_vector = [float(position_vector[0]), float(position_vector[1]), float(position_vector[2])]
+    return mass * np.cross(position_vector, velocity_vector)
+
+
+angular_momentum_x = []
+angular_momentum_y = []
+angular_momentum_z = []
 total_momentum_x = []
 total_momentum_y = []
 total_momentum_z = []
@@ -29,28 +30,56 @@ for time in np.arange(start_time, end_time + interval, interval):
     df = pd.read_csv(sph_file, header=None, skiprows=2, delimiter="\t")
     os.remove(sph_file)
     tag, x, y, z, mass, v_x, v_y, v_z = df[1], df[3], df[4], df[5], df[2], df[6], df[7], df[8]
-    total_am = sum(
-        [float(m) * np.cross([float(x_coord), float(y_coord), float(z_coord)], [float(vx), float(vy), float(vz)]) for
-         m, x_coord, y_coord, z_coord, vx, vy, vz in zip(mass, x, y, z, v_x, v_y, v_z)])
+    total_mass = sum([float(m) for m in mass])
+    position_vectors = list(zip(x, y, z))
+    velocity_vectors = list(zip(v_x, v_y, v_z))
+    ams = [calc_angular_momentum(velocity_vectors[index], position_vectors[index], i) for index, i in enumerate(mass)]
     momentum_x = sum([float(m) * float(v) for m, v in zip(mass, v_x)])
     momentum_y = sum([float(m) * float(v) for m, v in zip(mass, v_y)])
     momentum_z = sum([float(m) * float(v) for m, v in zip(mass, v_z)])
     total_momentum = momentum_x + momentum_y + momentum_z
-    total_mass = sum([float(m) for m in mass])
-    total_ams.append(total_am / total_mass)
+    angular_momentum_x.append(sum([i[0] / total_mass for i in ams]))
+    angular_momentum_y.append(sum([i[1] / total_mass for i in ams]))
+    angular_momentum_z.append(sum([i[2] / total_mass for i in ams]))
     total_momentum_x.append(momentum_x / total_mass)
     total_momentum_y.append(momentum_y / total_mass)
     total_momentum_z.append(momentum_z / total_mass)
     total_momentums.append(total_momentum / total_mass)
 
-ax.plot(
+fig = plt.figure()
+fig.set_size_inches(18.5, 10.5)
+ax_x = fig.add_subplot(311)
+ax_y = fig.add_subplot(312)
+ax_z = fig.add_subplot(313)
+ax_z.set_xlabel("Time Iteration")
+ax_x.set_ylabel("Normalized Angular Momentum")
+ax_y.set_ylabel("Normalized Angular Momentum")
+ax_z.set_ylabel("Normalized Angular Momentum")
+ax_x.set_title("x angular momentum")
+ax_y.set_title("y angular momentum")
+ax_z.set_title("z angular momentum")
+ax_x.grid()
+ax_y.grid()
+ax_z.grid()
+ax_x.plot(
     np.arange(start_time, end_time + interval, interval),
-    total_ams,
+    angular_momentum_x,
     linewidth=2.0,
-    color="black"
+    label="x"
 )
-
-plt.savefig("total_angular_momentum.png", format='png')
+ax_y.plot(
+    np.arange(start_time, end_time + interval, interval),
+    angular_momentum_y,
+    linewidth=2.0,
+    label="y"
+)
+ax_z.plot(
+    np.arange(start_time, end_time + interval, interval),
+    angular_momentum_z,
+    linewidth=2.0,
+    label="z"
+)
+plt.savefig("angular_momentum_components.png", format='png')
 fig.clear()
 
 fig = plt.figure()
