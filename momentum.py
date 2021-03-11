@@ -11,20 +11,12 @@ from src.combine import CombineFile
 This is meant for mode 2 analysis (i.e. single body formation mode).
 """
 
-
 start_time = 0
 end_time = 5000
 interval = 50
 number_processes = 100
 
 path_to_outputs = "/scratch/shull4/GI"
-outfile_plot_path = "/scratch/shull4/outfiles"
-
-paths = [outfile_plot_path]
-for i in paths:
-    if os.path.exists(i):
-        shutil.rmtree(i)
-    os.mkdir(i)
 
 p_x = []
 p_y = []
@@ -53,13 +45,13 @@ for time in np.arange(start_time, end_time + interval, interval):
         v_x = float(df[6][row])
         v_y = float(df[7][row])
         v_z = float(df[8][row])
-        v_total = sqrt(v_x**2 + v_y**2 + v_z**2)
+        v_total = sqrt((v_x ** 2) + (v_y ** 2) + (v_z ** 2))
         velocity_vector = [v_x, v_y, v_z]
         p_x_i = mass * v_x
         p_y_i = mass * v_y
         p_z_i = mass * v_z
         p_total_i = mass * v_total
-        angular_p_i = mass * np.cross(position_vector, velocity_vector)
+        angular_p_i = np.linalg.norm(mass * np.cross(position_vector, velocity_vector))
 
         # sum particle totals
         p_x_time += p_x_i
@@ -75,7 +67,6 @@ for time in np.arange(start_time, end_time + interval, interval):
     angular_p.append(angular_p_time)
 
     os.remove(f)
-
 
 fig = plt.figure(figsize=(16, 9))
 ax1 = fig.add_subplot(211)
