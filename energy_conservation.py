@@ -53,6 +53,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     potential_energy.append(potential_energy_time)
     kinetic_energy.append(kinetic_energy_time)
     total_energy.append(total_energy_time)
+    os.remove(f)
 
 fig = plt.figure(figsize=(16, 9))
 ax1 = fig.add_subplot(411)
