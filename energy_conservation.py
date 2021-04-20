@@ -41,12 +41,12 @@ for time in np.arange(start_time, end_time + interval, interval):
         v_total = sqrt((v_x ** 2) + (v_y ** 2) + (v_z ** 2))
         potential_energy_i = float(df[12][row])
         internal_energy_i = float(df[10][row])
-        kinetic_energy_i = 0.5 * mass * (v_total ** 2)
+        kinetic_energy_i = (0.5 * mass * (v_total ** 2)) / mass  # units: kJ/kg
         total_energy_i = potential_energy_i + internal_energy_i + kinetic_energy_i
 
         internal_energy_time += internal_energy_i
         kinetic_energy_time += kinetic_energy_i
-        potential_energy_time += potential_energy_i
+        potential_energy_time += abs(potential_energy_i)
         total_energy_time += total_energy_i
 
     internal_energy.append(internal_energy_time)
@@ -60,13 +60,17 @@ ax1 = fig.add_subplot(411)
 ax2 = fig.add_subplot(412)
 ax3 = fig.add_subplot(413)
 ax4 = fig.add_subplot(414)
-ax1.plot(np.arange(start_time, end_time + interval, interval), kinetic_energy, linewdith=2.0, color='black')
-ax2.plot(np.arange(start_time, end_time + interval, interval), potential_energy, linewdith=2.0, color='black')
-ax3.plot(np.arange(start_time, end_time + interval, interval), internal_energy, linewdith=2.0, color='black')
-ax4.plot(np.arange(start_time, end_time + interval, interval), total_energy, linewdith=2.0, color='black')
+ax1.plot(np.arange(start_time, end_time + interval, interval), kinetic_energy, linewidth=2.0, color='black')
+ax2.plot(np.arange(start_time, end_time + interval, interval), potential_energy, linewidth=2.0, color='black')
+ax3.plot(np.arange(start_time, end_time + interval, interval), internal_energy, linewidth=2.0, color='black')
+ax4.plot(np.arange(start_time, end_time + interval, interval), total_energy, linewidth=2.0, color='black')
+ax1.set_yscale('log')
+ax2.set_yscale('log')
+ax3.set_yscale('log')
+ax4.set_yscale('log')
 ax4.set_xlabel("Time (Iteration)")
 ax1.set_ylabel("Kinetic")
-ax2.set_ylabel("Potential")
+ax2.set_ylabel("Potential (abs. val.)")
 ax3.set_ylabel("Internal")
 ax4.set_ylabel("Total")
 ax1.set_title("Energy Conservation")
