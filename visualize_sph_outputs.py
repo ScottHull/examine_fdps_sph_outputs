@@ -145,7 +145,7 @@ class BuildMovie:
             ax.set_title("Iteration: {}".format(self.curr_file))
             print("Built scene: {}".format(self.curr_file))
             fig.savefig(self.to_path + "/output_{}.png".format(self.curr_file), format='png', dpi=100)
-            self.curr_file += 1
+            self.curr_file += self.interval
         else:
             plt.show()
 
@@ -156,12 +156,12 @@ class BuildMovie:
 
     def __animate(self, file_name="sph_output.mp4"):
         frames = [self.to_path + "/output_{}.png".format(int(i)) for i in np.arange(self.start_file,
-                                                                               self.num_files / self.interval + 1, 1)]
+                                                                        self.num_files + self.interval, self.interval)]
         animation = mpy.ImageSequenceClip(frames, fps=self.fps, load_images=True)
         animation.write_videofile(file_name, fps=self.fps)
 
     def build_animation(self, save=False):
-        for i in np.arange(self.start_file, self.num_files / self.interval + 1, 1):
+        for i in np.arange(self.start_file, self.num_files + self.interval, self.interval):
             self.__make_scene(savefig=save, file_num=int(i))
             self.curr_process = 0
         self.__animate(file_name=self.file_name)
@@ -175,11 +175,11 @@ class BuildMovie:
     def build_animation_from_existing(self, path, num_files, start_from_file_number=0):
         num_files_copy = copy(self.num_files)
 
-path = "/Users/scotthull/Desktop/test3"
+path = "/scratch/shull4/gi"
 mov = BuildMovie(
     output_path=path,
-    to_path=os.getcwd() + "/sph_visualization",
-    num_files=1000,
+    to_path="/scratch/shull4/sph_visualization",
+    num_files=2000,
     fps=30,
     colorize_particles=True,
     dimension='3',
@@ -189,7 +189,7 @@ mov = BuildMovie(
     focus_process=None,
     file_name="sph_output.mp4",
     center=True,
-    center_on_target_iron=False
+    center_on_target_iron=True
 )
 
 mov.build_animation(save=True)

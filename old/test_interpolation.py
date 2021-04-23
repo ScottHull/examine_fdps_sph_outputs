@@ -9,7 +9,7 @@ path_to_outputs = "/scratch/shull4/impactor/"
 number_processes = 100
 time = 1000
 
-eos_df_silicate = pd.read_fwf("src/eos/duniteS2.rho_u.txt", header=None, skiprows=2)
+eos_df_silicate = pd.read_fwf("../src/eos/duniteS2.rho_u.txt", header=None, skiprows=2)
 density_silicate = list(eos_df_silicate[0])  # load in the full-length density array from eos_df_silicate
 energy_silicate = list(eos_df_silicate[1])  # load in the full-length energy array from eos_df_silicate
 entropy_silicate = list(eos_df_silicate[5])  # load in the full-length entropy array from eos_df_silicate
@@ -17,7 +17,7 @@ tempertaure_silicate = list(eos_df_silicate[2])
 pressure_silicate = list(eos_df_silicate[3])
 soundspeed_silicate = list(eos_df_silicate[4])
 
-eos_df_iron = pd.read_fwf("src/eos/ironC.rho_u.txt", header=None, skiprows=2)
+eos_df_iron = pd.read_fwf("../src/eos/ironC.rho_u.txt", header=None, skiprows=2)
 density_iron = list(eos_df_iron[0])  # load in the full-length density array from eos_df_iron
 energy_iron = list(eos_df_iron[1])  # load in the full-length energy array from eos_df_iron
 entropy_iron = list(eos_df_iron[5])  # load in the full-length entropy array from eos_df_iron
