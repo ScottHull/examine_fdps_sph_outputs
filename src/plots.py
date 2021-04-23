@@ -211,9 +211,9 @@ def plot_eccentricities(particles, a, b):
                 abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b]
 
     periapsis_inside_x = [p.distance for p in particles if
-                          p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a]
+                          p.eccentricity <= 1.0 and abs(p.periapsis) <= a]
     periapsis_inside_y = [p.eccentricity for p in particles if
-                          p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+                          p.eccentricity <= 1.0 and abs(p.periapsis) <= a],
 
     disk_x = [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a]
     disk_y = [p.eccentricity for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a]

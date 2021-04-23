@@ -11,12 +11,15 @@ import shutil
 
 time = 2000
 number_processes = 100
-path_to_outputs = "/scratch/shull4/gi"
+# path_to_outputs = "/scratch/shull4/gi"
+path_to_outputs = "/Users/scotthull/Desktop"
 
-combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
-f = os.getcwd() + "/merged_{}.dat".format(time)
-pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True, center_plot=True)
-particle_map = pm.solve()
+# combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
+# f = os.getcwd() + "/merged_{}.dat".format(time)
+# pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True, center_plot=True)
+# particle_map = pm.solve()
+pm = ParticleMapFromFiles(path=path_to_outputs)
+particle_map = pm.read(time=time)
 
 fig = plots.plot_eccentricities(
     particles=particle_map,

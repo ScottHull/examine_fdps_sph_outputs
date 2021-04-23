@@ -12,7 +12,7 @@ import statistics
 class ParticleMap:
 
     def __init__(self, output_path, center=True, centering_resolution=1e5, centering_delta=1e7,
-                 number_expected_bodies=1, center_on_target_iron=False, plot=False, relative_velocity=False,
+                 number_expected_bodies=1, center_on_target_iron=False, plot=False, relative_velocity=True,
                  center_plot=False):
         self.centering_resolution = centering_resolution
         self.centering_delta = centering_delta
@@ -95,9 +95,10 @@ class ParticleMap:
             NEW_MASS_ESCAPED = 0.0
             NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
             for p in particles:
-                if abs(p.position_vector[0]) <= self.a and abs(p.position_vector[2]) <= self.a and abs(
-                        p.position_vector[
-                            1]) <= self.b:  # the particle's radial position is inside of the protoplanetary polar and equatorial radii and is part of the planet
+                if abs(p.distance) < self.a:
+                # if abs(p.position_vector[0]) <= self.a and abs(p.position_vector[2]) <= self.a and abs(
+                #         p.position_vector[
+                #             1]) <= self.b:  # the particle's radial position is inside of the protoplanetary polar and equatorial radii and is part of the planet
                     NUM_PARTICLES_WITHIN_RADIAL_DISTANCE += 1
                     NEW_MASS_PROTOPLANET += p.mass
                     NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
