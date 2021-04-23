@@ -201,35 +201,48 @@ def colorcode_orbits(particles, a, b, z=None, center_plot=False):
 def plot_eccentricities(particles, a, b):
     fig = plt.figure()
     ax = fig.add_subplot(111)
+
+    escape_x = [p.distance for p in particles if p.eccentricity > 1.0]
+    escape_y = [p.eccentricity for p in particles if p.eccentricity > 1.0]
+
+    inside_x = [p.distance for p in particles if
+         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b]
+    inside_y = [p.eccentricity for p in particles if
+         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b]
+
+    periapsis_inside_x = [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a]
+    periapsis_inside_y = [p.eccentricity for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a]
+
+    disk_x = [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a]
+    disk_y = [p.eccentricity for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a]
+
     ax.scatter(
-        [p.distance for p in particles if p.eccentricity > 1.0],
-        [p.eccentricity for p in particles if p.eccentricity > 1.0],
+        escape_x,
+        escape_y,
         c='red',
         marker="+",
-        label="ESCAPE"
+        label="ESCAPE ({})".format(len(escape_y))
     )
     ax.scatter(
-        [p.distance for p in particles if
-         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
-        [p.eccentricity for p in particles if
-         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
+        inside_x,
+        inside_y,
         c='blue',
         marker="+",
-        label="DISTANCE WITHIN PLANET"
+        label="DISTANCE WITHIN PLANET ({})".format(len(inside_y))
     )
     ax.scatter(
-        [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
-        [p.eccentricity for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+        periapsis_inside_x,
+        periapsis_inside_y,
         c='green',
         marker="+",
-        label="PERIAPSIS INSIDE PLANET"
+        label="PERIAPSIS INSIDE PLANET ({})".format(len(periapsis_inside_y))
     )
     ax.scatter(
-        [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
-        [p.eccentricity for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+        disk_x,
+        disk_y,
         c='pink',
         marker="+",
-        label="DISK"
+        label="DISK ({})".format(len(disk_y))
     )
 
     ax.set_xlabel("Radial Distance From Earth Center")

@@ -9,7 +9,7 @@ from src.structure import Structure
 import matplotlib.pyplot as plt
 import shutil
 
-time = 50
+time = 2000
 number_processes = 100
 path_to_outputs = "/scratch/shull4/gi"
 
@@ -25,3 +25,5 @@ fig = plots.plot_eccentricities(
     a=1e6,
     b=1e6,
 )
+fig.savefig("eccentricity_{}.png".format(time), format='png')
+plt.close()
