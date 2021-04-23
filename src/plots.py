@@ -206,12 +206,14 @@ def plot_eccentricities(particles, a, b):
     escape_y = [p.eccentricity for p in particles if p.eccentricity > 1.0]
 
     inside_x = [p.distance for p in particles if
-         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b]
+                abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b]
     inside_y = [p.eccentricity for p in particles if
-         abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b]
+                abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b]
 
-    periapsis_inside_x = [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a]
-    periapsis_inside_y = [p.eccentricity for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a]
+    periapsis_inside_x = [p.distance for p in particles if
+                          p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a]
+    periapsis_inside_y = [p.eccentricity for p in particles if
+                          p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
 
     disk_x = [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a]
     disk_y = [p.eccentricity for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a]
@@ -244,6 +246,9 @@ def plot_eccentricities(particles, a, b):
         marker="+",
         label="DISK ({})".format(len(disk_y))
     )
+
+    ax.axvline(a, linestyle="--", color='red', label="a")
+    ax.axvline(b, linestyle="--", color='blue', label="b")
 
     ax.set_xlabel("Radial Distance From Earth Center")
     ax.set_ylabel("Orbital Eccentricity")
