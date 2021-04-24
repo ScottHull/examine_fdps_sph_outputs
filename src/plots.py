@@ -96,35 +96,46 @@ def scatter_particles(x, y, tags, x_label, y_label, z=None, z_label=None, a=None
 def colorcode_orbits(particles, a, b, z=None, center_plot=False):
     fig = plt.figure()
     ax = fig.add_subplot(111)
+
+    escape_x = [p.distance for p in particles if p.eccentricity > 1.0]
+    escape_y = [p.eccentricity for p in particles if p.eccentricity > 1.0]
+
+    inside_x = [p.distance for p in particles if abs(p.distance) < a]
+    inside_y = [p.eccentricity for p in particles if abs(p.distance) < a]
+
+    periapsis_inside_x = [p.distance for p in particles if
+                          p.eccentricity <= 1.0 and abs(p.periapsis) <= a]
+    periapsis_inside_y = [p.eccentricity for p in particles if
+                          p.eccentricity <= 1.0 and abs(p.periapsis) <= a],
+
+    disk_x = [p.distance for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a]
+    disk_y = [p.eccentricity for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a]
+
     if z is None:
         ax.scatter(
-            [p.position_vector[0] for p in particles if p.eccentricity > 1.0],
-            [p.position_vector[1] for p in particles if p.eccentricity > 1.0],
+            escape_x,
+            escape_y,
             c='red',
             marker="+",
             label="ESCAPE"
         )
         ax.scatter(
-            [p.position_vector[0] for p in particles if
-             abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
-            [p.position_vector[1] for p in particles if
-             abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
+            inside_x,
+            inside_y,
             c='blue',
             marker="+",
             label="DISTANCE WITHIN PLANET"
         )
         ax.scatter(
-            [p.position_vector[0] for p in particles if
-             p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
-            [p.position_vector[1] for p in particles if
-             p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
+            periapsis_inside_x,
+            periapsis_inside_y,
             c='green',
             marker="+",
             label="PERIAPSIS INSIDE PLANET"
         )
         ax.scatter(
-            [p.position_vector[0] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
-            [p.position_vector[1] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+            disk_x,
+            disk_y,
             c='pink',
             marker="+",
             label="DISK"
@@ -139,8 +150,10 @@ def colorcode_orbits(particles, a, b, z=None, center_plot=False):
         ax.legend()
 
         if center_plot:
-            ax.set_xlim(-2e8, 2e8)
-            ax.set_ylim(-2e8, 2e8)
+            ax.set_xlim(-1e7, 1e7)
+            ax.set_ylim(-1e7, 1e7)
+            # ax.set_xlim(-2e8, 2e8)
+            # ax.set_ylim(-2e8, 2e8)
 
     else:
         ax = Axes3D(fig)
