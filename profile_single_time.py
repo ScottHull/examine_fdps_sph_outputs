@@ -36,6 +36,6 @@ fig = plots.colorcode_orbits(
         a=1e6,
         b=1e6,
         center_plot=True,
-        z=True
+        z=False
     )
 fig.savefig("orbits_{}.png".format(time), format='png')
