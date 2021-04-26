@@ -92,13 +92,9 @@ class ParticleMap:
             NEW_MASS_ESCAPED = 0.0
             NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
             for p in particles:
-                print(
-                    "Periapsis: {}\nSemi-Major Axis: {}\nOrbital KE: {}\nOrbital PE: {}".format(p.periapsis, p.semi_major_axis, p.kinetic_energy, p.potential_energy)
-                )
-                if abs(p.distance) < self.a:
-                # if abs(p.position_vector[0]) <= self.a and abs(p.position_vector[2]) <= self.a and abs(
-                #         p.position_vector[
-                #             1]) <= self.b:  # the particle's radial position is inside of the protoplanetary polar and equatorial radii and is part of the planet
+                if abs(p.position_vector[0]) <= self.a and abs(p.position_vector[2]) <= self.a and abs(
+                        p.position_vector[
+                            1]) <= self.b:  # the particle's radial position is inside of the protoplanetary polar and equatorial radii and is part of the planet
                     NUM_PARTICLES_WITHIN_RADIAL_DISTANCE += 1
                     NEW_MASS_PROTOPLANET += p.mass
                     NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]

@@ -139,8 +139,10 @@ def colorcode_orbits(particles, a, b, z=None, center_plot=False):
         ax.legend()
 
         if center_plot:
-            ax.set_xlim(-2e8, 2e8)
-            ax.set_ylim(-2e8, 2e8)
+            # ax.set_xlim(-2e8, 2e8)
+            # ax.set_ylim(-2e8, 2e8)
+            ax.set_xlim(-1e7, 1e7)
+            ax.set_ylim(-1e7, 1e7)
 
     else:
         ax = Axes3D(fig)
