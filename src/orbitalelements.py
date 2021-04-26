@@ -50,7 +50,7 @@ class Particle:
         return p_x, p_y, p_z
 
     def __angular_momentum(self):
-        am = self.mass * np.cross(self.position_vector, self.relative_velocity_vector)
+        am = np.array(self.mass * np.cross(self.position_vector, self.relative_velocity_vector))
         return am
 
     def __node_vector(self):
