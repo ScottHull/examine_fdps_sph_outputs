@@ -11,12 +11,12 @@ class Particle:
         self.assigned_body = None
         self.particle_name = particle_name
         self.particle_id = particle_id
-        self.position_vector = position_vector
-        self.velocity_vector = velocity_vector
+        self.position_vector = np.array(position_vector)
+        self.velocity_vector = np.array(velocity_vector)
         if relative_velocity_vector is None:
-            self.relative_velocity_vector = self.velocity_vector
+            self.relative_velocity_vector = np.array(self.velocity_vector)
         else:
-            self.relative_velocity_vector = relative_velocity_vector
+            self.relative_velocity_vector = np.array(relative_velocity_vector)
         self.distance = np.linalg.norm(position_vector)
         self.mass = float(mass)
         self.density = float(density)
@@ -59,9 +59,9 @@ class Particle:
 
     def __total_orbital_energy(self):
         # kinetic energy, KE = 1/2 m v^2
-        self.kinetic_energy = (1.0 / 2.0) * self.mass * (np.linalg.norm(self.relative_velocity_vector) ** 2)
+        self.kinetic_energy = (1.0 / 2.0) * self.mass * self.relative_velocity_vector ** 2
         # vectorized gravitational potential energy, PE = (G M_1 M_2) / r
-        self.potential_energy = - (self.__G * self.mass_grav_body * self.mass) / np.linalg.norm(self.position_vector)
+        self.potential_energy = - (self.__G * self.mass_grav_body * self.mass) / self.position_vector
         return self.kinetic_energy + self.potential_energy
 
     def __eccentricity(self):
@@ -80,7 +80,6 @@ class Particle:
 
     def __semi_major_axis(self):
         E_spec = self.__total_orbital_energy() / self.mass
-
         mu = self.__G * self.mass_grav_body
         return - mu / (2.0 * E_spec)
 
