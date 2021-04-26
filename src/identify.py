@@ -1,4 +1,4 @@
-from src.orbitalelements_new import Particle
+from src.orbitalelements import Particle
 from src.centering import find_center, center_of_mass
 import src.plots as plots
 import pandas as pd
@@ -95,6 +95,9 @@ class ParticleMap:
             NEW_MASS_ESCAPED = 0.0
             NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
             for p in particles:
+                print(
+                    "Periapsis: {}\nSemi-Major Axis: {}\nOrbital KE: {}\nOrbital PE: {}".format(p.periapsis, p.semi_major_axis, p.kinetic_energy, p.potential_energy)
+                )
                 if abs(p.distance) < self.a:
                 # if abs(p.position_vector[0]) <= self.a and abs(p.position_vector[2]) <= self.a and abs(
                 #         p.position_vector[
