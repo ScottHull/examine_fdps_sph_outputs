@@ -128,3 +128,7 @@ class Particle:
         self.argument_of_periapsis = self.__argument_of_periapsis()
         # self.true_anomaly = self.__true_anomaly()
         self.periapsis = self.__periapsis()
+        print(
+            "Periapsis: {}\n"
+            "Semi Major Axis: {}".format(self.periapsis, self.semi_major_axis)
+        )
