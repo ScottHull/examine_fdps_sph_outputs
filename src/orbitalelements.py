@@ -58,7 +58,7 @@ class Particle:
 
     def __total_orbital_energy(self):
         # kinetic energy, KE = 1/2 m v^2
-        self.kinetic_energy = (1.0 / 2.0) * self.mass * self.relative_velocity_vector ** 2
+        self.kinetic_energy = (1.0 / 2.0) * self.mass * np.array(self.relative_velocity_vector) ** 2
         # vectorized gravitational potential energy, PE = (G M_1 M_2) / r
         self.potential_energy = - (self.__G * self.mass_grav_body * self.mass) / self.position_vector
         return self.kinetic_energy + self.potential_energy
