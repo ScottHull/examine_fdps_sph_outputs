@@ -44,13 +44,14 @@ class Particle:
         self.potential_energy = 0
 
     def __total_momentum_vector(self):
-        p_x = self.mass * self.velocity_vector[0]
-        p_y = self.mass * self.velocity_vector[1]
-        p_z = self.mass * self.velocity_vector[2]
-        return p_x, p_y, p_z
+        m_x = self.mass * self.velocity_vector[0]
+        m_y = self.mass * self.velocity_vector[1]
+        m_z = self.mass * self.velocity_vector[2]
+        return m_x, m_y, m_z
 
     def __angular_momentum(self):
         am = self.mass * np.cross(self.position_vector, self.relative_velocity_vector)
+        self.angular_momentum = sum(am)
         return am
 
     def __node_vector(self):
@@ -58,19 +59,20 @@ class Particle:
 
     def __total_orbital_energy(self):
         # kinetic energy, KE = 1/2 m v^2
-        self.kinetic_energy = (1.0 / 2.0) * self.mass * self.relative_velocity_vector ** 2
+        self.kinetic_energy = (1.0 / 2.0) * self.mass * (np.linalg.norm(self.relative_velocity_vector) ** 2)
         # vectorized gravitational potential energy, PE = (G M_1 M_2) / r
-        self.potential_energy = - (self.__G * self.mass_grav_body * self.mass) / self.position_vector
+        self.potential_energy = - (self.__G * self.mass_grav_body * self.mass) / np.linalg.norm(self.position_vector)
         return self.kinetic_energy + self.potential_energy
 
     def __eccentricity(self):
+        L = np.linalg.norm(self.angular_momentum_vector)
         self.alpha = - self.__G * self.mass * self.mass_grav_body
         self.mass_reduced = (self.mass * self.mass_grav_body) / (self.mass + self.mass_grav_body)
-        return sqrt(1.0 + ((2.0 * self.orbital_energy * (self.angular_momentum_vector ** 2)) / (self.mass_reduced * (self.alpha ** 2))))
+        return sqrt(1.0 + ((2.0 * self.orbital_energy * (L ** 2)) / (self.mass_reduced * (self.alpha ** 2))))
 
     def __eccentricity_vector(self):
         mu = self.__G * self.mass_grav_body
-        term1 = ((((self.relative_velocity_vector) ** 2) / mu) - (1.0 / self.distance)) * \
+        term1 = ((((np.linalg.norm(self.relative_velocity_vector)) ** 2) / mu) - (1.0 / self.distance)) * \
                 np.array(self.position_vector)
         term2 = ((np.dot(self.position_vector, self.relative_velocity_vector) / mu)) * np.array(
             self.relative_velocity_vector)
@@ -78,11 +80,12 @@ class Particle:
 
     def __semi_major_axis(self):
         E_spec = self.__total_orbital_energy() / self.mass
+
         mu = self.__G * self.mass_grav_body
         return - mu / (2.0 * E_spec)
 
     def __inclination(self):
-        return acos(self.angular_momentum_vector[2] / self.angular_momentum_vector)
+        return acos(self.angular_momentum_vector[2] / np.linalg.norm(self.angular_momentum_vector))
 
     def __longitude_of_ascending_node(self):
         return np.cross([0, 0, 1], self.angular_momentum_vector)

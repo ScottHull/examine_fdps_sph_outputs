@@ -1,4 +1,4 @@
-from src.orbitalelements import Particle
+from src.orbitalelements_new import Particle
 from src.centering import find_center, center_of_mass
 import src.plots as plots
 import pandas as pd
