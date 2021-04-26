@@ -68,7 +68,8 @@ class Particle:
         L = np.linalg.norm(self.angular_momentum_vector)
         self.alpha = - self.__G * self.mass * self.mass_grav_body
         self.mass_reduced = (self.mass * self.mass_grav_body) / (self.mass + self.mass_grav_body)
-        return sqrt(1.0 + ((2.0 * self.orbital_energy * (L ** 2)) / (self.mass_reduced * (self.alpha ** 2))))
+        orbital_energy = np.linalg.norm(self.orbital_energy)
+        return sqrt(1.0 + ((2.0 * orbital_energy * (L ** 2)) / (self.mass_reduced * (self.alpha ** 2))))
 
     def __eccentricity_vector(self):
         mu = self.__G * self.mass_grav_body
