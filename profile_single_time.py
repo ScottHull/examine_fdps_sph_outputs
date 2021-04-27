@@ -22,19 +22,15 @@ particle_map = pm.solve()
 
 fig = plots.plot_eccentricities(
     particles=particle_map,
-    # a=pm.a,
-    # b=pm.b
-    a=1e6,
-    b=1e6,
+    a=pm.a,
+    b=pm.b
 )
 fig.savefig("eccentricity_{}.png".format(time), format='png')
 
 fig = plots.colorcode_orbits(
         particles=particle_map,
-        # a=pm.a,
-        # b=pm.b,
-        a=1e6,
-        b=1e6,
+        a=pm.a,
+        b=pm.b,
         center_plot=True,
         z=None
     )
