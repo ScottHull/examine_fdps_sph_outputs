@@ -99,7 +99,7 @@ def colorcode_orbits(particles, a, b, z=None, center_plot=False):
     if z is None:
         ax.scatter(
             [p.position_vector[0] for p in particles if p.eccentricity > 1.0],
-            [p.position_vector[2] for p in particles if p.eccentricity > 1.0],
+            [p.position_vector[1] for p in particles if p.eccentricity > 1.0],
             c='red',
             marker="+",
             label="ESCAPE"
@@ -107,7 +107,7 @@ def colorcode_orbits(particles, a, b, z=None, center_plot=False):
         ax.scatter(
             [p.position_vector[0] for p in particles if
              abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
-            [p.position_vector[2] for p in particles if
+            [p.position_vector[1] for p in particles if
              abs(p.position_vector[0]) <= a and abs(p.position_vector[2]) <= a and abs(p.position_vector[1]) <= b],
             c='blue',
             marker="+",
@@ -116,7 +116,7 @@ def colorcode_orbits(particles, a, b, z=None, center_plot=False):
         ax.scatter(
             [p.position_vector[0] for p in particles if
              p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
-            [p.position_vector[2] for p in particles if
+            [p.position_vector[1] for p in particles if
              p.eccentricity <= 1.0 and abs(p.periapsis) <= a and p.distance > a],
             c='green',
             marker="+",
@@ -124,7 +124,7 @@ def colorcode_orbits(particles, a, b, z=None, center_plot=False):
         )
         ax.scatter(
             [p.position_vector[0] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
-            [p.position_vector[2] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
+            [p.position_vector[1] for p in particles if p.eccentricity <= 1.0 and abs(p.periapsis) > a],
             c='pink',
             marker="+",
             label="DISK"
