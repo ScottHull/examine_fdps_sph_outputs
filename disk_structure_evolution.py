@@ -39,10 +39,10 @@ for time in np.arange(start_time, end_time + interval, interval):
     # os.remove(f)
     fig = plots.plot_eccentricities(
         particles=particle_map,
-        # a=pm.a,
-        # b=pm.b
-        a=1e6,
-        b=1e6,
+        a=pm.a,
+        b=pm.b
+        # a=1e6,
+        # b=1e6,
     )
     fig.savefig(eccentricity_plot_path + "/{}.png".format(time), format='png')
     plt.close()
@@ -52,10 +52,10 @@ for time in np.arange(start_time, end_time + interval, interval):
         tags=[p.particle_id for p in particle_map],
         x_label="x",
         y_label="y",
-        # a=pm.a,
-        # b=pm.b,
-        a=1e6,
-        b=1e6,
+        a=pm.a,
+        b=pm.b,
+        # a=1e6,
+        # b=1e6,
         center_plot=True,
         z=[p.position_vector[2] for p in particle_map],
         z_label="z"
@@ -64,10 +64,10 @@ for time in np.arange(start_time, end_time + interval, interval):
     plt.close()
     fig = plots.colorcode_orbits(
         particles=particle_map,
-        # a=pm.a,
-        # b=pm.b,
-        a=1e6,
-        b=1e6,
+        a=pm.a,
+        b=pm.b,
+        # a=1e6,
+        # b=1e6,
         center_plot=True,
         z=True
     )

@@ -92,6 +92,7 @@ class ParticleMap:
             NEW_MASS_ESCAPED = 0.0
             NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
             for p in particles:
+
                 if abs(p.position_vector[0]) <= self.a and abs(p.position_vector[2]) <= self.a and abs(
                         p.position_vector[
                             1]) <= self.b:  # the particle's radial position is inside of the protoplanetary polar and equatorial radii and is part of the planet
