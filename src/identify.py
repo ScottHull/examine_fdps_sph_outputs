@@ -58,20 +58,23 @@ class ParticleMap:
             position_vector = [self.output[3][row] - self.earth_center[0], self.output[4][row] - self.earth_center[1],
                                self.output[5][row] - self.earth_center[2]]
             velocity_vector = [self.output[6][row], self.output[7][row], self.output[8][row]]
-            p = Particle(
-                particle_name=int(self.output[0][row]),
-                particle_id=int(self.output[1][row]),
-                position_vector=position_vector,
-                velocity_vector=velocity_vector,
-                mass=self.output[2][row],
-                density=self.output[9][row],
-                internal_energy=self.output[10][row],
-                mass_grav_body=grav_mass,
-                entropy=self.output[13][row],
-                temperature=self.output[14][row]
-            )
-            p.pressure = self.output[11][row]
-            particles.append(p)
+            try:
+                p = Particle(
+                    particle_name=int(self.output[0][row]),
+                    particle_id=int(self.output[1][row]),
+                    position_vector=position_vector,
+                    velocity_vector=velocity_vector,
+                    mass=self.output[2][row],
+                    density=self.output[9][row],
+                    internal_energy=self.output[10][row],
+                    mass_grav_body=grav_mass,
+                    entropy=self.output[13][row],
+                    temperature=self.output[14][row]
+                )
+                p.pressure = self.output[11][row]
+                particles.append(p)
+            except:
+                pass
         print("Collected particles!")
         return particles
 
@@ -92,10 +95,10 @@ class ParticleMap:
             NEW_MASS_ESCAPED = 0.0
             NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
             for p in particles:
-
-                if abs(p.position_vector[0]) <= self.a and abs(p.position_vector[2]) <= self.a and abs(
-                        p.position_vector[
-                            1]) <= self.b:  # the particle's radial position is inside of the protoplanetary polar and equatorial radii and is part of the planet
+                if abs(p.distance) < self.a:
+                # if abs(p.position_vector[0]) <= self.a and abs(p.position_vector[2]) <= self.a and abs(
+                #         p.position_vector[
+                #             1]) <= self.b:  # the particle's radial position is inside of the protoplanetary polar and equatorial radii and is part of the planet
                     NUM_PARTICLES_WITHIN_RADIAL_DISTANCE += 1
                     NEW_MASS_PROTOPLANET += p.mass
                     NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
@@ -143,11 +146,10 @@ class ParticleMap:
             print(
                 "ITERATION: {}\n"
                 "ERROR: {}\n"
-                "EQUATORIAL RADIUS: {}\n"
                 "NUM_PARTICLES_WITHIN_RADIAL_DISTANCE: {}\n"
                 "NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE: {}\n"
                 "NUM_PARTICLES_IN_DISK: {}\n"
-                "NUM_PARTICLES_ESCAPING: {}".format(iteration, error, self.a,
+                "NUM_PARTICLES_ESCAPING: {}".format(iteration, error,
                                                     NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
                                                     NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE,
                                                     NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING)
