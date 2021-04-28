@@ -33,7 +33,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     fig = plots.colorcode_orbits(
         particles=particle_map,
         center_plot=True,
-        z=True
+        z=None
     )
     fig.savefig(disk_structure_eccentricity_path + "/{}.png".format(time), format='png')
 
