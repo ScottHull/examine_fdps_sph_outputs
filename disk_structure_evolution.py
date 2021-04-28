@@ -37,11 +37,5 @@ for time in np.arange(start_time, end_time + interval, interval):
     )
     fig.savefig(disk_structure_eccentricity_path + "/{}.png".format(time), format='png')
 
-plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=eccentricity_plot_path,
-              filename="eccentricities.mp4", fps=5)
-plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=disk_structure_path,
-              filename="structure.mp4", fps=5)
 plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=disk_structure_eccentricity_path,
               filename="structure_eccentricities.mp4", fps=5)
-plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=vmf_path,
-              filename="vmf.mp4", fps=5)
