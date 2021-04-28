@@ -14,7 +14,7 @@ end_time = 2000
 interval = 200
 number_processes = 100
 
-path_to_outputs = "/scratch/shull4/gi"
+path_to_outputs = "/scratch/shull4/outfiles"
 eccentricity_plot_path = os.getcwd() + "/eccentricity"
 disk_structure_path = os.getcwd() + "/structure"
 disk_structure_eccentricity_path = os.getcwd() + "/eccentricity_structure"

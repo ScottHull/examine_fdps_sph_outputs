@@ -50,6 +50,8 @@ def colorcode_orbits(particles, a=None, b=None, z=None, center_plot=False):
             ax.set_xlim(-1e8, 1e8)
             ax.set_ylim(-1e8, 1e8)
 
+    return fig
+
 
 def animate(start_time, end_time, interval, path, filename="animation.mp4", fps=15):
     frames = [path + "/{}.png".format(time) for time in np.arange(start_time, end_time + interval, interval)]
