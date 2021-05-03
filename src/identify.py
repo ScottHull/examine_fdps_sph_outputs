@@ -8,6 +8,8 @@ from matplotlib.patches import Ellipse
 import numpy as np
 import statistics
 
+EARTH_MASS = 5.972 * 10 ** 24
+LUNAR_MASS = 7.34767309 * 10 ** 22
 
 class ParticleMap:
 
@@ -150,6 +152,15 @@ class ParticleMap:
                                                     NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
                                                     NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE,
                                                     NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING)
+            )
+            print(
+                "PROTOPLANET MASS: {} M_E ({} KG)\n"
+                "DISK MASS: {} M_L ({} KG\n"
+                "ESCAPING MASS: {} M_L ({} KG\n".format(
+                    NEW_MASS_PROTOPLANET, NEW_MASS_PROTOPLANET / EARTH_MASS,
+                    NEW_MASS_DISK, NEW_MASS_DISK / LUNAR_MASS,
+                    NEW_MASS_ESCAPED, NEW_MASS_ESCAPED / LUNAR_MASS,
+                )
             )
             if self.__relative_velocity:
                 self.target_velocity = [
