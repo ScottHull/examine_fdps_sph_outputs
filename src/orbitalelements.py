@@ -88,7 +88,7 @@ class Particle:
         return - mu / (2.0 * E_spec)
 
     def __inclination(self):
-        return acos(self.angular_momentum_vector[2] / self.angular_momentum)
+        return acos(self.angular_momentum_vector[2] / np.linalg.norm(self.angular_momentum_vector))
 
     def __longitude_of_ascending_node(self):
         return np.cross([0, 0, 1], self.angular_momentum_vector)
