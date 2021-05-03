@@ -65,10 +65,10 @@ class Particle:
         return self.kinetic_energy + self.potential_energy
 
     def __eccentricity(self):
-        L = np.linalg.norm(self.angular_momentum_vector)
+        # L = np.linalg.norm(self.angular_momentum_vector)
         self.alpha = - self.__G * self.mass * self.mass_grav_body
         self.mass_reduced = (self.mass * self.mass_grav_body) / (self.mass + self.mass_grav_body)
-        return sqrt(1.0 + ((2.0 * self.orbital_energy * (L ** 2)) / (self.mass_reduced * (self.alpha ** 2))))
+        return sqrt(1.0 + ((2.0 * self.orbital_energy * (self.angular_momentum ** 2)) / (self.mass_reduced * (self.alpha ** 2))))
 
     def __eccentricity_vector(self):
         mu = self.__G * self.mass_grav_body
@@ -85,7 +85,7 @@ class Particle:
         return - mu / (2.0 * E_spec)
 
     def __inclination(self):
-        return acos(self.angular_momentum_vector[2] / np.linalg.norm(self.angular_momentum_vector))
+        return acos(self.angular_momentum_vector[2] / self.angular_momentum)
 
     def __longitude_of_ascending_node(self):
         return np.cross([0, 0, 1], self.angular_momentum_vector)

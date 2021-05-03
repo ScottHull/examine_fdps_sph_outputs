@@ -7,7 +7,7 @@ import moviepy.editor as mpy
 
 
 
-def colorcode_orbits(particles, a=None, b=None, z=None, center_plot=False):
+def colorcode_orbits(particles, time, a=None, b=None, z=None, center_plot=False):
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
@@ -42,7 +42,7 @@ def colorcode_orbits(particles, a=None, b=None, z=None, center_plot=False):
             ax.add_artist(e)
         ax.set_xlabel("x")
         ax.set_ylabel("y")
-        ax.set_title("PARTICLE ORBITS")
+        ax.set_title("PARTICLE ORBITS (iteration: {})".format(time))
         ax.grid()
         ax.legend()
 
