@@ -10,6 +10,7 @@ import statistics
 
 EARTH_MASS = 5.972 * 10 ** 24
 LUNAR_MASS = 7.34767309 * 10 ** 22
+L_EM = 3.5 * 10 ** 34
 
 class ParticleMap:
 
@@ -142,6 +143,7 @@ class ParticleMap:
             self.a = NEW_A
             self.mass_protoearth = NEW_MASS_PROTOPLANET
             iteration += 1
+            total_angular_momentum = sum([i.angular_momentum for i in particles])
             print(
                 "ITERATION: {}\n"
                 "ERROR: {}\n"
@@ -155,12 +157,15 @@ class ParticleMap:
             )
             print(
                 "PROTOPLANET MASS: {} M_E ({} KG)\n"
-                "DISK MASS: {} M_L ({} KG\n"
-                "ESCAPING MASS: {} M_L ({} KG\n".format(
-                    NEW_MASS_PROTOPLANET, NEW_MASS_PROTOPLANET / EARTH_MASS,
-                    NEW_MASS_DISK, NEW_MASS_DISK / LUNAR_MASS,
-                    NEW_MASS_ESCAPED, NEW_MASS_ESCAPED / LUNAR_MASS,
+                "DISK MASS: {} M_L ({} KG)\n"
+                "ESCAPING MASS: {} M_L ({} KG)\n".format(
+                    NEW_MASS_PROTOPLANET / EARTH_MASS, NEW_MASS_PROTOPLANET,
+                    NEW_MASS_DISK / LUNAR_MASS, NEW_MASS_DISK,
+                    NEW_MASS_ESCAPED / LUNAR_MASS, NEW_MASS_ESCAPED
                 )
+            )
+            print(
+                "TOTAL ANGULAR MOMENTUM: {} L_EM ({})".format(total_angular_momentum / L_EM, total_angular_momentum)
             )
             if self.__relative_velocity:
                 self.target_velocity = [
