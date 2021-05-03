@@ -25,4 +25,36 @@ for row in df.index:
     pos = np.linalg.norm(pos_vec)
     data.append((label, vel, rel_vel, pos))
 
+planet = [i for i in data if i[0] == "PLANET"]
+disk = [i for i in data if i[0] == "DISK"]
+escape = [i for i in data if i[0] == "ESCAPE"]
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.scatter(
+    [i[3] for i in planet],
+    [i[2] for i in planet],
+    marker="+",
+    color='blue',
+    label="PLANET"
+)
+ax.scatter(
+    [i[3] for i in disk],
+    [i[2] for i in disk],
+    marker="+",
+    color='pink',
+    label="DISK"
+)
+ax.scatter(
+    [i[3] for i in escape],
+    [i[2] for i in escape],
+    marker="+",
+    color='red',
+    label="ESCAPE"
+)
+ax.set_xlabel("Radial Distance")
+ax.set_ylabel("Relative Velocity")
+ax.grid()
+ax.legend()
+plt.savefig("velocities.png", format='png')
 
