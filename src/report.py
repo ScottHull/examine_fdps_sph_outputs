@@ -29,4 +29,7 @@ def make_report(particles, time, to_directory="/particle_outputs"):
         "total_momentum_x": [p.momentum_vector[0] for p in particles],
         "total_momentum_y": [p.momentum_vector[1] for p in particles],
         "total_momentum_z": [p.momentum_vector[2] for p in particles],
+        "semimajor_axis": [p.semi_major_axis for p in particles],
+        "periapsis": [p.periapsis for p in particles],
+        "inclination": [p.inclination for p in particles],
     }).to_csv(to_directory + "/{}.csv".format(time))

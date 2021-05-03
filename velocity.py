@@ -12,7 +12,6 @@ for row in df.index:
     vel_x, vel_y, vel_z = df['v_x_absolute'][row], df['v_y_absolute'][row], df['v_z_absolute'][row]
     rel_vel_x, rel_vel_y, rel_vel_z = df['v_x_relative'][row], df['v_y_relative'][row], df['v_z_relative'][row]
     label = df['label'][row]
-    tag = df['']
     x, y, z = df['x'][row], df['y'][row], df['z'][row]
 
     vel_vec = [vel_x, vel_y, vel_z]
@@ -56,5 +55,7 @@ ax.set_xlabel("Radial Distance")
 ax.set_ylabel("Relative Velocity")
 ax.grid()
 ax.legend()
-plt.savefig("velocities.png", format='png')
+ax.set_xlim(0, 1e8)
+# plt.savefig("velocities.png", format='png')
+plt.show()
 
