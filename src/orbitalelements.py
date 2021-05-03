@@ -26,7 +26,7 @@ class Particle:
         self.pressure = None
         self.mass_grav_body = mass_grav_body
         self.angular_momentum_vector = self.__angular_momentum_vector()
-        self.angular_momentum = 0
+        self.angular_momentum = self.__angular_momentum()
         self.momentum_vector = self.__total_momentum_vector()
         self.semi_major_axis = self.__semi_major_axis()
         self.orbital_energy = self.__total_orbital_energy()
@@ -54,8 +54,7 @@ class Particle:
         return am
 
     def __angular_momentum(self):
-        am = self.__angular_momentum_vector()
-        self.angular_momentum = sum(am)
+        am = sum(self.__angular_momentum_vector())
         return am
 
     def __node_vector(self):
