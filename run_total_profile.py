@@ -1,5 +1,5 @@
 import os
-from src.identify import ParticleMap, ParticleMapFromFiles
+from src.identify import ParticleMap
 from src.combine import CombineFile
 from total_profile import controller
 import matplotlib.pyplot as plt

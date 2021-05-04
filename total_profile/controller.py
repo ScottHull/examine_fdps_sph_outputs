@@ -48,21 +48,21 @@ def plot(ax, ps):
         [p[1] for p in ps['planet']],
         marker="+",
         color='blue',
-        label='PLANET'
+        label='PLANET ({})'.format(len(ps['planet']))
     )
     ax.scatter(
         [p[0] for p in ps['disk']],
         [p[1] for p in ps['disk']],
         marker="+",
         color='pink',
-        label='DISK'
+        label='DISK ({})'.format(len(ps['disk']))
     )
     ax.scatter(
         [p[0] for p in ps['escape']],
         [p[1] for p in ps['escape']],
         marker="+",
         color='red',
-        label='ESCAPE'
+        label='ESCAPE ({})'.format(len(ps['disk']))
     )
     ax.grid()
     ax.legend()

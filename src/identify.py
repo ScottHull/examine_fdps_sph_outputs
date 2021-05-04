@@ -165,7 +165,7 @@ class ParticleMap:
                 )
             )
             print(
-                "TOTAL ANGULAR MOMENTUM: {} L_EM ({})".format(total_angular_momentum / L_EM, total_angular_momentum)
+                "TOTAL ANGULAR MOMENTUM: {} L_EM ({})\n\n".format(total_angular_momentum / L_EM, total_angular_momentum)
             )
             if self.__relative_velocity:
                 self.target_velocity = [
