@@ -121,7 +121,7 @@ ax.plot(
     color='black'
 )
 ax.set_xlabel("x")
-ax.set_xlabel("y")
+ax.set_ylabel("y")
 ax.set_title("Iteration: {}".format(time))
 ax.grid()
 ax.legend()
