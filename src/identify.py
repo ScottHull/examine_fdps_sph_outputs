@@ -61,11 +61,25 @@ class ParticleMap:
             position_vector = [self.output[3][row] - self.earth_center[0], self.output[4][row] - self.earth_center[1],
                                self.output[5][row] - self.earth_center[2]]
             velocity_vector = [self.output[6][row], self.output[7][row], self.output[8][row]]
+            p = Particle(
+                particle_name=int(self.output[0][row]),
+                particle_id=int(self.output[1][row]),
+                position_vector=position_vector,
+                velocity_vector=velocity_vector,
+                mass=self.output[2][row],
+                density=self.output[9][row],
+                internal_energy=self.output[10][row],
+                mass_grav_body=grav_mass,
+                entropy=self.output[13][row],
+                temperature=self.output[14][row],
+                find_orbital_elements=find_orbital_elements,
+            )
+            p.pressure = self.output[11][row]
             if self.__relative_velocity:
                 self.target_velocity = [
-                    statistics.mean([p.velocity_vector[0] for p in particles if p.label == "PLANET"]),
-                    statistics.mean([p.velocity_vector[1] for p in particles if p.label == "PLANET"]),
-                    statistics.mean([p.velocity_vector[2] for p in particles if p.label == "PLANET"])
+                    statistics.mean([p.velocity_vector[0] for p in particles if p.particle_id == 1]),
+                    statistics.mean([p.velocity_vector[1] for p in particles if p.particle_id == 1]),
+                    statistics.mean([p.velocity_vector[2] for p in particles if p.particle_id == 1])
                 ]
                 relative_velocity_vector = [
                     velocity_vector[0] - self.target_velocity[0],
@@ -78,21 +92,6 @@ class ParticleMap:
                     position_vector=position_vector,
                     velocity_vector=velocity_vector,
                     relative_velocity_vector=relative_velocity_vector,
-                    mass=self.output[2][row],
-                    density=self.output[9][row],
-                    internal_energy=self.output[10][row],
-                    mass_grav_body=grav_mass,
-                    entropy=self.output[13][row],
-                    temperature=self.output[14][row],
-                    find_orbital_elements=find_orbital_elements,
-                )
-                p.pressure = self.output[11][row]
-            else:
-                p = Particle(
-                    particle_name=int(self.output[0][row]),
-                    particle_id=int(self.output[1][row]),
-                    position_vector=position_vector,
-                    velocity_vector=velocity_vector,
                     mass=self.output[2][row],
                     density=self.output[9][row],
                     internal_energy=self.output[10][row],

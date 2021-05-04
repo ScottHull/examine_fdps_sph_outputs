@@ -9,7 +9,7 @@ from src.structure import Structure
 import matplotlib.pyplot as plt
 import shutil
 
-time = 0
+time = 2000
 number_processes = 100
 path_to_outputs = "/scratch/shull4/gi"
 
