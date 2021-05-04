@@ -53,7 +53,7 @@ class ParticleMap:
     def calc_mass_protoearth(self, a, b, rho=5500):
         return ((4.0 / 3.0) * pi * (a ** 2) * b) * rho
 
-    def collect_all_particles(self):
+    def collect_all_particles(self, find_orbital_elements=True):
         print("Collecting particles...")
         particles = []
         grav_mass = self.calc_mass_protoearth(a=self.a, b=self.b)
@@ -71,7 +71,8 @@ class ParticleMap:
                 internal_energy=self.output[10][row],
                 mass_grav_body=grav_mass,
                 entropy=self.output[13][row],
-                temperature=self.output[14][row]
+                temperature=self.output[14][row],
+                find_orbital_elements=find_orbital_elements
             )
             p.pressure = self.output[11][row]
             particles.append(p)

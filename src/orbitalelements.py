@@ -5,7 +5,8 @@ import numpy as np
 class Particle:
 
     def __init__(self, position_vector, velocity_vector, mass, density, mass_grav_body, particle_id,
-                 temperature, entropy, internal_energy, particle_name=None, relative_velocity_vector=None):
+                 temperature, entropy, internal_energy, particle_name=None, relative_velocity_vector=None,
+                 find_orbital_elements=True):
         self.__G = 6.674 * 10 ** -11
         self.label = None
         self.assigned_body = None
@@ -25,23 +26,24 @@ class Particle:
         self.internal_energy = float(internal_energy)
         self.pressure = None
         self.mass_grav_body = mass_grav_body
-        self.angular_momentum_vector = self.__angular_momentum_vector()
-        self.angular_momentum = self.__angular_momentum()
-        self.momentum_vector = self.__total_momentum_vector()
-        self.semi_major_axis = self.__semi_major_axis()
-        self.orbital_energy = self.__total_orbital_energy()
-        self.eccentricity = self.__eccentricity()
-        self.eccentricity_vector = self.__eccentricity_vector()
-        self.periapsis_node_vector = self.__node_vector()
-        self.inclination = self.__inclination()
-        self.longitude_of_ascending_node = self.__longitude_of_ascending_node()
-        self.argument_of_periapsis = self.__argument_of_periapsis()
-        # self.true_anomaly = self.__true_anomaly()
-        self.periapsis = self.__periapsis()
-        self.alpha = 0
-        self.mass_reduced = 0
-        self.kinetic_energy = 0
-        self.potential_energy = 0
+        if find_orbital_elements:
+            self.angular_momentum_vector = self.__angular_momentum_vector()
+            self.angular_momentum = self.__angular_momentum()
+            self.momentum_vector = self.__total_momentum_vector()
+            self.semi_major_axis = self.__semi_major_axis()
+            self.orbital_energy = self.__total_orbital_energy()
+            self.eccentricity = self.__eccentricity()
+            self.eccentricity_vector = self.__eccentricity_vector()
+            self.periapsis_node_vector = self.__node_vector()
+            self.inclination = self.__inclination()
+            self.longitude_of_ascending_node = self.__longitude_of_ascending_node()
+            self.argument_of_periapsis = self.__argument_of_periapsis()
+            # self.true_anomaly = self.__true_anomaly()
+            self.periapsis = self.__periapsis()
+            self.alpha = 0
+            self.mass_reduced = 0
+            self.kinetic_energy = 0
+            self.potential_energy = 0
 
     def __total_momentum_vector(self):
         m_x = self.mass * self.velocity_vector[0]

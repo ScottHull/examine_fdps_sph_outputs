@@ -4,14 +4,14 @@ from src.combine import CombineFile
 from src.identify import ParticleMap
 import matplotlib.pyplot as plt
 
-time = 2000
+time = 0
 number_processes = 100
 path_to_outputs = "/scratch/shull4/gi"
 
 combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
 f = os.getcwd() + "/merged_{}.dat".format(time)
 pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True,
-                 center_plot=True).collect_all_particles()
+                 center_plot=True).collect_all_particles(find_orbital_elements=False)
 
 impactor = [i for i in pm if i.particle_id > 1]
 target = [i for i in pm if i.particle_id <= 1]
