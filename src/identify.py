@@ -76,8 +76,6 @@ class ParticleMap:
             )
             p.pressure = self.output[11][row]
             particles.append(p)
-            print("Collected particles!")
-            return particles
 
         if self.__relative_velocity:
             self.target_velocity = [
@@ -94,6 +92,7 @@ class ParticleMap:
                     velocity_vector[2] - self.target_velocity[2]
                 ]
                 p.relative_velocity_vector = relative_velocity_vector
+        print("Collected particles!")
         return particles
 
     def __solve(self, particles, planet_label):
