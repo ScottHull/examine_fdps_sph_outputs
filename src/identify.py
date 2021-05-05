@@ -75,34 +75,25 @@ class ParticleMap:
                 find_orbital_elements=find_orbital_elements,
             )
             p.pressure = self.output[11][row]
+            particles.append(p)
+            print("Collected particles!")
+            return particles
+
+        if self.__relative_velocity:
             self.target_velocity = [
                 statistics.mean([p.velocity_vector[0] for p in particles if p.particle_id == 1]),
                 statistics.mean([p.velocity_vector[1] for p in particles if p.particle_id == 1]),
                 statistics.mean([p.velocity_vector[2] for p in particles if p.particle_id == 1])
             ]
-            if self.__relative_velocity:
+            for p in particles:
+                velocity_vector = p.velocity_vector
+
                 relative_velocity_vector = [
                     velocity_vector[0] - self.target_velocity[0],
                     velocity_vector[1] - self.target_velocity[1],
                     velocity_vector[2] - self.target_velocity[2]
                 ]
-                p = Particle(
-                    particle_name=int(self.output[0][row]),
-                    particle_id=int(self.output[1][row]),
-                    position_vector=position_vector,
-                    velocity_vector=velocity_vector,
-                    relative_velocity_vector=relative_velocity_vector,
-                    mass=self.output[2][row],
-                    density=self.output[9][row],
-                    internal_energy=self.output[10][row],
-                    mass_grav_body=grav_mass,
-                    entropy=self.output[13][row],
-                    temperature=self.output[14][row],
-                    find_orbital_elements=find_orbital_elements,
-                )
-                p.pressure = self.output[11][row]
-            particles.append(p)
-        print("Collected particles!")
+                p.relative_velocity_vector = relative_velocity_vector
         return particles
 
     def __solve(self, particles, planet_label):
