@@ -92,6 +92,7 @@ class ParticleMap:
                     velocity_vector[2] - self.target_velocity[2]
                 ]
                 p.relative_velocity_vector = relative_velocity_vector
+                p.recalculate_elements(self.mass_protoearth)
         print("Collected particles!")
         return particles
 
