@@ -75,12 +75,12 @@ class ParticleMap:
                 find_orbital_elements=find_orbital_elements,
             )
             p.pressure = self.output[11][row]
+            self.target_velocity = [
+                statistics.mean([p.velocity_vector[0] for p in particles if p.particle_id == 1]),
+                statistics.mean([p.velocity_vector[1] for p in particles if p.particle_id == 1]),
+                statistics.mean([p.velocity_vector[2] for p in particles if p.particle_id == 1])
+            ]
             if self.__relative_velocity:
-                self.target_velocity = [
-                    statistics.mean([p.velocity_vector[0] for p in particles if p.particle_id == 1]),
-                    statistics.mean([p.velocity_vector[1] for p in particles if p.particle_id == 1]),
-                    statistics.mean([p.velocity_vector[2] for p in particles if p.particle_id == 1])
-                ]
                 relative_velocity_vector = [
                     velocity_vector[0] - self.target_velocity[0],
                     velocity_vector[1] - self.target_velocity[1],
