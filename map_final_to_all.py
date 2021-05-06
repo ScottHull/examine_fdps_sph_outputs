@@ -63,3 +63,4 @@ for time in np.arange(start_time, end_time + interval, interval):
 
 plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=plot_path,
               filename="map_final_to_all.mp4")
+shutil.rmtree(plot_path)

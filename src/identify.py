@@ -76,6 +76,7 @@ class ParticleMap:
                 find_orbital_elements=find_orbital_elements,
             )
             p.pressure = self.output[11][row]
+
             particles.append(p)
 
         if self.__relative_velocity:
