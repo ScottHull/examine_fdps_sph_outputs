@@ -24,9 +24,9 @@ for p in pm_end:
 for time in np.arange(start_time, end_time + interval, interval):
     print("At iteration: {}".format(time))
     pm = ParticleMapFromFiles(path=path).read(time=time)
-    planet = [p for p in pm if final[p.particle_name] == "PLANET"]
-    disk = [p for p in pm if final[p.particle_name] == "DISK"]
-    escape = [p for p in pm if final[p.particle_name] == "ESCAPE"]
+    planet = [p for p in pm if final[p.particle_name].label == "PLANET"]
+    disk = [p for p in pm if final[p.particle_name].label == "DISK"]
+    escape = [p for p in pm if final[p.particle_name].label == "ESCAPE"]
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
