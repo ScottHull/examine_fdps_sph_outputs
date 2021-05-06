@@ -32,6 +32,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax = fig.add_subplot(111)
     ax.set_title("Iteration: {}".format(time))
     ax.set_xlim(-1e8, 1e8)
+    ax.set_ylim(-1e8, 1e8)
     ax.scatter(
         [p.position_vector[0] for p in planet],
         [p.position_vector[1] for p in planet],
