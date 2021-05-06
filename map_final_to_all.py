@@ -9,7 +9,7 @@ start_time = 0
 end_time = 2000
 interval = 10
 number_processes = 100
-path = "/scratch/shull4/gi"
+path = "/scratch/shull4/outfiles"
 plot_path = "/scratch/shull4/map_final_to_all"
 
 if os.path.exists(plot_path):
