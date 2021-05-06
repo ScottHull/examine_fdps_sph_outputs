@@ -33,22 +33,22 @@ for time in np.arange(start_time, end_time + interval, interval):
     ax.set_title("Iteration: {}".format(time))
     ax.set_xlim(-1e8, 1e8)
     ax.scatter(
-        [p.position[0] for p in planet],
-        [p.position[1] for p in planet],
+        [p.position_vector[0] for p in planet],
+        [p.position_vector[1] for p in planet],
         marker="+",
         color='blue',
         label='PLANET'
     )
     ax.scatter(
-        [p.position[0] for p in disk],
-        [p.position[1] for p in disk],
+        [p.position_vector[0] for p in disk],
+        [p.position_vector[1] for p in disk],
         marker="+",
         color='pink',
         label='DISK'
     )
     ax.scatter(
-        [p.position[0] for p in escape],
-        [p.position[1] for p in escape],
+        [p.position_vector[0] for p in escape],
+        [p.position_vector[1] for p in escape],
         marker="+",
         color='red',
         label='ESCAPE'
