@@ -12,6 +12,7 @@ EARTH_MASS = 5.972 * 10 ** 24
 LUNAR_MASS = 7.34767309 * 10 ** 22
 L_EM = 3.5 * 10 ** 34
 
+
 class ParticleMap:
 
     def __init__(self, output_path, center=True, centering_resolution=1e5, centering_delta=1e7,
@@ -113,10 +114,10 @@ class ParticleMap:
             NEW_MASS_ESCAPED = 0.0
             NEW_Z_ANGULAR_MOMENTUM_ESCAPED = 0.0
             for p in particles:
-                if abs(p.distance) < self.a:
-                # if abs(p.position_vector[0]) <= self.a and abs(p.position_vector[2]) <= self.a and abs(
-                #         p.position_vector[
-                #             1]) <= self.b:  # the particle's radial position is inside of the protoplanetary polar and equatorial radii and is part of the planet
+                if abs(p.distance) <= self.a:
+                    # if abs(p.position_vector[0]) <= self.a and abs(p.position_vector[2]) <= self.a and abs(
+                    #         p.position_vector[
+                    #             1]) <= self.b:  # the particle's radial position is inside of the protoplanetary polar and equatorial radii and is part of the planet
                     NUM_PARTICLES_WITHIN_RADIAL_DISTANCE += 1
                     NEW_MASS_PROTOPLANET += p.mass
                     NEW_Z_ANGULAR_MOMENTUM_PROTOPLANET += p.angular_momentum_vector[2]
@@ -125,7 +126,7 @@ class ParticleMap:
                 else:  # the particle's radial position is not within the planet
                     if p.eccentricity <= 1.0:  # elliptic orbit, will remain in the disk
                         if abs(
-                                p.periapsis) <= self.a:  # the particle's periapsis is < the equatorial radius and will eventually fall on the planet and become part of the planet
+                                p.periapsis) < self.a:  # the particle's periapsis is < the equatorial radius and will eventually fall on the planet and become part of the planet
                             NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE += 1
                             p.label = "PLANET"
                             p.assigned_body = planet_label
@@ -187,9 +188,12 @@ class ParticleMap:
             )
             if self.__relative_velocity:
                 self.target_velocity = [
-                    statistics.mean([p.velocity_vector[0] for p in particles if p.label == "PLANET"]),
-                    statistics.mean([p.velocity_vector[1] for p in particles if p.label == "PLANET"]),
-                    statistics.mean([p.velocity_vector[2] for p in particles if p.label == "PLANET"])
+                    statistics.mean(
+                        [p.velocity_vector[0] for p in particles if p.label == "PLANET" and p.particle_name == 1]),
+                    statistics.mean(
+                        [p.velocity_vector[1] for p in particles if p.label == "PLANET" and p.particle_name == 1]),
+                    statistics.mean(
+                        [p.velocity_vector[2] for p in particles if p.label == "PLANET" and p.particle_name == 1])
                 ]
             for p in particles:
                 try:
@@ -276,6 +280,7 @@ class ParticleMap:
             )
 
         return particles
+
 
 class ParticleMapFromFiles:
 
