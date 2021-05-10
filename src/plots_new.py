@@ -17,13 +17,6 @@ def colorcode_orbits(particles, time, a=None, b=None, z=None, center_plot=False)
 
     if z is None:
         ax.scatter(
-            [p.position_vector[0] for p in escaping_particles],
-            [p.position_vector[1] for p in escaping_particles],
-            c='red',
-            marker="+",
-            label="ESCAPE"
-        )
-        ax.scatter(
             [p.position_vector[0] for p in planet_particles],
             [p.position_vector[1] for p in planet_particles],
             c='blue',
@@ -36,6 +29,13 @@ def colorcode_orbits(particles, time, a=None, b=None, z=None, center_plot=False)
             c='pink',
             marker="+",
             label="DISK"
+        )
+        ax.scatter(
+            [p.position_vector[0] for p in escaping_particles],
+            [p.position_vector[1] for p in escaping_particles],
+            c='red',
+            marker="+",
+            label="ESCAPE"
         )
         if a is not None and b is not None:
             e = Ellipse(xy=(0, 0), width=a * 2.0, height=b * 2.0, alpha=0.3, color="blue")

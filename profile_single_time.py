@@ -4,7 +4,7 @@ import numpy as np
 from src.identify import ParticleMap, ParticleMapFromFiles
 from src.combine import CombineFile
 from src.report import make_report
-import src.plots as plots
+import src.plots_new as plots
 from src.structure import Structure
 import matplotlib.pyplot as plt
 import shutil
@@ -20,18 +20,19 @@ particle_map = pm.solve()
 # pm = ParticleMapFromFiles(path=path_to_outputs)
 # particle_map = pm.read(time=time)
 
-fig = plots.plot_eccentricities(
-    particles=particle_map,
-    a=pm.a,
-    b=pm.b
-)
-fig.savefig("eccentricity_{}.png".format(time), format='png')
+# fig = plots.plot_eccentricities(
+#     particles=particle_map,
+#     a=pm.a,
+#     b=pm.b
+# )
+# fig.savefig("eccentricity_{}.png".format(time), format='png')
 
 fig = plots.colorcode_orbits(
         particles=particle_map,
         a=pm.a,
         b=pm.b,
         center_plot=True,
-        z=None
+        z=None,
+        time=time
     )
 fig.savefig("orbits_{}.png".format(time), format='png')
