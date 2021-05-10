@@ -167,10 +167,11 @@ class ParticleMap:
             print(
                 "ITERATION: {}\n"
                 "ERROR: {}\n"
+                "NEW A: {}\n"
                 "NUM_PARTICLES_WITHIN_RADIAL_DISTANCE: {}\n"
                 "NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE: {}\n"
                 "NUM_PARTICLES_IN_DISK: {}\n"
-                "NUM_PARTICLES_ESCAPING: {}".format(iteration, error,
+                "NUM_PARTICLES_ESCAPING: {}".format(iteration, error, self.a,
                                                     NUM_PARTICLES_WITHIN_RADIAL_DISTANCE,
                                                     NUM_PARTICLES_WITH_PERIAPSES_WITHIN_RADIAL_DISTANCE,
                                                     NUM_PARTICLES_IN_DISK, NUM_PARTICLES_ESCAPING)
