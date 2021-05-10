@@ -38,21 +38,21 @@ for time in np.arange(start_time, end_time + interval, interval):
         [p.position_vector[1] for p in planet],
         marker="+",
         color='blue',
-        label='PLANET'
+        label='PLANET ({})'.format(len(planet))
     )
     ax.scatter(
         [p.position_vector[0] for p in disk],
         [p.position_vector[1] for p in disk],
         marker="+",
         color='pink',
-        label='DISK'
+        label='DISK ({})'.format(len(disk))
     )
     ax.scatter(
         [p.position_vector[0] for p in escape],
         [p.position_vector[1] for p in escape],
         marker="+",
         color='red',
-        label='ESCAPE'
+        label='ESCAPE ({})'.format(len(escape))
     )
     ax.set_xlabel("x")
     ax.set_ylabel("y")
