@@ -308,6 +308,7 @@ class ParticleMapFromFiles:
                 entropy=df["entropy"][row],
                 temperature=df["temperature"][row],
                 mass_grav_body=df["mass_grav_body"][row],
+                find_orbital_elements=False,
             )
             p.label = df["label"][row]
             p.pressure = df['pressure'][row]
