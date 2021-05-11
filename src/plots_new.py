@@ -8,7 +8,7 @@ import moviepy.editor as mpy
 
 
 def colorcode_orbits(particles, time, a=None, b=None, z=None, center_plot=False):
-    fig = plt.figure()
+    fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
 
     escaping_particles = [p for p in particles if p.label == "ESCAPE"]
