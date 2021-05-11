@@ -57,16 +57,16 @@ def eccentricity_plot(particles, time, a):
     ax = fig.add_subplot(111)
 
     escaping_particles = [(p.semi_major_axis / a, p.eccentricity) for p in particles if p.label == "ESCAPE"]
-    disk_particles = [(p.semi_major_axis / a, p.eccentricity) for p in particles if p.label == "DISK"]
+    disk_particles = [(abs(p.semi_major_axis / a), p.eccentricity) for p in particles if p.label == "DISK"]
     planet_particles = [(p.semi_major_axis / a, p.eccentricity) for p in particles if p.label == "PLANET"]
 
-    ax.scatter(
-        [p[0] for p in planet_particles],
-        [p[1] for p in planet_particles],
-        c='blue',
-        marker="+",
-        label="PLANET: {}".format(len(planet_particles))
-    )
+    # ax.scatter(
+    #     [p[0] for p in planet_particles],
+    #     [p[1] for p in planet_particles],
+    #     c='blue',
+    #     marker="+",
+    #     label="PLANET: {}".format(len(planet_particles))
+    # )
     ax.scatter(
         [p[0] for p in disk_particles],
         [p[1] for p in disk_particles],
@@ -74,21 +74,18 @@ def eccentricity_plot(particles, time, a):
         marker="+",
         label="DISK: {}".format(len(disk_particles))
     )
-    ax.scatter(
-        [p[0] for p in escaping_particles],
-        [p[1] for p in escaping_particles],
-        c='red',
-        marker="+",
-        label="ESCAPE: {}".format(len(escaping_particles))
-    )
+    # ax.scatter(
+    #     [p[0] for p in escaping_particles],
+    #     [p[1] for p in escaping_particles],
+    #     c='red',
+    #     marker="+",
+    #     label="ESCAPE: {}".format(len(escaping_particles))
+    # )
     ax.set_xlabel("a / Rp (semi-major axis / planet radius)")
     ax.set_ylabel("Eccentricity (e)")
     ax.set_title("Iteration: {}".format(time))
     ax.grid()
     ax.legend()
-
-    ax.set_xlim(-1e8, 1e8)
-    ax.set_ylim(-1e8, 1e8)
 
     return fig
 
