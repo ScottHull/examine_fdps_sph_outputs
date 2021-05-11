@@ -120,7 +120,6 @@ for time in np.arange(start_time, end_time + interval, interval):
     plt.savefig(density_path + "/{}.png".format(time), format="png")
     plt.close()
 
-
 for index, output_path in enumerate(paths):
     fname = fnames[index]
     animate(start_time=start_time, end_time=end_time, interval=interval, output_path=output_path, file_name=fname)

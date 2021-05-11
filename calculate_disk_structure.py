@@ -59,7 +59,8 @@ ax.scatter(
     marker="+",
     color="black"
 )
-ax.set_title("Disk Angular Momentum (Total: {})".format(sum([np.linalg.norm(p.angular_momentum_vector) for p in disk_particles])))
+ax.set_title("Disk Angular Momentum (Total: {})".format(
+    sum([np.linalg.norm(p.angular_momentum_vector) for p in disk_particles])))
 ax.set_xlabel("Radial Distance (km)")
 ax.set_ylabel("Angular Momentum")
 ax.grid()

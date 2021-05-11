@@ -4,7 +4,6 @@ import pandas as pd
 from random import randint
 
 
-
 class Model:
 
     def __init__(self, output_file, center=True):
@@ -27,7 +26,7 @@ class Model:
         self.a = (12713.6 / 2.0) * 1000.0  # present-day equitorial radius of the Earth in m
         self.b = (12756.2 / 2.0) * 1000.0  # present-day polar radius of the Earth in m
         self.__avg_density = 5.5 * 1000
-        self.initial_mass = (4.0 / 3.0) * (self.a**2) * self.b * self.__avg_density
+        self.initial_mass = (4.0 / 3.0) * (self.a ** 2) * self.b * self.__avg_density
 
     def center_of_mass(self, x_coords, y_coords, z_coords, masses):
         masses = np.array(masses, dtype=np.float32)
@@ -98,9 +97,9 @@ class Model:
 
         return p
 
+
 m = Model(output_file="merged_800.dat", center=True)
 p = m.select_random_particle()
 print(p.eccentricity)
 print(np.linalg.norm(p.eccentricity_vector))
 print(p.semi_major_axis)
-

@@ -6,9 +6,11 @@ from src.identify import ParticleMap
 from src.combine import CombineFile
 from src.report import make_report
 
+
 def calc_escape_velocity(mass, radius):
     G = 6.674 * 10 ** -11
     return sqrt((2 * G * mass) / radius)
+
 
 time = 2000
 number_processes = 100
@@ -25,5 +27,3 @@ escape_velocity = calc_escape_velocity(mass=mass, radius=pm.a)
 print(
     "Mass: {}\nRadius: {}\nEscape Velocity: {}".format(mass, pm.a, escape_velocity)
 )
-
-

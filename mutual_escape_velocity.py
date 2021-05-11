@@ -7,9 +7,11 @@ impactor_path = "/Users/scotthull/Desktop/imp.dat"
 tar_df = pd.read_csv(target_path, skiprows=2, header=None, delimiter="\t")
 imp_df = pd.read_csv(impactor_path, skiprows=2, header=None, delimiter="\t")
 
+
 def calculate_mutual_escape_velocity(m_tar, m_imp, r_tar, r_imp):
     G = 6.674 * 10 ** -11
     return sqrt(2 * G * ((m_tar + m_imp) / (r_tar + r_imp)))
+
 
 max_x_tar = max([float(i) for i in tar_df[3]])
 max_y_tar = max([float(i) for i in tar_df[4]])
@@ -41,4 +43,3 @@ print(
 
 print(list(tar_df[2])[0])
 print(list(imp_df[2])[0])
-

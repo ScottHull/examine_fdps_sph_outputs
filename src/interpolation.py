@@ -202,7 +202,7 @@ class GenericTrilinearInterpolation:
 
         # package the neighbor values up for use for interpolation
         var1_neighbor_values = (
-        self.var1_array[d1_indices[0]:d1_indices[1]][0], self.var1_array[d2_indices[0]:d2_indices[1]][0])
+            self.var1_array[d1_indices[0]:d1_indices[1]][0], self.var1_array[d2_indices[0]:d2_indices[1]][0])
         restricted_var2_array_lower = self.var2_array[d1_indices[0]:d1_indices[1]]
         restricted_var2_array_upper = self.var2_array[d2_indices[0]:d2_indices[1]]
         var2_neighbor_values = (restricted_var2_array_lower[lower_var2_neighbors[0]],

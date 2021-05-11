@@ -2,6 +2,7 @@ import pandas as pd
 import csv
 import os
 
+
 class CombineFile:
 
     def __init__(self, num_processes, time, output_path):
@@ -62,4 +63,3 @@ class CombineFile:
 
 m = CombineFile(num_processes=100, time=1253, output_path="/scratch/shull4/GI_neg_energy")
 m.combine()
-

@@ -46,7 +46,7 @@ fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(211)
 ax2 = fig.add_subplot(212)
 
-d = {1: {}, 2:{}}
+d = {1: {}, 2: {}}
 for i in rand_selected_particles_indices:
     for key in d.keys():
         d[key].update({i: {

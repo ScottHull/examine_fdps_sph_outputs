@@ -29,8 +29,8 @@ class Visualize:
 
     def __make_scene(self, ax):
         x, y, z, v_x, v_y, v_z = self.__read_sph_file()
-        r = [sqrt(i**2 + j**2) for i, j in zip(x, y)]
-        v = [sqrt(i**2 + j**2) for i, j in zip(v_x, v_y)]
+        r = [sqrt(i ** 2 + j ** 2) for i, j in zip(x, y)]
+        v = [sqrt(i ** 2 + j ** 2) for i, j in zip(v_x, v_y)]
         v_omega = [1E-4 * i for i in r]
         ax.scatter(r, v, c='black')
         ax.scatter(r, v_omega, c='red')

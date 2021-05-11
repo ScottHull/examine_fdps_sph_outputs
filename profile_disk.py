@@ -66,9 +66,9 @@ fig.clear()
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.scatter(escaping_end_positions, escaping_entropies[-1], marker="+",
-        color="red", label="Escaping Entropy", alpha=0.3)
+           color="red", label="Escaping Entropy", alpha=0.3)
 ax.scatter(disk_end_positions, disk_entropies[-1], marker="+",
-        color="blue", label="Disk Entropy", alpha=0.3)
+           color="blue", label="Disk Entropy", alpha=0.3)
 ax.set_xlabel("Distance From Planet Center (km)")
 ax.set_ylabel("Entropy")
 ax.set_title("Disk and Escaping Entropy at Iteration {}".format(end_time))
@@ -77,5 +77,3 @@ ax.legend()
 plt.savefig("disk_and_escaping_entropy.png", format="png")
 
 fig.clear()
-
-

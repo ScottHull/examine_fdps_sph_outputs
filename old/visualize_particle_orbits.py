@@ -88,7 +88,7 @@ class Visualize:
 
     def __get_points_within_spheroid(self):
         return [p for p in self.coords if
-                        -self.a <= p[0] <= self.a and -self.a <= p[1] <= self.a and -self.b <= p[2] <= self.b]
+                -self.a <= p[0] <= self.a and -self.a <= p[1] <= self.a and -self.b <= p[2] <= self.b]
 
     def __select_random_particle_outside_spheroid(self):
         for index, p in enumerate(self.coords):
@@ -103,7 +103,7 @@ class Visualize:
                             position_vector=[p[0], p[1], p[2]],
                             velocity_vector=[v_x, v_y, v_z],
                             mass=mass,
-                            mass_grav_body=((4.0 / 3.0) * pi * (self.a**2) * self.b) * self.__avg_density
+                            mass_grav_body=((4.0 / 3.0) * pi * (self.a ** 2) * self.b) * self.__avg_density
                         )
                         return particle
 
@@ -128,4 +128,3 @@ class Visualize:
 v = Visualize(output_file="merged_800.dat", center=False)
 ax = v.visualize3D()
 plt.show()
-

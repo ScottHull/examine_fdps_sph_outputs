@@ -2,8 +2,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from math import sqrt
 
+
 def radius(x_coords, y_coords, z_coords):
-    return [sqrt(x**2 + y**2 + z**2) / 1000.0 for x, y, z in zip(x_coords, y_coords, z_coords)]
+    return [sqrt(x ** 2 + y ** 2 + z ** 2) / 1000.0 for x, y, z in zip(x_coords, y_coords, z_coords)]
+
 
 aneos = [
     (

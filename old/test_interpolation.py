@@ -4,7 +4,6 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 
-
 path_to_outputs = "/scratch/shull4/impactor/"
 number_processes = 100
 time = 1000
@@ -25,8 +24,6 @@ tempertaure_iron = list(eos_df_iron[2])
 pressure_iron = list(eos_df_iron[3])
 soundspeed_iron = list(eos_df_iron[4])
 
-
-
 combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
 sph_file = os.getcwd() + "/merged_{}.dat".format(time)
 sph_df = pd.read_csv(sph_file, header=None, skiprows=2, delimiter="\t")
@@ -45,16 +42,15 @@ for row in sph_df.index:
     given_entropy.append(entropy_sph)
     if tag_sph % 2 == 0:
         interpolated_val = GenericTrilinearInterpolation(var1_array=density_silicate, var2_array=entropy_silicate,
-                                      var3_array=energy_silicate,
-                                      var1=density_sph, var2=entropy_sph,
-                                      grid_length=120).interpolate()
+                                                         var3_array=energy_silicate,
+                                                         var1=density_sph, var2=entropy_sph,
+                                                         grid_length=120).interpolate()
     else:
         interpolated_val = GenericTrilinearInterpolation(var1_array=density_iron, var2_array=entropy_iron,
                                                          var3_array=energy_iron,
                                                          var1=density_sph, var2=entropy_sph,
                                                          grid_length=120).interpolate()
     interpolated_internal_energy.append(interpolated_val)
-
 
 fig = plt.figure()
 ax = fig.add_subplot(111)

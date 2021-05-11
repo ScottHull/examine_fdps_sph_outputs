@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
 class PhaseSpace:
 
     def __init__(self, phase="duniteS"):
@@ -34,5 +35,6 @@ class PhaseSpace:
         ax.grid()
         ax.legend()
         plt.show()
+
 
 PhaseSpace().plot_phase_space()

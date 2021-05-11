@@ -18,9 +18,11 @@ pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative
 particle_map = pm.solve()
 s = Structure(particles=particle_map, phase="duniteS2")
 
+
 def get_phase_curve_temperature_from_entropy(entropy_value, entropy_list, temperature_list):
     index = list(entropy_list).index(entropy_value)
     return list(temperature_list)[index]
+
 
 rand_particles = []
 sol_liq_interp = []
@@ -49,7 +51,6 @@ while selected_particles < max_plot_particles:
         sol_liq_interp.append((entropy_liq, s.phase_df['temperature'][nearest_temp_index]))
         liq_vap_interp.append((entropy_vap, s.phase_df['temperature'][nearest_temp_index]))
         selected_particles += 1
-
 
 fig = plt.figure(figsize=(16, 9))
 ax = fig.add_subplot(111)
@@ -104,4 +105,3 @@ ax.set_ylabel("Temperature")
 ax.grid()
 ax.legend()
 fig.savefig("verify_entropy_interp.png", format="png")
-

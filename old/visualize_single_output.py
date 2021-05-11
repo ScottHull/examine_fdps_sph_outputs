@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+
 class Visualize:
 
     def __init__(self, output_path):
@@ -45,4 +46,3 @@ class Visualize:
 v = Visualize(output_path="/Users/scotthull/Desktop/merged_212.dat")
 ax = v.plot(dimension=2, color=15, color_label="Soundspeed")
 plt.show()
-

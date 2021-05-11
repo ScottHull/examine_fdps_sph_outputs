@@ -283,7 +283,7 @@ for time in np.arange(start_time, end_time + interval, interval):
     plt.tight_layout()
     plt.savefig(combined_path + "/target/{}.png".format(time), format="png")
     plt.close()
-    
+
     fig = plt.figure()
     fig.set_size_inches(18.5, 10.5)
     ax_density = fig.add_subplot(221)
@@ -360,7 +360,6 @@ for time in np.arange(start_time, end_time + interval, interval):
     plt.tight_layout()
     plt.savefig(combined_path + "/impactor/{}.png".format(time), format="png")
     plt.close()
-
 
 animate(start_time=start_time, end_time=end_time, interval=interval, output_path=output_path + "/target",
         file_name="target_mode1.mp4")

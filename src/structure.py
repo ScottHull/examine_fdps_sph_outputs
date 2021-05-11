@@ -31,7 +31,7 @@ class Structure:
                 # entropy_vap = interpolate1d(val=temperature_i, val_array=self.phase_df['temperature'],
                 #                             interp_array=self.phase_df['entropy_vap'])
                 nearest_temperature_index = nearest_neighbor.neighbor_index(given_val=temperature_i,
-                                                                       array=self.phase_df['temperature'])
+                                                                            array=self.phase_df['temperature'])
                 entropy_liq = self.phase_df['entropy_sol_liq'][nearest_temperature_index]
                 entropy_vap = self.phase_df['entropy_vap'][nearest_temperature_index]
                 if entropy_i < entropy_liq:
@@ -61,7 +61,8 @@ class Structure:
     def calc_total_angular_momentum(self, target_label=None):
         angular_momentum = 0
         if (target_label is not None) and target_label == "DISK":
-            angular_momentum = sum([np.linalg.norm(p.angular_momentum_vector) for p in self.particles if p.label == "DISK"])
+            angular_momentum = sum(
+                [np.linalg.norm(p.angular_momentum_vector) for p in self.particles if p.label == "DISK"])
         else:
             angular_momentum = sum([np.linalg.norm(p.angular_momentum_vector) for p in self.particles])
         return angular_momentum

@@ -11,7 +11,8 @@ from src.centering import center_of_mass
 
 class BuildMovie:
 
-    def __init__(self, output_path, to_path, num_files, fps=10, start_from=0, interval=1, new_sim=True, colorize_particles=True,
+    def __init__(self, output_path, to_path, num_files, fps=10, start_from=0, interval=1, new_sim=True,
+                 colorize_particles=True,
                  dimension='3', file_name="sph_output.mp4", num_processes=1, focus_process=None, center=True,
                  center_on_target_iron=False):
         self.output_path = output_path
@@ -126,12 +127,27 @@ class BuildMovie:
                 x = x - com[0]
                 y = y - com[1]
                 z = z - com[2]
-            x = np.array([i for index, i in enumerate(x) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(x) if particle_id[index] % 2 != 0])
-            y = np.array([i for index, i in enumerate(y) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(y) if particle_id[index] % 2 != 0])
-            z = np.array([i for index, i in enumerate(z) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(z) if particle_id[index] % 2 != 0])
-            colors = np.array([i for index, i in enumerate(colors) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(colors) if particle_id[index] % 2 != 0])
-            mass = np.array([i for index, i in enumerate(mass) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(mass) if particle_id[index] % 2 != 0])
-            particle_id = np.array([i for index, i in enumerate(particle_id) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(particle_id) if particle_id[index] % 2 != 0])
+            x = np.array(
+                [i for index, i in enumerate(x) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(x) if
+                                                                                   particle_id[index] % 2 != 0])
+            y = np.array(
+                [i for index, i in enumerate(y) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(y) if
+                                                                                   particle_id[index] % 2 != 0])
+            z = np.array(
+                [i for index, i in enumerate(z) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(z) if
+                                                                                   particle_id[index] % 2 != 0])
+            colors = np.array([i for index, i in enumerate(colors) if particle_id[index] % 2 == 0] + [i for index, i in
+                                                                                                      enumerate(colors)
+                                                                                                      if particle_id[
+                                                                                                          index] % 2 != 0])
+            mass = np.array(
+                [i for index, i in enumerate(mass) if particle_id[index] % 2 == 0] + [i for index, i in enumerate(mass)
+                                                                                      if particle_id[index] % 2 != 0])
+            particle_id = np.array(
+                [i for index, i in enumerate(particle_id) if particle_id[index] % 2 == 0] + [i for index, i in
+                                                                                             enumerate(particle_id) if
+                                                                                             particle_id[
+                                                                                                 index] % 2 != 0])
             if self.colorize_particles:
                 ax.scatter(x, y, c=colors, alpha=alpha)
             else:
@@ -156,7 +172,8 @@ class BuildMovie:
 
     def __animate(self, file_name="sph_output.mp4"):
         frames = [self.to_path + "/output_{}.png".format(int(i)) for i in np.arange(self.start_file,
-                                                                        self.num_files + self.interval, self.interval)]
+                                                                                    self.num_files + self.interval,
+                                                                                    self.interval)]
         animation = mpy.ImageSequenceClip(frames, fps=self.fps, load_images=True)
         animation.write_videofile(file_name, fps=self.fps)
 
@@ -174,6 +191,7 @@ class BuildMovie:
 
     def build_animation_from_existing(self, path, num_files, start_from_file_number=0):
         num_files_copy = copy(self.num_files)
+
 
 path = "/scratch/shull4/gi"
 mov = BuildMovie(

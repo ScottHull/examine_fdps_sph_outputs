@@ -17,7 +17,6 @@ relative_velocities = controller.get_relative_velocities(particle_map=particle_m
 eccentricities = controller.get_eccentricities(particle_map=particle_map)
 periapsis = controller.get_periapsis(particle_map=particle_map)
 
-
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax = controller.plot(ax=ax, ps=relative_velocities)

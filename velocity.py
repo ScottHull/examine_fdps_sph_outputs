@@ -18,7 +18,6 @@ for row in df.index:
     rel_vel_vec = [rel_vel_x, rel_vel_y, rel_vel_z]
     pos_vec = [x, y, z]
 
-
     vel = np.linalg.norm(vel_vec)
     rel_vel = np.linalg.norm(rel_vel_vec)
     pos = np.linalg.norm(pos_vec)
@@ -58,4 +57,3 @@ ax.legend()
 ax.set_xlim(0, 1e8)
 # plt.savefig("velocities.png", format='png')
 plt.show()
-

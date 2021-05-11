@@ -53,4 +53,3 @@ for time in np.arange(start_time, end_time + interval, interval):
 
 plots.animate(start_time=start_time, end_time=end_time, interval=interval, path=entropy_plot_path,
               filename="entropy_evolution.mp4", fps=5)
-

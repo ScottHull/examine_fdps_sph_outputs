@@ -62,7 +62,8 @@ class MapParticles:
                    color="black")
         if particle_sample is not None:
             ax.scatter([i.position_vector[0] for i in particle_sample if i.label == "PLANET"],
-                   [i.position_vector[1] for i in particle_sample if i.label == "PLANET"], marker="+", color="green")
+                       [i.position_vector[1] for i in particle_sample if i.label == "PLANET"], marker="+",
+                       color="green")
         ax.scatter(0, 0, marker="o", s=30, color='red')
         e = Ellipse(xy=(0, 0), width=self.a * 2.0, height=self.b * 2.0, alpha=0.2, color="blue")
         ax.add_artist(e)
@@ -286,6 +287,7 @@ class MapParticles:
             if CONVERGENCE:
                 ax = self.plot_particles(particle_sample=particles)
                 plt.show()
+
 
 m = MapParticles(output_path="merged_1.dat", center=True)
 # m.plot_particles_from_iteration(max_iteration=5000, max_randint=110000)

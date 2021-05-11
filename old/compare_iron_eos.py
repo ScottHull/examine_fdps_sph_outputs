@@ -6,7 +6,7 @@ iron___ = pd.read_fwf("/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Re
 ironS2 = pd.read_fwf("/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/FDPS_SPH/eos/ironS2.rho_u.txt",
                      skiprows=2, header=None)
 ironC = pd.read_fwf("/Users/scotthull/Documents - Scott’s MacBook Pro/PhD Research/FDPS_SPH/eos/ironC.rho_u.txt",
-                     skiprows=2, header=None)
+                    skiprows=2, header=None)
 
 ax1 = plt.figure().add_subplot(111)
 ax1.scatter(iron___[5], iron___[1], marker="+", color='blue', label="iron___")

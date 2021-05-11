@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-
 class RadiusPlot:
 
     def __init__(self, path, focus_timestep, num_processes=1, focus_process=None):
@@ -16,8 +15,8 @@ class RadiusPlot:
 
     def __get_filename(self):
         return self.path + "/" + self.file_format.format(str(self.focus_timestep).zfill(5),
-                                                                str(self.num_processes).zfill(5),
-                                                                str(self.curr_process).zfill(5))
+                                                         str(self.num_processes).zfill(5),
+                                                         str(self.curr_process).zfill(5))
 
     def __read_sph_file(self):
         df = pd.read_csv(self.__get_filename(), sep='\t', skiprows=2, header=None)
@@ -49,7 +48,8 @@ class RadiusPlot:
             index_id, p_id, x, y, z = self.__read_sph_file()
             silicate_index_id = [i for index, i in enumerate(index_id) if p_id[index] == 0]
             silicate_radius = [sqrt(i ** 2 + j ** 2 + k ** 2) for p, i, j, k in zip(p_id, x, y, z) if p == 0]
-            ax.scatter(silicate_index_id, silicate_radius, marker="+", label="Process: {} (silicate)".format(self.curr_process))
+            ax.scatter(silicate_index_id, silicate_radius, marker="+",
+                       label="Process: {} (silicate)".format(self.curr_process))
             iron_index_id = [i for index, i in enumerate(index_id) if p_id[index] == 1]
             iron_radius = [sqrt(i ** 2 + j ** 2 + k ** 2) for p, i, j, k in zip(p_id, x, y, z) if p == 1]
             ax.scatter(iron_index_id, iron_radius, marker="o", label="Process: {} (iron)".format(self.curr_process))
@@ -60,6 +60,7 @@ class RadiusPlot:
         # ax.legend(loc='lower left')
         # ax2.legend(loc='lower left')
         plt.show()
+
 
 path = "/Users/scotthull/Desktop/impactor_small"
 m = RadiusPlot(

@@ -28,11 +28,18 @@ particle_map = pm.solve()
 # fig.savefig("eccentricity_{}.png".format(time), format='png')
 
 fig = plots.colorcode_orbits(
-        particles=particle_map,
-        a=pm.a,
-        b=pm.b,
-        center_plot=True,
-        z=None,
-        time=time
-    )
+    particles=particle_map,
+    a=pm.a,
+    b=pm.b,
+    center_plot=True,
+    z=None,
+    time=time
+)
 fig.savefig("orbits_{}.png".format(time), format='png')
+
+fig = plots.eccentricity_plot(
+    particles=particle_map,
+    a=pm.a,
+    time=time
+)
+fig.savefig("e_vs_a_rp_{}.png".format(time), format='png')

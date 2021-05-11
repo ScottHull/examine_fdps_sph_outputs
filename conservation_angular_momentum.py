@@ -94,4 +94,3 @@ ax.plot(
 )
 plt.savefig("total_momentum.png", format='png')
 fig.clear()
-

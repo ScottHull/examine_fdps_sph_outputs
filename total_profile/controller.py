@@ -34,6 +34,7 @@ def get_eccentricities(particle_map):
         'escape': [(p.distance, p.eccentricity) for p in pm['escape']],
     }
 
+
 def get_periapsis(particle_map):
     pm = particle_location(particle_map=particle_map)
     return {
@@ -41,6 +42,7 @@ def get_periapsis(particle_map):
         'disk': [(p.distance, p.periapsis) for p in pm['disk']],
         'escape': [(p.distance, p.periapsis) for p in pm['escape']],
     }
+
 
 def plot(ax, ps):
     ax.scatter(

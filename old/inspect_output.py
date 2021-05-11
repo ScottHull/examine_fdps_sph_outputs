@@ -42,5 +42,3 @@ class Inspect:
 
 m = Inspect(num_processes=20, time=6, output_path="/Users/scotthull/Desktop/GI")
 m.plot(9, 11, "Density", "Pressure")
-
-

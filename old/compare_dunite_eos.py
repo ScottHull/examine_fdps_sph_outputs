@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-
 paths = [
     ("src/eos/dunite.rho_u.txt", "dunite"),
     ("src/eos/dunite3.rho_u.txt", "dunite3"),
@@ -46,6 +45,5 @@ for i in paths:
 
 ax2.grid()
 ax2.legend()
-
 
 plt.show()

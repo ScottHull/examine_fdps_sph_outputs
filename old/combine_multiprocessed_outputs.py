@@ -2,6 +2,7 @@ import pandas as pd
 import csv
 import os
 
+
 class CombineFile:
 
     def __init__(self, num_processes, time, output_path):
@@ -59,7 +60,5 @@ class CombineFile:
         merged_df = pd.concat(dfs)
         return merged_df
 
-
 # m = CombineFile(num_processes=20, time=1000, output_path="/Users/scotthull/Desktop/target_small")
 # m.combine()
-
