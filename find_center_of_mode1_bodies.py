@@ -1,4 +1,5 @@
 import os
+from math import pi, sqrt, atan
 import pandas as pd
 from src.combine import CombineFile
 from src.identify import ParticleMap
@@ -68,6 +69,12 @@ tar_max_y_coord = (mid_x_tar, max_y_tar)
 imp_intersection = line_intersection((imp_min_x_coord, imp_max_x_coord), (imp_min_y_coord, imp_max_y_coord))
 tar_intersection = line_intersection((tar_min_x_coord, tar_max_x_coord), (tar_min_y_coord, tar_max_y_coord))
 
+imp_tar_distance = sqrt((imp_intersection[0] - tar_intersection[0])**2 +
+                                 (imp_intersection[1] - tar_intersection[1])**2)
+imp_tar_x_distance = mid_x_imp - mid_x_tar
+imp_tar_y_distance = mid_y_imp - mid_y_tar
+imp_tar_angle = atan(imp_tar_y_distance / imp_tar_x_distance) * (180.0 / pi)
+
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.scatter(
@@ -117,7 +124,24 @@ ax.plot(
     [imp_intersection[1], tar_intersection[1]],
     linewidth=2.0,
     linestyle="--",
-    color='black'
+    color='black',
+    label="distance: {}\nangle: {} deg".format(imp_tar_distance, imp_tar_angle)
+)
+ax.plot(
+    [mid_x_tar, mid_x_imp],
+    [mid_x_tar, mid_x_tar],
+    linewidth=2.0,
+    linestyle="-.-",
+    color='black',
+    label="x distance: {}".format(imp_tar_x_distance)
+)
+ax.plot(
+    [mid_x_imp, mid_x_imp],
+    [mid_y_tar, mid_y_imp],
+    linewidth=2.0,
+    linestyle="-.-",
+    color='black',
+    label="y distance: {}".format(imp_tar_y_distance)
 )
 ax.set_xlabel("x")
 ax.set_ylabel("y")
