@@ -131,7 +131,7 @@ ax.plot(
     [mid_x_tar, mid_x_imp],
     [mid_x_tar, mid_x_tar],
     linewidth=2.0,
-    linestyle="-.-",
+    linestyle="-.",
     color='black',
     label="x distance: {}".format(imp_tar_x_distance)
 )
@@ -139,7 +139,7 @@ ax.plot(
     [mid_x_imp, mid_x_imp],
     [mid_y_tar, mid_y_imp],
     linewidth=2.0,
-    linestyle="-.-",
+    linestyle="-.",
     color='black',
     label="y distance: {}".format(imp_tar_y_distance)
 )
