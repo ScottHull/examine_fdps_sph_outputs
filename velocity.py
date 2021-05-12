@@ -27,14 +27,23 @@ for row in df.index:
     pos = np.linalg.norm(pos_vec)
     
     if tag == 0:
-        target_silicate.append((label, vel, rel_vel, pos))
+        target_silicate.append([label, vel, rel_vel, pos, [vel_x, vel_y, vel_z], [rel_vel_x, rel_vel_y, rel_vel_z]])
     elif tag == 1:
-        target_iron.append((label, vel, rel_vel, pos))
+        target_iron.append([label, vel, rel_vel, pos, [vel_x, vel_y, vel_z], [rel_vel_x, rel_vel_y, rel_vel_z]])
     elif tag == 2:
-        impactor_silicate.append((label, vel, rel_vel, pos))
+        impactor_silicate.append([label, vel, rel_vel, pos, [vel_x, vel_y, vel_z], [rel_vel_x, rel_vel_y, rel_vel_z]])
     elif tag ==3:
-        impactor_iron.append((label, vel, rel_vel, pos))
+        impactor_iron.append([label, vel, rel_vel, pos, [vel_x, vel_y, vel_z], [rel_vel_x, rel_vel_y, rel_vel_z]])
 
+total_particles = target_silicate + target_iron + impactor_silicate + impactor_iron
+total_abs_velocity_x = sum(i[4][0] for i in total_particles)
+total_abs_velocity_y = sum(i[4][1] for i in total_particles)
+total_abs_velocity_z = sum(i[4][2] for i in total_particles)
+total_rel_velocity_x = sum(i[5][0] for i in total_particles)
+total_rel_velocity_y = sum(i[5][1] for i in total_particles)
+total_rel_velocity_z = sum(i[5][2] for i in total_particles)
+total_abs_velocity = np.linalg.norm([total_abs_velocity_x, total_abs_velocity_y, total_abs_velocity_z])
+total_rel_velocity = np.linalg.norm([total_rel_velocity_x, total_rel_velocity_y, total_rel_velocity_z])
 
 mean_vel_target_silicate = sum([p[1] for p in target_silicate]) / len(target_silicate)
 mean_vel_target_iron = sum([p[1] for p in target_iron]) / len(target_iron)
@@ -63,13 +72,16 @@ print(
     "MIN V TARGET SILICATE: {}\n"
     "MIN V TARGET IRON: {}\n"
     "MIN V IMPACTOR SILICATE: {}\n"
-    "MIN V IMPACTOR IRON: {}\n".format(
+    "MIN V IMPACTOR IRON: {}\n"
+    "TOTAL REL VELOCITY: {}\n"
+    "TOTAL ABS VELOCITY: {}".format(
         mean_vel_target_silicate, mean_vel_target_iron,
         mean_vel_impactor_silicate, mean_vel_impactor_iron,
         max_vel_target_silicate, max_vel_target_iron,
         max_vel_impactor_silicate, max_vel_impactor_iron,
         min_vel_target_silicate, min_vel_target_iron,
         min_vel_impactor_silicate, min_vel_impactor_iron,
+        total_rel_velocity, total_abs_velocity
     )
 )
 
