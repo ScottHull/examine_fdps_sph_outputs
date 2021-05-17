@@ -1,9 +1,8 @@
 import numpy as np
 
 
-def center_of_mass(x_coords, y_coords, z_coords, masses, particle_ids, target_iron=False):
+def center_of_mass(x_coords, y_coords, z_coords, masses, particle_ids, target_iron=False, target_iron_id=1):
     if target_iron:
-        target_iron_id = 1
         masses = np.array([i for index, i in enumerate(masses) if particle_ids[index] == target_iron_id],
                           dtype=np.float32)
         x_coords = np.array([i for index, i in enumerate(x_coords) if particle_ids[index] == target_iron_id],
