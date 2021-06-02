@@ -3,6 +3,7 @@ from math import pi, sqrt, atan
 import pandas as pd
 from src.combine import CombineFile
 from src.identify import ParticleMap
+from src import centering
 import matplotlib.pyplot as plt
 
 time = 0
@@ -13,10 +14,6 @@ combined_file = CombineFile(num_processes=number_processes, time=time, output_pa
 f = os.getcwd() + "/merged_{}.dat".format(time)
 pm = ParticleMap(output_path=f, center_on_target_iron=False, plot=False, relative_velocity=True,
                  center_plot=False).collect_all_particles(find_orbital_elements=False)
-
-def center_of_mass(coords, masses):
-    total_mass = sum(masses)
-    return sum([x * y for x, y in zip(coords, masses)]) / total_mass
 
 def line_intersection(line1, line2):
     xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
@@ -38,8 +35,18 @@ def line_intersection(line1, line2):
 impactor = [i for i in pm if i.particle_id > 1]
 target = [i for i in pm if i.particle_id <= 1]
 
-com_imp = center_of_mass(coords=[i.position_vector for i in impactor], masses=[i.mass for i in impactor])
-com_tar = center_of_mass(coords=[i.position_vector for i in target], masses=[i.mass for i in target])
+com_x_tar, com_y_tar, com_z_tar = centering.center_of_mass(
+    x_coords=[p.position_vector[0] for p in target],
+    y_coords=[p.position_vector[1] for p in target],
+    z_coords=[p.position_vector[2] for p in target],
+    masses=[p.mass for p in target],
+)
+com_x_imp, com_y_imp, com_z_imp = centering.center_of_mass(
+    x_coords=[p.position_vector[0] for p in impactor],
+    y_coords=[p.position_vector[1] for p in impactor],
+    z_coords=[p.position_vector[2] for p in impactor],
+    masses=[p.mass for p in impactor],
+)
 
 min_x_imp = min([i.position_vector[0] for i in impactor])
 max_x_imp = max([i.position_vector[0] for i in impactor])
@@ -148,6 +155,22 @@ ax.plot(
     linestyle="-.",
     color='black',
     label="y distance: {}".format(imp_tar_y_distance)
+)
+ax.scatter(
+    com_x_tar,
+    com_y_tar,
+    color='green',
+    marker="*",
+    s=200,
+    label="COM TARGET"
+)
+ax.scatter(
+    com_x_imp,
+    com_y_imp,
+    color='purple',
+    marker="*",
+    s=200,
+    label="COM IMPACTOR"
 )
 ax.set_xlabel("x")
 ax.set_ylabel("y")
