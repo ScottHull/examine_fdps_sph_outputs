@@ -11,9 +11,12 @@ path_to_outputs = "/scratch/shull4/gi"
 
 combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
 f = os.getcwd() + "/merged_{}.dat".format(time)
-pm = ParticleMap(output_path=f, center_on_target_iron=True, plot=False, relative_velocity=True,
-                 center_plot=True).collect_all_particles(find_orbital_elements=False)
+pm = ParticleMap(output_path=f, center_on_target_iron=False, plot=False, relative_velocity=True,
+                 center_plot=False).collect_all_particles(find_orbital_elements=False)
 
+def center_of_mass(coords, masses):
+    total_mass = sum(masses)
+    return sum([x * y for x, y in zip(coords, masses)]) / total_mass
 
 def line_intersection(line1, line2):
     xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
@@ -34,6 +37,9 @@ def line_intersection(line1, line2):
 
 impactor = [i for i in pm if i.particle_id > 1]
 target = [i for i in pm if i.particle_id <= 1]
+
+com_imp = center_of_mass(coords=[i.position_vector for i in impactor], masses=[i.mass for i in impactor])
+com_tar = center_of_mass(coords=[i.position_vector for i in target], masses=[i.mass for i in target])
 
 min_x_imp = min([i.position_vector[0] for i in impactor])
 max_x_imp = max([i.position_vector[0] for i in impactor])

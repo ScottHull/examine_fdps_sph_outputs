@@ -14,7 +14,7 @@ impactor_iron = []
 for row in df.index:
     vel_x, vel_y, vel_z = df['v_x_absolute'][row], df['v_y_absolute'][row], df['v_z_absolute'][row]
     rel_vel_x, rel_vel_y, rel_vel_z = df['v_x_relative'][row], df['v_y_relative'][row], df['v_z_relative'][row]
-    tag = df['particle_id'][row]
+    tag = df['tag'][row]
     label = df['label'][row]
     x, y, z = df['x'][row], df['y'][row], df['z'][row]
 
@@ -32,7 +32,7 @@ for row in df.index:
         target_iron.append([label, vel, rel_vel, pos, [vel_x, vel_y, vel_z], [rel_vel_x, rel_vel_y, rel_vel_z]])
     elif tag == 2:
         impactor_silicate.append([label, vel, rel_vel, pos, [vel_x, vel_y, vel_z], [rel_vel_x, rel_vel_y, rel_vel_z]])
-    elif tag ==3:
+    elif tag == 3:
         impactor_iron.append([label, vel, rel_vel, pos, [vel_x, vel_y, vel_z], [rel_vel_x, rel_vel_y, rel_vel_z]])
 
 total_particles = target_silicate + target_iron + impactor_silicate + impactor_iron
@@ -72,16 +72,13 @@ print(
     "MIN V TARGET SILICATE: {}\n"
     "MIN V TARGET IRON: {}\n"
     "MIN V IMPACTOR SILICATE: {}\n"
-    "MIN V IMPACTOR IRON: {}\n"
-    "TOTAL REL VELOCITY: {}\n"
-    "TOTAL ABS VELOCITY: {}".format(
+    "MIN V IMPACTOR IRON: {}\n".format(
         mean_vel_target_silicate, mean_vel_target_iron,
         mean_vel_impactor_silicate, mean_vel_impactor_iron,
         max_vel_target_silicate, max_vel_target_iron,
         max_vel_impactor_silicate, max_vel_impactor_iron,
         min_vel_target_silicate, min_vel_target_iron,
         min_vel_impactor_silicate, min_vel_impactor_iron,
-        total_rel_velocity, total_abs_velocity
     )
 )
 
