@@ -84,8 +84,10 @@ tar_intersection = line_intersection((tar_min_x_coord, tar_max_x_coord), (tar_mi
 
 imp_tar_distance = sqrt((imp_intersection[0] - tar_intersection[0])**2 +
                                  (imp_intersection[1] - tar_intersection[1])**2)
-imp_tar_x_distance = mid_x_imp - mid_x_tar
-imp_tar_y_distance = mid_y_imp - mid_y_tar
+# imp_tar_x_distance = mid_x_imp - mid_x_tar
+# imp_tar_y_distance = mid_y_imp - mid_y_tar
+imp_tar_x_distance = com_x_imp - com_x_tar
+imp_tar_y_distance = com_y_imp - com_y_tar
 imp_tar_angle = atan(imp_tar_y_distance / imp_tar_x_distance) * (180.0 / pi)
 
 fig = plt.figure()
@@ -133,24 +135,24 @@ ax.plot(
     color='pink'
 )
 ax.plot(
-    [imp_intersection[0], tar_intersection[0]],
-    [imp_intersection[1], tar_intersection[1]],
+    [com_x_tar, com_x_imp],
+    [com_y_tar, com_y_imp],
     linewidth=2.0,
     linestyle="--",
     color='black',
     label="distance: {}\nangle: {} deg".format(imp_tar_distance, imp_tar_angle)
 )
 ax.plot(
-    [mid_x_tar, mid_x_imp],
-    [mid_x_tar, mid_x_tar],
+    [com_x_tar, com_x_imp],
+    [com_x_tar, com_x_tar],
     linewidth=2.0,
     linestyle="-.",
     color='black',
     label="x distance: {}".format(imp_tar_x_distance)
 )
 ax.plot(
-    [mid_x_imp, mid_x_imp],
-    [mid_y_tar, mid_y_imp],
+    [com_x_imp, com_x_imp],
+    [com_y_tar, com_y_imp],
     linewidth=2.0,
     linestyle="-.",
     color='black',
