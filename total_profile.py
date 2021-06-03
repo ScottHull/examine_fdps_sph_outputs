@@ -60,12 +60,12 @@ target_velocity = sum([np.linalg.norm([vx, vy, vz]) for vx, vy, vz in zip(
     [p.velocity_vector[0] for p in start_target],
     [p.velocity_vector[1] for p in start_target],
     [p.velocity_vector[2] for p in start_target]
-)])
+)]) / len(start_target)
 impactor_velocity = sum([np.linalg.norm([vx, vy, vz]) for vx, vy, vz in zip(
     [p.velocity_vector[0] for p in start_impactor],
     [p.velocity_vector[1] for p in start_impactor],
     [p.velocity_vector[2] for p in start_impactor]
-)])
+)]) / len(start_impactor)
 v_imp_verify_tar = target_velocity / ((total_imp_mass / total_mass) * imp_velocity)
 v_imp_verify_imp = impactor_velocity / ((total_tar_mass / total_mass) * imp_velocity)
 print("V_TAR: {}\nV_IMPACTOR_{}\nV_IMP_TAR_VERIFY: {} (target: {})\nV_IMP_IMP_VERIFY: {} (target: {})".format(
