@@ -53,6 +53,7 @@ satellite_mass = (1.9 * disk_ang_momentum / sqrt(G * M_earth * roche)) - (1.15 *
 print("DISK MASS: {} ({} M_L)\nESCAPE MASS: {} ({} M_L)\nPROTOEARTH MASS: {} ({} M_E)".format(
     disk_mass, disk_mass / M_moon, escape_mass, escape_mass / M_moon, planet_mass, planet_mass / M_earth
 ))
+print("DISK ANGULAR MOMENTUM: {}\nROCHE LIMIT: {}".format(disk_ang_momentum, roche))
 print("PREDICTED SATELLITE MASS: {} kg ({} lunar masses)".format(satellite_mass, satellite_mass / M_moon))
 
 target_velocity = sum([np.linalg.norm([vx, vy, vz]) for vx, vy, vz in zip(
@@ -67,5 +68,6 @@ impactor_velocity = sum([np.linalg.norm([vx, vy, vz]) for vx, vy, vz in zip(
 )])
 v_imp_verify_tar = target_velocity / ((total_imp_mass / total_mass) * imp_velocity)
 v_imp_verify_imp = impactor_velocity / ((total_tar_mass / total_mass) * imp_velocity)
-print("V_IMP_TAR: {} (target: {})\nV_IMP_IMP: {} (target: {})".format(v_imp_verify_tar, imp_velocity, v_imp_verify_imp,
-                                                                      imp_velocity))
+print("V_TAR: {}\nV_IMPACTOR_{}\nV_IMP_TAR_VERIFY: {} (target: {})\nV_IMP_IMP_VERIFY: {} (target: {})".format(
+    target_velocity, impactor_velocity, v_imp_verify_tar, imp_velocity, v_imp_verify_imp,
+    imp_velocity))
