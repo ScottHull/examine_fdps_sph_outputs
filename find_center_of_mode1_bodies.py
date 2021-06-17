@@ -13,7 +13,7 @@ path_to_outputs = "/scratch/shull4/gi"
 combined_file = CombineFile(num_processes=number_processes, time=time, output_path=path_to_outputs).combine()
 f = os.getcwd() + "/merged_{}.dat".format(time)
 pm = ParticleMap(output_path=f, center_on_target_iron=False, plot=False, relative_velocity=True,
-                 center_plot=False).collect_all_particles(find_orbital_elements=False)
+                 center_plot=False, center=False).collect_all_particles(find_orbital_elements=False)
 
 def line_intersection(line1, line2):
     xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])

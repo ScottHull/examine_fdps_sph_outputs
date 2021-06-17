@@ -25,7 +25,7 @@ class ParticleMap:
         self.__center_on_target_iron = center_on_target_iron
         self.__center_plot = center_plot
         self.output = pd.read_csv(output_path, skiprows=2, header=None, delimiter="\t")
-        if center_plot or center_on_target_iron:
+        if center_on_target_iron:
             self.com = center_of_mass(x_coords=self.output[3], y_coords=self.output[4],
                                       z_coords=self.output[5], masses=self.output[2], particle_ids=self.output[1],
                                       target_iron=self.__center_on_target_iron)

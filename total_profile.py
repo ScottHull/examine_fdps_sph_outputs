@@ -71,3 +71,6 @@ v_imp_verify_imp = impactor_velocity / (total_tar_mass / total_mass)
 print("V_TAR: {}\nV_IMPACTOR_{}\nV_IMP_TAR_VERIFY: {} (target: {})\nV_IMP_IMP_VERIFY: {} (target: {})".format(
     target_velocity, impactor_velocity, v_imp_verify_tar, imp_velocity, v_imp_verify_imp,
     imp_velocity))
+
+
+v_esc = sqrt((2 * G * total_mass) / (imp_tar_x_offset))
